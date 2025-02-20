@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人介绍</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">我的名字</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#about">关于我 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#skills">技能</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">联系方式</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="text-center py-5 bg-dark text-white">
+        <h1>欢迎来到我的个人网站</h1>
+    </header>
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loader">
+            <div class="spinner"></div>
+            <div class="progress-bar-container">
+                <div class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                </div>
+                <div class="progress-text">0%</div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h2 id="about">关于我</h2>
+                <p>这里是关于您的一些基本信息。可以包括您的背景、兴趣、技能等。</p>
+            </div>
+            <div class="col-md-6">
+                <h2 id="skills">我的技能</h2>
+                <ul>
+                    <li>技能1</li>
+                    <li>技能2</li>
+                    <li>技能3</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+        <!-- 在index.html 中添加 -->
+<div id="chatContainer" class="chat-container" style="display:none;">
+    <div id="chatBox" class="chat-box">
+        <div id="chatHistory" class="chat-history"></div>
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." />
+        <button id="sendButton" class="chat-send-btn">Send</button>
+    </div>
+</div>
+<button id="openChat" class="open-chat-btn">
+
+</button>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>版权所有 &copy; 2024</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="scripts.js"></script>
+    <script>
+        function sendMessage() {
+    const userMessage = document.getElementById('userInput').value;
+    const chatWindow = document.getElementById('chatWindow');
+
+    if (userMessage.trim() !== '') {
+        chatWindow.innerHTML += `<p>You: ${userMessage}</p>`;
+
+        // 发送消息到后端
+        fetch('/message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            chatWindow.innerHTML += `<p>Chatbot: ${data.message}</p>`;
+            document.getElementById('userInput').value = ''; // 清空输入框
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+    </script>
+</body>
+</html>
