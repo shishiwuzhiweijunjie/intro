@@ -25,10 +25,10 @@ app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public/login.
 app.post('/register', authController.register);
 app.post('/login', authController.login);
 
-// 登出功能路由
 app.get('/logout', (req, res) => {
-    res.clearCookie('token'); // 清除 JWT
-    res.redirect('/');
+    // 清除 sessionStorage 中的 JWT
+    res.clearCookie('token'); // 如果之前使用了 Cookie，也需要清除
+    res.send('<script>sessionStorage.removeItem("token"); window.location.href = "/";</script>');
 });
 
 const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY})
