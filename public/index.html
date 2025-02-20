@@ -79,18 +79,18 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // 检查 JWT
-        const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
-
+        // 从 sessionStorage 中获取 JWT
+        const token = sessionStorage.getItem('token');
+    
         if (token) {
             document.getElementById('registerLink').style.display = 'none';
             document.getElementById('loginLink').style.display = 'none';
             document.getElementById('logoutLink').style.display = 'block';
         } else {
-            document.getElementById('loadingOverlay').style.display = 'flex'; // 显示加载动画
             document.getElementById('logoutLink').style.display = 'none';
+            document.getElementById('loadingOverlay').style.display = 'flex'; // 显示加载动画
         }
-
+    
         // 加载动画逻辑
         if (!token) {
             const progressBar = document.querySelector('.progress-bar-inner');
@@ -98,7 +98,7 @@
             let currentProgress = 0;
             const increment = 1;
             const randomTime = Math.floor(Math.random() * 1000) + 2000;
-
+    
             const updateProgress = () => {
                 currentProgress += increment;
                 if (currentProgress >= 100) {
@@ -109,7 +109,7 @@
                 progressBar.style.width = currentProgress + '%';
                 progressText.textContent = currentProgress + '%';
             };
-
+    
             const interval = setInterval(updateProgress, randomTime / 100);
         }
     </script>

@@ -27,18 +27,18 @@
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
+    
             const response = await fetch('/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }, // 修正了这里的语法错误
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
-
+    
             const result = await response.json();
             if (response.ok) {
                 alert(result.message);
-                // 存储 JWT 到 Cookie 或 LocalStorage
-                document.cookie = `token=${result.token}; path=/; max-age=3600;`;
+                // 将 JWT 存储到 sessionStorage
+                sessionStorage.setItem('token', result.token);
                 window.location.href = '/';
             } else {
                 alert(result.error || '登录失败');
