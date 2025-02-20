@@ -24,6 +24,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#contact">联系方式</a>
                 </li>
+                <li class="nav-item" id="registerLink">
+                    <a class="nav-link" href="/register">注册</a>
+                </li>
+                <li class="nav-item" id="loginLink">
+                    <a class="nav-link" href="/login">登录</a>
+                </li>
+                <li class="nav-item" id="logoutLink" style="display: none;">
+                    <a class="nav-link" href="/logout">登出</a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -31,7 +40,9 @@
     <header class="text-center py-5 bg-dark text-white">
         <h1>欢迎来到我的个人网站</h1>
     </header>
-    <div id="loadingOverlay" class="loading-overlay">
+
+    <!-- 加载动画 -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
         <div class="loader">
             <div class="spinner"></div>
             <div class="progress-bar-container">
@@ -42,6 +53,7 @@
             </div>
         </div>
     </div>
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-6">
@@ -59,18 +71,6 @@
         </div>
     </div>
 
-        <!-- 在index.html 中添加 -->
-<div id="chatContainer" class="chat-container" style="display:none;">
-    <div id="chatBox" class="chat-box">
-        <div id="chatHistory" class="chat-history"></div>
-        <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." />
-        <button id="sendButton" class="chat-send-btn">Send</button>
-    </div>
-</div>
-<button id="openChat" class="open-chat-btn">
-
-</button>
-
     <footer class="bg-dark text-white text-center py-3">
         <p>版权所有 &copy; 2024</p>
     </footer>
@@ -78,31 +78,40 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="scripts.js"></script>
     <script>
-        function sendMessage() {
-    const userMessage = document.getElementById('userInput').value;
-    const chatWindow = document.getElementById('chatWindow');
+        // 检查 JWT
+        const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
 
-    if (userMessage.trim() !== '') {
-        chatWindow.innerHTML += `<p>You: ${userMessage}</p>`;
+        if (token) {
+            document.getElementById('registerLink').style.display = 'none';
+            document.getElementById('loginLink').style.display = 'none';
+            document.getElementById('logoutLink').style.display = 'block';
+        } else {
+            document.getElementById('loadingOverlay').style.display = 'flex'; // 显示加载动画
+            document.getElementById('logoutLink').style.display = 'none';
+        }
 
-        // 发送消息到后端
-        fetch('/message', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message: userMessage })
-        })
-        .then(response => response.json())
-        .then(data => {
-            chatWindow.innerHTML += `<p>Chatbot: ${data.message}</p>`;
-            document.getElementById('userInput').value = ''; // 清空输入框
-        })
-        .catch(error => console.error('Error:', error));
-    }
-}
+        // 加载动画逻辑
+        if (!token) {
+            const progressBar = document.querySelector('.progress-bar-inner');
+            const progressText = document.querySelector('.progress-text');
+            let currentProgress = 0;
+            const increment = 1;
+            const randomTime = Math.floor(Math.random() * 1000) + 2000;
+
+            const updateProgress = () => {
+                currentProgress += increment;
+                if (currentProgress >= 100) {
+                    currentProgress = 100;
+                    clearInterval(interval);
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+                progressBar.style.width = currentProgress + '%';
+                progressText.textContent = currentProgress + '%';
+            };
+
+            const interval = setInterval(updateProgress, randomTime / 100);
+        }
     </script>
 </body>
 </html>
