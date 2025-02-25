@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星穹铁道抽卡模拟</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 样式保持与之前一致 */
+        .navbar-dark.bg-primary { background-color: #2c3e50 !important; }
+        .gacha-card { transition: transform 0.3s; border: 2px solid transparent; }
+        .gacha-card:hover { transform: translateY(-5px); }
+        .five-star { border-color: #ffd700 !important; background: linear-gradient(45deg, #fff3e0, #ffecb3); }
+        .four-star { border-color: #9c27b0 !important; background: linear-gradient(45deg, #f3e5f5, #e1bee7); }
+        .three-star { border-color: #2196f3 !important; background: linear-gradient(45deg, #e3f2fd, #bbdefb); }
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8); display: none; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">星穹抽卡模拟</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">首页</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="/gacha">抽卡</a></li>
+                    <li class="nav-item" id="loginLink"><a class="nav-link" href="/login">登录</a></li>
+                    <li class="nav-item" id="logoutLink" style="display: none;">
+                        <a class="nav-link" href="#" onclick="logout()">登出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 抽卡界面 -->
+    <div class="container my-5">
+        <div class="text-center mb-4">
+            <h2 class="text-primary mb-3">★ 星穹铁道抽卡模拟 ★</h2>
+            <div class="btn-group">
+                <button class="btn btn-lg btn-danger" onclick="pull(1)">单抽</button>
+                <button class="btn btn-lg btn-warning ml-2" onclick="pull(10)">十连</button>
+            </div>
+            <div class="mt-3">
+                <p class="text-muted" id="pityCounter">
+                    保底计数：五星：<span id="fiveStarPity">0/90</span> | 四星：<span id="fourStarPity">0/10</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- 结果容器 -->
+        <div class="row" id="resultsContainer"></div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // 初始化检查
+        $(() => {
+            const token = sessionStorage.getItem('token');
+            if (!token) window.location.href = '/login';
+            $('#logoutLink').toggle(!!token);
+            $('#loginLink').toggle(!token);
+        });
+
+        // 抽卡功能
+        async function pull(times) {
+            showLoading(true);
+            try {
+                const res = await fetch('/gacha/pull', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ times })
+                });
+
+                const { success, data, error } = await res.json();
+                if (!success) throw new Error(error || '抽卡失败');
+
+                displayResults(data?.results || []);
+                updatePity(data?.meta || {});
+
+            } catch (err) {
+                showError(err.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // 结果显示
+        function displayResults(results = []) {
+            const container = $('#resultsContainer').empty();
+            
+            if (!results.length) {
+                return container.html('<div class="col-12 text-center text-muted">未获得任何物品</div>');
+            }
+
+            results.forEach(item => {
+                const rarity = item.rarity || 3;
+                const card = `
+                    <div class="col-md-3 mb-4">
+                        <div class="card gacha-card ${getRarityClass(rarity)}">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">${'★'.repeat(rarity)}</h5>
+                                <p class="h4">${item.name || '未知物品'}</p>
+                                ${item.isRateUp ? '<span class="badge badge-success">UP!</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.prepend(card);
+            });
+        }
+
+        // 辅助函数
+        function getRarityClass(rarity) {
+            return {
+                5: 'five-star',
+                4: 'four-star',
+                3: 'three-star'
+            }[rarity] || 'three-star';
+        }
+
+        function updatePity(meta = {}) {
+            $('#fiveStarPity').text(`${meta.remainingFiveStarPity || 0}/90`);
+            $('#fourStarPity').text(`${meta.remainingFourStarPity || 0}/10`);
+        }
+
+        function showLoading(show) {
+            $('#loadingOverlay').css('display', show ? 'flex' : 'none');
+        }
+
+        function showError(msg) {
+            $('#resultsContainer').html(
+                `<div class="col-12 text-center text-danger">${msg}</div>`
+            );
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
