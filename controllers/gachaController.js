@@ -52,7 +52,38 @@ const gachaController = {
         error: err.message || '服务器内部错误'
       });
     }
-  }
+  },
+
+  getHistory: async (req, res) => {
+    try {
+        // 鉴权验证
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ 
+                success: false,
+                error: '未提供访问令牌' 
+            });
+        }
+
+        // 解码令牌
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.userId;
+
+        // 查询抽卡记录
+        const history = await userModel.getGachaHistory(userId);
+
+        res.json({
+            success: true,
+            data: history
+        });
+    } catch (err) {
+        console.error('获取抽卡记录失败:', err);
+        res.status(500).json({
+            success: false,
+            error: err.message || '服务器内部错误'
+        });
+    }
+}
 };
 
 module.exports = gachaController;

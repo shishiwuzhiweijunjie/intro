@@ -16,6 +16,8 @@ const authMiddleware = require('./middleware/auth');
 const PORT = process.env.PORT || 3000
 
 const app = express();
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,7 +36,7 @@ app.post('/gacha/pull', authMiddleware, gachaController.draw);
 app.post('/register', authController.register);
 // 确保登录路由正确配置
 app.post('/login', authController.login);
-
+app.get('/gacha/history', authMiddleware, gachaController.getHistory);
 // 添加测试路由验证中间件
 app.get('/test-auth', authMiddleware, (req, res) => {
   res.json({ user: req.user });

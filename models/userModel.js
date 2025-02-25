@@ -58,36 +58,51 @@ const pool = mysql.createPool({
       }
     },
   
-    // 抽卡核心逻辑（统一使用普通函数）
-    gachaPull: async function(userId, times) {
-      try {
+    // 抽卡核心逻辑
+gachaPull: async function(userId, times) {
+    try {
         const allItems = await this.getAllValidItems();
         let pity = await this.getPityCounter(userId);
         const results = [];
-  
+
         for (let i = 0; i < times; i++) {
-          // 更新计数器
-          pity.five_star_counter++;
-          pity.four_star_counter++;
-  
-          // 计算稀有度
-          const targetRarity = this.calculateRarity(pity);
-          
-          // 生成物品
-          const item = this.generateItem(allItems, targetRarity, pity);
-          
-          // 更新保底状态
-          this.updatePityAfterPull(pity, targetRarity, item);
-          
-          results.push(item);
+            // 更新计数器
+            pity.five_star_counter++;
+            pity.four_star_counter++;
+
+            // 计算稀有度
+            const targetRarity = this.calculateRarity(pity);
+            
+            // 生成物品
+            const item = this.generateItem(allItems, targetRarity, pity);
+            
+            // 更新保底状态
+            this.updatePityAfterPull(pity, targetRarity, item);
+            
+            // 记录抽卡结果
+            await this.recordGachaResult(userId, item);
+
+            results.push(item);
         }
-  
+
         await this.updatePityCounter(userId, pity);
         return results;
-      } catch (err) {
+    } catch (err) {
         throw new Error('抽卡失败: ' + err.message);
-      }
-    },
+    }
+},
+
+// 记录抽卡结果
+recordGachaResult: async function(userId, item) {
+    try {
+        await pool.query(
+            'INSERT INTO gacha_history (user_id, item_name, rarity) VALUES (?, ?, ?)',
+            [userId, item.name, item.rarity]
+        );
+    } catch (err) {
+        console.error('记录抽卡结果失败:', err);
+    }
+},
   
     // 稀有度计算（普通函数）
     calculateRarity: function(pity) {
@@ -175,6 +190,19 @@ const pool = mysql.createPool({
       } catch (err) {
         throw new Error('更新保底数据失败');
       }
+    }, 
+
+   // 查询抽卡记录
+    getGachaHistory: async function(userId) {
+    try {
+        const [rows] = await pool.query(
+            'SELECT item_name, rarity, created_at FROM gacha_history WHERE user_id = ? ORDER BY created_at DESC LIMIT 200',
+            [userId]
+        );
+        return rows;
+    } catch (err) {
+        throw new Error('查询抽卡记录失败');
+        }
     }
   };
   

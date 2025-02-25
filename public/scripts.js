@@ -158,3 +158,4 @@ openChatButton.addEventListener('click', (e) => {
         e.stopPropagation();
     }
 });
+
