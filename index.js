@@ -10,6 +10,8 @@ require('dotenv').config()
 
 const authController = require('./controllers/authController');
 const indexController = require('./controllers/indexController');
+const gachaController = require('./controllers/gachaController');
+const authMiddleware = require('./middleware/auth');
 
 const PORT = process.env.PORT || 3000
 
@@ -21,9 +23,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', indexController.home);
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'public/register.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public/login.html')));
+// 在路由配置部分添加
+app.get('/gacha', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/gacha.html'));
+  });
+  
+app.post('/gacha/pull', authMiddleware, gachaController.draw);
+
 
 app.post('/register', authController.register);
+// 确保登录路由正确配置
 app.post('/login', authController.login);
+
+// 添加测试路由验证中间件
+app.get('/test-auth', authMiddleware, (req, res) => {
+  res.json({ user: req.user });
+});
+
 
 app.get('/logout', (req, res) => {
     // 清除 sessionStorage 中的 JWT
