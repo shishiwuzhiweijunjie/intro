@@ -12,13 +12,7 @@
     "path": "^0.12.7"
   },
   "scripts": {
-    "postinstall": "npx prisma generate",
-    "migration:dev": "dotenv -e .env.development -- npx prisma migrate dev",
-    "migration:reset": "dotenv -e .env.development -- npx prisma migrate reset",
     "start": "dotenv -e .env.development -- node ./src/server.js",
-    "dev": "nodemon ./index.js",
-    "test": "dotenv -e .env.test -- playwright test --config=configs/playwright.config.js",
-    "lint": "eslint -c configs/eslint.config.mjs ./src/*",
-    "test-trace": "dotenv -e .env.test -- playwright test --config=configs/playwright.config.js --reporter=html --trace on"
+    "dev": "nodemon ./index.js"
   }
 }
