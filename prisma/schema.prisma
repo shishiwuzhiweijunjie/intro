@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model GachaHistory {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  itemName  String
+  rarity    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model GachaItems {
+  id       Int     @id @default(autoincrement())
+  itemName String
+  rarity   Int     @db.SmallInt
+  isRateUp Boolean @default(false)
+  weight   Int
+}
+
+model GachaPity {
+  userId          Int    @id
+  fiveStarCounter Int    @default(0)
+  fourStarCounter Int    @default(0)
+  guaranteeStatus String @default("none")
+  user            User   @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  username     String         @unique
+  email        String         @unique
+  password     String
+  createdAt    DateTime       @default(now())
+  gachaHistory GachaHistory[]
+  gachaPity    GachaPity?
+}
