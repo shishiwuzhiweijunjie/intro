@@ -165,7 +165,6 @@ const userModel = {
     }
   },
 
-  // 更新保底计数器
   async updatePityCounter(userId, pity) {
     try {
       await prisma.gachaPity.upsert({
@@ -188,20 +187,25 @@ const userModel = {
     }
   },
 
-  // 查询抽卡记录
   async getGachaHistory(userId) {
     try {
       const history = await prisma.gachaHistory.findMany({
         where: { userId },
         orderBy: { createdAt: 'desc' },
         take: 200,
-        select: { itemName: true, rarity: true, createdAt: true },
+        select: {
+          id: true,
+          userId: true,
+          itemName: true,
+          rarity: true,
+          createdAt: true
+        },
       });
       return history;
     } catch (err) {
       throw new Error('查询抽卡记录失败');
     }
-  },
+  }
 };
 
 module.exports = userModel;

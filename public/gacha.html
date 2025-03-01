@@ -542,19 +542,21 @@
         }
 
         function updatePity(meta = {}) {
-    const fiveStarPity = meta.remainingFiveStarPity || 0;
-    const fourStarPity = meta.remainingFourStarPity || 0;
+    // 直接使用后端返回的计数器值
+    const fiveStarCount = meta.fiveStarPity || 0;
+    const fourStarCount = meta.fourStarPity || 0;
 
-    // 更新进度条宽度
-    const fiveStarProgressWidth = ((90 - fiveStarPity) / 90) * 100; // 五星进度
-    const fourStarProgressWidth = ((10 - fourStarPity) / 10) * 100; // 四星进度
+    // 计算进度条百分比
+    const fiveStarProgress = (fiveStarCount / 90) * 100;
+    const fourStarProgress = (fourStarCount / 10) * 100;
 
-    $('#fiveStarProgress').css('width', `${fiveStarProgressWidth}%`);
-    $('#fourStarProgress').css('width', `${fourStarProgressWidth}%`);
+    // 更新进度条
+    $('#fiveStarProgress').css('width', `${fiveStarProgress}%`);
+    $('#fourStarProgress').css('width', `${fourStarProgress}%`);
 
-    // 更新进度条右边的数字
-    $('#fiveStarCount').text(`${90 - fiveStarPity}/90`);
-    $('#fourStarCount').text(`${10 - fourStarPity}/10`);
+    // 更新保底数字显示
+    $('#fiveStarCount').text(`${fiveStarCount}/90`);
+    $('#fourStarCount').text(`${fourStarCount}/10`);
 }
         function showLoading(show) {
             $('#loadingOverlay').css('display', show ? 'flex' : 'none');
@@ -684,8 +686,8 @@ function displayPage() {
         return `
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title" style="color: ${color};">${record.item_name} (${record.rarity}星)</h5>
-                    <p class="card-text">抽卡时间：${new Date(record.created_at).toLocaleString()}</p>
+                    <h5 class="card-title" style="color: ${color};">${record.itemName} (${record.rarity}星)</h5>
+                    <p class="card-text">抽卡时间：${new Date(record.createdAt).toLocaleString()}</p>
                 </div>
             </div>
         `;
