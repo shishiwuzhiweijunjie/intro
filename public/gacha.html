@@ -356,6 +356,22 @@
     font-weight: bold; /* 加粗字体 */
     color: black; /* 设置字体颜色 */
 }
+
+.card-title {
+    margin: 0;
+}
+
+.gold {
+    color: gold;
+}
+
+.purple {
+    color: purple;
+}
+
+.blue {
+    color: blue;
+}
     </style>
 </head>
 <body>
@@ -664,10 +680,11 @@ function displayPage() {
     const pageRecords = records.slice(start, end);
 
     const historyList = pageRecords.map(record => {
+        const color = getRarityColor(record.rarity); // 获取星级对应的颜色
         return `
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">${record.item_name} (${record.rarity}星)</h5>
+                    <h5 class="card-title" style="color: ${color};">${record.item_name} (${record.rarity}星)</h5>
                     <p class="card-text">抽卡时间：${new Date(record.created_at).toLocaleString()}</p>
                 </div>
             </div>
@@ -716,6 +733,22 @@ function nextPage() {
 function closeModal() {
     $('#gachaHistoryModal').modal('hide');
 }
+
+// 根据星级返回颜色
+function getRarityColor(rarity) {
+    switch (rarity) {
+        case 5:
+            return 'gold'; // 金色
+        case 4:
+            return 'purple'; // 紫色
+        case 3:
+            return 'blue'; // 蓝色
+        default:
+            return 'black'; // 默认黑色
+    }
+}
+
+
     </script>
 </body>
 </html>
