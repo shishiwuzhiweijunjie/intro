@@ -38,10 +38,11 @@ const gachaController = {
         success: true,
         data: {
           results: results || [],
-          meta: {
-            remainingFiveStarPity: 90 - (pity.five_star_counter || 0),
-            remainingFourStarPity: 10 - (pity.four_star_counter || 0)
-          }
+// 修改meta字段名为剩余次数而非剩余保底
+meta: {
+  fiveStarPity: pity.fiveStarCounter || 0, // 直接返回当前计数值
+  fourStarPity: pity.fourStarCounter || 0
+}
         }
       });
 
