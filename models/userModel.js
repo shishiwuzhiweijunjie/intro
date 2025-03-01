@@ -12,7 +12,7 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    timezone: '+08:00' // 添加时区配置
+    timezone: '+08:00' // 添加时区配置  
   });
 
   const userModel = {
