@@ -1,137 +1,69 @@
-.loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-#particles-js {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #000; /* 设置背景颜色 */
-}
-
-.loader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-    animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.progress-bar-container {
-    width: 200px;
-    position: relative;
-}
-
-.progress-bar {
-    height: 5px;
-    background: #f3f3f3;
-    border-radius: 5px;
-    overflow: hidden;
-    position: relative;
-}
-
-.progress-bar-inner {
-    height: 100%;
-    width: 0;
-    background: #3498db;
-    transition: width 0.5s ease;
-}
-
-.progress-text {
-    position: absolute;
-    bottom: -20px;
-    width: 100%;
-    text-align: center;
-    color: #fff;
-}
-
 .chat-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 300px;
+    width: 320px;
     z-index: 1000;
     background: #fff;
-   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.chat-box {
-    width: 100%;
-    height: 400px;
-    overflow-y: auto;
+.chat-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+}
+
+.chat-header button {
+    border: none;
+    background: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
 }
 
 .chat-history {
-    padding: 10px;
-    margin-bottom: 40;
-    height: calc(100% - 50px);
+    height: calc(100vh - 160px - 40px);
+    padding: 15px;
+    background-color: #f8f9fa;
     overflow-y: auto;
 }
 
-.chat-input {
-    width: calc(100% - 60px);
+.chat-input-group {
     padding: 10px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #eee;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 8px;
     border: none;
-    outline: none;
+    border-radius: 20px;
+    margin-right: 10px;
+    background: #f5f5f5;
 }
 
 .chat-send-btn {
-    width: 50px;
-    padding: 10px;
     background: #007bff;
     color: white;
     border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
     cursor: pointer;
 }
 
-.open-chat-btn {
-    width: 60px; /* 设置按钮宽度 */
-    height: 60px; /* 设置按钮高度 */
-    background-image: url('./image/miyabi.png'); /* 自定义图片路径 */
-    background-size: cover; /* 确保图片覆盖整个按钮 */
-    background-repeat: no-repeat;
-    background-position: center;
-    border: none; /* 去掉边框 */
-    border-radius: 50%; /* 圆形按钮 */
-    cursor: pointer; /* 鼠标悬停时显示指针 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
-    position: fixed; /* 添加定位 */
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
+.chat-send-btn:hover {
+    background: #0056b3;
 }
 
-.open-chat-btn:hover {
-    transform: scale(1.1); /* 鼠标悬停时放大 */
-    transition: transform 0.2s ease-in-out;
-}
-
-.open-chat-btn:active {
-    transform: scale(0.95); /* 按下时稍微缩小 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 .chat-message {
     display: flex;
     align-items: center;
@@ -139,17 +71,17 @@
 }
 
 .chat-message.user {
-    justify-content: flex-end; /* 用户消息右对齐 */
+    justify-content: flex-end;
 }
 
 .chat-message.ai {
-    justify-content: flex-start; /* AI 消息左对齐 */
+    justify-content: flex-start;
 }
 
 .chat-avatar {
     width: 40px;
     height: 40px;
-    border-radius: 50%; /* 圆形头像 */
+    border-radius: 50%;
     margin: 0 10px;
     background-size: cover;
     background-position: center;
@@ -175,3 +107,112 @@
     border-top-left-radius: 0;
 }
 
+.loading-dots {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    animation: ellipsis 1.2s infinite;
+}
+
+.loading-dots::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+
+.loading-dots::after {
+    animation: dots 1.5s infinite;
+}
+
+@keyframes ellipsis {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes dots {
+    0%, 20% { content: ". "; }
+    40% { content: ".. "; }
+    60% { content: "... "; }
+    80% { content: ".. "; }
+    100% { content: ". "; }
+}
+
+.open-chat-btn {
+    width: 60px;
+    height: 60px;
+    background-image: url('./image/miyabi.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.open-chat-btn:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.open-chat-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+    background-color: #2D2D2D; /* 基础背景色 */
+    background-image: linear-gradient(45deg, #333333, #2D2D2D); /* 渐变效果 */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* 添加下边框阴影 */
+}
+
+.navbar .navbar-nav .nav-link {
+    color: white; /* 文字颜色 */
+    transition: color 0.3s; /* 平滑过渡效果 */
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    color: #f8f9fa; /* 鼠标悬停时的颜色 */
+}
+
+.navbar .navbar-brand {
+    color: white; /* 品牌标志文字颜色 */
+}
+
+.navbar .navbar-brand:hover {
+    color: #f8f9fa; /* 鼠标悬停时的品牌标志文字颜色 */
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.2); /* 边框颜色 */
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); /* 菜单图标颜色 */
+}
+/* 其他样式可根据需求补充 */
+
+/* styles.css 或在 index.html 中的 <style> 标签内 */
+#particles-js {
+    width: 100%;
+    height: 100%;
+    background-color:#fff; /* 背景颜色 */
+    background-image: url(""); /* 背景图片 */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+    position: fixed;
+    top: 0;
+    z-index: -1;
+}

@@ -1,25 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const progressBar = document.querySelector('.progress-bar-inner');
-    const progressText = document.querySelector('.progress-text');
-    let currentProgress = 0; // 当前进度
-    const increment = 1; // 每次迭代增加的进度 
-    const randomTime = Math.floor(Math.random() * 1000) + 2000; // 2-3秒
-
-    const updateProgress = () => {
-        currentProgress += increment;
-        if (currentProgress >= 100) {
-            currentProgress = 100; // 确保不超过100%
-            clearInterval(interval); // 停止定时器
-            document.getElementById('loadingOverlay').style.display = 'none'; // 隐藏加载层
-        }
-        progressBar.style.width = currentProgress + '%';
-        progressText.textContent = currentProgress + '%';
-    };
-
-    const interval = setInterval(updateProgress, randomTime / 100); // 根据总时间调整每次更新的间隔
-});
-
-document.addEventListener('DOMContentLoaded', function() {
     // 聊天窗口相关元素
     const chatContainer = document.getElementById('chatContainer');
     const chatInput = document.getElementById('chatInput');
@@ -159,3 +138,24 @@ openChatButton.addEventListener('click', (e) => {
     }
 });
 
+function addLoadingIndicator() {
+    const loadingMsg = document.createElement('div');
+    loadingMsg.classList.add('chat-message', 'ai');
+    loadingMsg.innerHTML = `
+        <div class="chat-avatar" style="background-image: url('./image/miyabi.png')"></div>
+        <div class="chat-bubble ai">
+            <span class="loading-dots"></span>
+        </div>
+    `;
+    chatHistory.appendChild(loadingMsg);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+}
+
+function removeLoadingIndicator() {
+    const loadingElements = document.querySelectorAll('.loading-dots');
+    loadingElements.forEach(el => el.parentElement.remove());
+}
+
+function closeChat() {
+    chatContainer.style.display = 'none';
+}
