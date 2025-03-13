@@ -12,6 +12,7 @@ const authController = require('./controllers/authController');
 const indexController = require('./controllers/indexController');
 const gachaController = require('./controllers/gachaController');
 const authMiddleware = require('./middleware/auth');
+const userModel = require('./models/userModel')
 
 const PORT = process.env.PORT || 3000
 
@@ -49,6 +50,20 @@ app.get('/logout', (req, res) => {
     res.send('<script>sessionStorage.removeItem("token"); window.location.href = "/";</script>');
 });
 
+// 获取角色列表
+app.get('/characters', authMiddleware, async (req, res) => {
+    try {
+      console.log(`[characters] 接收到角色列表请求，用户ID: ${req.user.id}`);
+  
+      const characters = await userModel.getUserCharacters(req.user.id);
+      console.log(`[characters] 返回的角色列表数据:`, characters);
+  
+      res.json({ success: true, data: characters });
+    } catch (err) {
+      console.error(`[characters] 获取角色列表失败:`, err);
+      res.status(500).json({ success: false, error: '获取角色列表失败' });
+    }
+  });
 const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY})
 
 app.post('/message', async (req, res) => {
