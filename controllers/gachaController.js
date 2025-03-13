@@ -84,6 +84,45 @@ meta: {
             error: err.message || '服务器内部错误'
         });
     }
+},
+
+// 获取用户角色列表
+getCharacters: async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ 
+        success: false,
+        error: '未提供访问令牌' 
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    const characters = await userModel.getUserCharacters(userId);
+    
+    res.json({
+      success: true,
+      data: characters.map(char => ({
+        id: char.id,
+        name: char.character.itemName,
+        rarity: char.character.rarity,
+        health: char.health,
+        attack: char.attack,
+        defense: char.defense,
+        critRate: char.critRate,
+        critDamage: char.critDamage,
+        level: char.level
+      }))
+    });
+  } catch (err) {
+    console.error('获取角色列表失败:', err);
+    res.status(500).json({
+      success: false,
+      error: err.message || '服务器内部错误'
+    });
+  }
 }
 };
 

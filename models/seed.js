@@ -4,18 +4,18 @@ const prisma = new PrismaClient();
 async function insertGachaItems() {
   try {
     const items = [
-      { itemName: '遐蝶', rarity: 5, isRateUp: true, weight: 50 },
-      { itemName: '姬子', rarity: 5, isRateUp: false, weight: 50 },
-      { itemName: '布洛妮娅', rarity: 5, isRateUp: false, weight: 50 },
-      { itemName: '克拉拉', rarity: 5, isRateUp: false, weight: 50 },
-      { itemName: '杰帕德', rarity: 5, isRateUp: false, weight: 50 },
-      { itemName: '白露', rarity: 5, isRateUp: false, weight: 50 },
-      { itemName: '瓦尔特', rarity: 5, isRateUp: false, weight: 50 },
-      { itemName: '彦卿', rarity: 5, isRateUp: false, weight: 50 },
-      { itemName: '三月七', rarity: 4, isRateUp: true, weight: 100 },
-      { itemName: '丹恒', rarity: 4, isRateUp: true, weight: 100 },
-      { itemName: '停云', rarity: 4, isRateUp: true, weight: 100 },
-      { itemName: '信用点', rarity: 3, isRateUp: false, weight: 1000 },
+      { itemName: '遐蝶', rarity: 5, isRateUp: true, weight: 50, isCharacter: true },
+      { itemName: '姬子', rarity: 5, isRateUp: false, weight: 50, isCharacter: true },
+      { itemName: '布洛妮娅', rarity: 5, isRateUp: false, weight: 50, isCharacter: true },
+      { itemName: '克拉拉', rarity: 5, isRateUp: false, weight: 50, isCharacter: true },
+      { itemName: '杰帕德', rarity: 5, isRateUp: false, weight: 50, isCharacter: true },
+      { itemName: '白露', rarity: 5, isRateUp: false, weight: 50, isCharacter: true },
+      { itemName: '瓦尔特', rarity: 5, isRateUp: false, weight: 50, isCharacter: true },
+      { itemName: '彦卿', rarity: 5, isRateUp: false, weight: 50, isCharacter: true },
+      { itemName: '三月七', rarity: 4, isRateUp: true, weight: 100, isCharacter: true },
+      { itemName: '丹恒', rarity: 4, isRateUp: true, weight: 100, isCharacter: true },
+      { itemName: '停云', rarity: 4, isRateUp: true, weight: 100, isCharacter: true },
+      { itemName: '信用点', rarity: 3, isRateUp: false, weight: 1000, isCharacter: false },
     ];
 
     // 使用 createMany 插入数据

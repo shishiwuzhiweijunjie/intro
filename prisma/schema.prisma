@@ -24,6 +24,9 @@ model GachaItems {
   rarity   Int     @db.SmallInt
   isRateUp Boolean @default(false)
   weight   Int
+  isCharacter Boolean @default(false)
+
+  UserCharacters UserCharacters[]
 }
 
 model GachaPity {
@@ -42,4 +45,20 @@ model User {
   createdAt    DateTime       @default(now())
   gachaHistory GachaHistory[]
   gachaPity    GachaPity?
+
+  UserCharacters UserCharacters[]
+}
+
+model UserCharacters {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  characterId Int
+  health      Float    @default(100.0)
+  attack      Float    @default(10.0)
+  defense     Float    @default(5.0)
+  critRate    Float    @default(5.0)
+  critDamage  Float    @default(50.0)
+  level       Int      @default(1)
+  user        User     @relation(fields: [userId], references: [id])
+  character   GachaItems @relation(fields: [characterId], references: [id])
 }
