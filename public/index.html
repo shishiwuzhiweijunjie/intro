@@ -180,23 +180,6 @@
             }
         }
 
-        .chat-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .chat-container.active {
-            transform: translateX(0);
-        }
-
         .chat-header {
             background: var(--primary-color);
             color: white;
@@ -505,7 +488,7 @@
     </style>
 </head>
 <body class="bg-light">
-    <div id="particles-js"></div>
+    <div class="particles-bg" id="particles-js"></div>
     
     <!-- 导航栏 -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary fixed-top">
@@ -740,27 +723,33 @@
             </div>
         </section>
     </main>
-
-    <!-- 聊天窗口 -->
-    <div class="chat-container" id="chatContainer">
-        <div class="chat-header">
-            <h5>AI助手</h5>
-            <button class="btn" onclick="closeChat()">×</button>
-        </div>
-        <div class="chat-history" id="chatHistory">
-            <div class="chat-message">试试我们的人工智能！</div>
-        </div>
-        <div class="chat-input-group">
-            <input type="text" id="chatInput" placeholder="输入消息...">
-            <button class="chat-send-btn" id="sendButton">
-                <i class="fas fa-paper-plane"></i>
-            </button>
+<!-- 聊天窗口增强版 -->
+<div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+        <h5 class="animate__animated animate__pulse">智能AI助手 <i class="fas fa-robot text-warning"></i></h5>
+        <button class="btn">
+            <i class="fas fa-times-circle text-danger animate__animated animate__bounce"></i>
+        </button>
+    </div>
+    <div class="chat-history" id="chatHistory">
+        <div class="chat-message animate__animated animate__fadeIn">
+            <div class="chat-avatar" style="background-image: url('./image/miyabi.png')"></div>
+            <div class="chat-bubble ai animate__animated animate__backInLeft">
+                欢迎来到智能AI助手！我是您的专属智能伙伴，随时为您提供帮助。
+            </div>
         </div>
     </div>
+    <div class="chat-input-group">
+        <input type="text" id="chatInput" placeholder="输入消息..." class="animate__animated animate__fadeIn">
+        <button class="chat-send-btn" id="sendButton">
+            <i class="fas fa-paper-plane animate__animated animate__rubberBand"></i>
+        </button>
+    </div>
+</div>
 
-    <button class="open-chat-btn" id="openChat">
-        <i class="fas fa-comment-alt"></i>
-    </button>
+<button class="open-chat-btn" id="openChat">
+    <i class="fas fa-comment-alt animate__animated animate__pulse"></i>
+</button>
 
     <!-- 页脚 -->
     <footer>
@@ -938,21 +927,6 @@
             document.getElementById('chatContainer').classList.add('active');
         });
 
-        document.getElementById('closeChat').addEventListener('click', function() {
-            document.getElementById('chatContainer').classList.remove('active');
-        });
-
-        document.getElementById('sendButton').addEventListener('click', function() {
-            const message = document.getElementById('chatInput').value;
-            if(message.trim() !== '') {
-                addChatMessage('user', message);
-                document.getElementById('chatInput').value = '';
-                setTimeout(() => {
-                    addChatMessage('ai', '好的，我已经收到您的消息，正在处理中...');
-                }, 1000);
-            }
-        });
-
         document.getElementById('chatInput').addEventListener('keypress', function(e) {
             if(e.key === 'Enter') {
                 document.getElementById('sendButton').click();
@@ -982,6 +956,8 @@
                 });
             });
         });
+
+        
     </script>
 </body>
 </html>

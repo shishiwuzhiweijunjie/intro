@@ -2,12 +2,13 @@ const {OpenAI} = require('openai')
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
+const multer = require('multer');
 const { body, validationResult } = require('express-validator');
 const mysql = require('mysql2');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 require('dotenv').config()
-
+const upload = multer({ storage: multer.memoryStorage() });
 const authController = require('./controllers/authController');
 const indexController = require('./controllers/indexController');
 const gachaController = require('./controllers/gachaController');
@@ -68,7 +69,7 @@ const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY})
 
 app.post('/message', async (req, res) => {
     const response = await openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'chatgpt-4o-latest',
         messages: [
             {
                 role: 'user',
@@ -78,6 +79,29 @@ app.post('/message', async (req, res) => {
     })
     res.send({message: response.choices[0].message.content})
 })
+
+app.post('/image', upload.single('image'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send({ error: 'No image uploaded' });
+    }
+
+    const imageBuffer = req.file.buffer;
+    const base64Image = imageBuffer.toString('base64');
+
+    try {
+        const response = await openai.images.generate({
+            prompt: `Describe the content of this image: ${base64Image}`,
+            n: 1,
+            size: '256x256',
+            response_format: 'url'
+        });
+
+        res.send({ description: response.data[0].url });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Error processing image' });
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`PORT listening to ${PORT}`);
