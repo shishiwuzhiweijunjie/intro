@@ -199,7 +199,7 @@
 
 .chat-bubble.user::after {
     right: -24px;
-    border-left-color: var(--primary-color);
+
 }
 
 .chat-bubble.ai::after {

@@ -17,13 +17,18 @@
   },
   "scripts": {
     "start": "dotenv -e .env.development -- node ./src/server.js",
-    "dev": "nodemon ./index.js"
+    "dev": "nodemon ./index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
     "@babel/core": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
+    "@eslint/js": "^9.23.0",
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
+    "eslint": "^9.23.0",
+    "globals": "^16.0.0",
     "prisma": "^6.4.1",
     "style-loader": "^4.0.0",
     "webpack": "^5.98.0",

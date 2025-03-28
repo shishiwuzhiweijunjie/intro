@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     // 聊天窗口相关元素
     const chatContainer = document.getElementById('chatContainer');
     const chatInput = document.getElementById('chatInput');
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.background = 'transparent';
         });
 
-        emojiBtn.addEventListener('click', function() {
+        emojiBtn.addEventListener('click', () => {
             chatInput.focus();
             const start = chatInput.selectionStart;
             const end = chatInput.selectionEnd;
@@ -221,12 +221,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const chatInputGroup = document.querySelector('.chat-input-group');
         chatInputGroup.insertBefore(imageButton, sendButton);
 
-        imageButton.addEventListener('click', function() {
+        imageButton.addEventListener('click', () => {
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.accept = 'image/*';
 
-            fileInput.addEventListener('change', function(event) {
+            fileInput.addEventListener('change', (event) => {
                 const file = event.target.files[0];
                 if (file) {
                     const reader = new FileReader();

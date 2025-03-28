@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-catch */
 // models/userModel.js
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
@@ -54,7 +56,7 @@ const userModel = {
   async gachaPull(userId, times) {
     try {
       const allItems = await this.getAllValidItems();
-      let pity = await this.getPityCounter(userId);
+      const pity = await this.getPityCounter(userId);
       const results = [];
 
       for (let i = 0; i < times; i++) {
@@ -97,7 +99,7 @@ results.push(item);
       await this.updatePityCounter(userId, pity);
       return results;
     } catch (err) {
-      throw new Error('抽卡失败: ' + err.message);
+      throw new Error(`抽卡失败: ${  err.message}`);
     }
   },
 
@@ -263,7 +265,7 @@ async addOrUpdateCharacter(userId, characterId) {
   try {
     console.log(`[addOrUpdateCharacter] 开始处理角色添加或更新，用户ID: ${userId}，角色ID: ${characterId}`);
 
-    let character = await prisma.userCharacters.findFirst({
+    const character = await prisma.userCharacters.findFirst({
       where: { userId, characterId }
     });
 
