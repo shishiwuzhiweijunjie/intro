@@ -12,14 +12,16 @@ const upload = multer({ storage: multer.memoryStorage() });
 const authController = require('./controllers/authController');
 const indexController = require('./controllers/indexController');
 const gachaController = require('./controllers/gachaController');
+const shopController = require('./controllers/shopController');
 const authMiddleware = require('./middleware/auth');
+const paymentController = require('./controllers/paymentController');
 const userModel = require('./models/userModel')
 
 const PORT = process.env.PORT || 3000
 
 const app = express();
 
-
+app.post('/shop/webhook',  bodyParser.raw({ type: 'application/json' }), paymentController.handlePaymentSuccess);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -31,7 +33,12 @@ app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public/login.
 app.get('/gacha', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/gacha.html'));
   });
-  
+  app.get('/shop', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/shop.html'));
+  });
+  app.get('/game', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/game.html'));
+  });
 app.post('/gacha/pull', authMiddleware, gachaController.draw);
 
 
@@ -102,6 +109,24 @@ app.post('/image', upload.single('image'), async (req, res) => {
         res.status(500).send({ error: 'Error processing image' });
     }
 });
+
+
+app.get('/shop/products', shopController.getProducts);
+
+// 获取商品详情
+app.get('/shop/products/:id', shopController.getProduct);
+
+// 创建订单
+app.post('/shop/orders', authMiddleware, shopController.createOrder);
+
+// 支付订单
+app.post('/shop/orders/:orderId/pay', authMiddleware, shopController.payOrder);
+
+// 获取订单历史
+app.get('/shop/orders', authMiddleware, shopController.getOrderHistory);
+
+app.post('/shop/orders/:orderId/create-payment-intent', authMiddleware, paymentController.createPaymentIntent);
+
 
 app.listen(PORT, () => {
     console.log(`PORT listening to ${PORT}`);

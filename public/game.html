@@ -1,0 +1,261 @@
+<!-- game.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛博防卫战 | 某空商城</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 共享主站样式 -->
+    <style>
+        /* 游戏专属样式 */
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(45deg, #0a0a12 0%, #1a1a2f 100%);
+        }
+
+        #gameCanvas {
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+        }
+
+        .hud {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: var(--neon-pink);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        .powerup-tag {
+            position: absolute;
+            pointer-events: none;
+            font-size: 12px;
+            color: var(--neon-blue);
+            animation: float 2s ease-out forwards;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+
+        .cyber-button {
+            background: rgba(0, 243, 255, 0.1);
+            border: 2px solid var(--neon-blue);
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cyber-button:hover {
+            background: rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- 共享导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <!-- 导航栏内容与主站一致 -->
+    </nav>
+
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        <div class="hud">
+            <div>能量: <span id="energy">100</span></div>
+            <div>分数: <span id="score">0</span></div>
+            <div>BUFF: <span id="buffStatus">无</span></div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 初始化画布尺寸
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // 游戏实体
+        const player = {
+            x: canvas.width/2,
+            y: canvas.height/2,
+            size: 30,
+            speed: 5,
+            color: '#00f3ff',
+            weapons: []
+        };
+
+        const enemies = [];
+        const powerups = [];
+        let score = 0;
+        let activeBuff = null;
+
+        // 武器原型
+        const Weapon = {
+            basic: {
+                fireRate: 300,
+                lastShot: 0,
+                damage: 10,
+                bulletSpeed: 8,
+                color: '#ff00ff'
+            },
+            laser: {
+                fireRate: 100,
+                lastShot: 0,
+                damage: 20,
+                bulletSpeed: 12,
+                color: '#bc13fe'
+            }
+        };
+
+        // 增益效果
+        const Powerup = {
+            types: {
+                speed: {
+                    duration: 5000,
+                    effect: () => player.speed *= 1.5,
+                    reset: () => player.speed /= 1.5
+                },
+                shield: {
+                    duration: 7000,
+                    effect: () => player.color = '#00ff88',
+                    reset: () => player.color = '#00f3ff'
+                },
+                laser: {
+                    duration: 10000,
+                    effect: () => player.weapons.push(Weapon.laser),
+                    reset: () => player.weapons.pop()
+                }
+            }
+        };
+
+        // 生成敌人
+        function spawnEnemy() {
+            enemies.push({
+                x: Math.random() < 0.5 ? 0 : canvas.width,
+                y: Math.random() * canvas.height,
+                size: 20 + Math.random() * 20,
+                speed: 1 + Math.random() * 3,
+                color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                health: 50 + Math.random() * 100
+            });
+        }
+
+        // 生成增益道具
+        function spawnPowerup(type) {
+            powerups.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                type: type || Object.keys(Powerup.types)[
+                    Math.floor(Math.random() * Object.keys(Powerup.types).length)
+                ],
+                size: 15
+            });
+        }
+
+        // 碰撞检测
+        function checkCollision(obj1, obj2) {
+            const dx = obj1.x - obj2.x;
+            const dy = obj1.y - obj2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            return distance < (obj1.size/2 + obj2.size/2);
+        }
+
+        // 游戏循环
+        function gameLoop() {
+            ctx.fillStyle = 'rgba(10, 10, 18, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 绘制玩家
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.size/2, 0, Math.PI*2);
+            ctx.fillStyle = player.color;
+            ctx.fill();
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon-blue').trim();
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 更新和绘制敌人
+            enemies.forEach((enemy, index) => {
+                // 移动逻辑
+                const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
+                enemy.x += Math.cos(angle) * enemy.speed;
+                enemy.y += Math.sin(angle) * enemy.speed;
+
+                // 绘制敌人
+                ctx.beginPath();
+                ctx.arc(enemy.x, enemy.y, enemy.size/2, 0, Math.PI*2);
+                ctx.fillStyle = enemy.color;
+                ctx.fill();
+
+                // 碰撞检测
+                if (checkCollision(player, enemy)) {
+                    if (!activeBuff || activeBuff.type !== 'shield') {
+                        score -= 10;
+                    }
+                    enemies.splice(index, 1);
+                }
+            });
+
+            // 绘制增益道具
+            powerups.forEach((powerup, index) => {
+                ctx.beginPath();
+                ctx.arc(powerup.x, powerup.y, powerup.size/2, 0, Math.PI*2);
+                ctx.fillStyle = Powerup.types[powerup.type].color || '#00f3ff';
+                ctx.fill();
+
+                if (checkCollision(player, powerup)) {
+                    const buff = Powerup.types[powerup.type];
+                    buff.effect();
+                    activeBuff = {
+                        type: powerup.type,
+                        timeout: setTimeout(() => {
+                            buff.reset();
+                            activeBuff = null;
+                        }, buff.duration)
+                    };
+                    powerups.splice(index, 1);
+                }
+            });
+
+            // 更新HUD
+            document.getElementById('score').textContent = score;
+            document.getElementById('buffStatus').textContent = activeBuff?.type || '无';
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // 控制逻辑
+        const keys = {};
+        window.addEventListener('keydown', e => keys[e.key] = true);
+        window.addEventListener('keyup', e => keys[e.key] = false);
+
+        function handleControls() {
+            if (keys['ArrowUp'] || keys['w']) player.y -= player.speed;
+            if (keys['ArrowDown'] || keys['s']) player.y += player.speed;
+            if (keys['ArrowLeft'] || keys['a']) player.x -= player.speed;
+            if (keys['ArrowRight'] || keys['d']) player.x += player.speed;
+
+            // 边界检测
+            player.x = Math.max(player.size/2, Math.min(canvas.width - player.size/2, player.x));
+            player.y = Math.max(player.size/2, Math.min(canvas.height - player.size/2, player.y));
+        }
+
+        // 游戏初始化
+        setInterval(spawnEnemy, 2000);
+        setInterval(() => spawnPowerup(), 10000);
+        setInterval(handleControls, 1000/60);
+        gameLoop();
+    </script>
+</body>
+</html>

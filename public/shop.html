@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物商城 | 某空</title>
+    <!-- 样式依赖 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bc13fe;
+            --cyber-bg: #0a0a12;
+            --hologram-gradient: linear-gradient(45deg, 
+                rgba(0, 243, 255, 0.1) 0%,
+                rgba(188, 19, 254, 0.1) 50%,
+                rgba(255, 0, 255, 0.1) 100%);
+            --section-delay: 0.2s;
+        }
+        
+        body {
+            background: var(--cyber-bg);
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        /* 全息投影背景 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--hologram-gradient);
+            animation: hologram 20s linear infinite;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        @keyframes hologram {
+            0% { transform: rotate(0deg) translate(0,0); }
+            100% { transform: rotate(360deg) translate(100px, 50px); }
+        }
+        
+        /* 霓虹标题效果 */
+        h2 {
+            position: relative;
+            text-shadow: 0 0 10px var(--neon-blue),
+                         0 0 20px var(--neon-blue),
+                         0 0 30px var(--neon-blue);
+            animation: neonPulse 2s ease-in-out infinite alternate;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out var(--section-delay) forwards, neonPulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes neonPulse {
+            from { text-shadow: 0 0 10px var(--neon-blue); }
+            to { text-shadow: 0 0 20px var(--neon-blue), 
+                             0 0 30px var(--neon-purple); }
+        }
+        
+        /* 赛博导航栏 */
+        .navbar {
+            background: linear-gradient(90deg, 
+                rgba(0, 243, 255, 0.1) 0%,
+                rgba(188, 19, 254, 0.2) 100%) !important;
+            border-bottom: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(5px);
+            transform: translateY(-100%);
+            animation: slideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        
+        @keyframes slideDown {
+            to { transform: translateY(0); }
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .nav-link:nth-child(1) { animation-delay: 0.4s; }
+        .nav-link:nth-child(2) { animation-delay: 0.5s; }
+        .nav-link:nth-child(3) { animation-delay: 0.6s; }
+        .nav-link:nth-child(4) { animation-delay: 0.7s; }
+        .nav-link:nth-child(5) { animation-delay: 0.8s; }
+        .nav-link:nth-child(6) { animation-delay: 0.9s; }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-pink);
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* 未来商品卡片 */
+        .product-card {
+            background: rgba(10, 10, 18, 0.8) !important;
+            border: 1px solid var(--neon-blue) !important;
+            position: relative;
+            overflow: visible;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: cardEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        @keyframes cardEntrance {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        /* 为每个卡片设置不同的延迟 */
+        .product-card:nth-child(1) { animation-delay: calc(var(--section-delay) + 0.1s); }
+        .product-card:nth-child(2) { animation-delay: calc(var(--section-delay) + 0.2s); }
+        .product-card:nth-child(3) { animation-delay: calc(var(--section-delay) + 0.3s); }
+        .product-card:nth-child(4) { animation-delay: calc(var(--section-delay) + 0.4s); }
+        .product-card:nth-child(5) { animation-delay: calc(var(--section-delay) + 0.5s); }
+        .product-card:nth-child(6) { animation-delay: calc(var(--section-delay) + 0.6s); }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--neon-blue), 
+                var(--neon-purple),
+                var(--neon-pink));
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+        
+        @keyframes borderGlow {
+            0% { opacity: 0.8; filter: hue-rotate(0deg); }
+            50% { opacity: 0.3; }
+            100% { opacity: 0.8; filter: hue-rotate(360deg); }
+        }
+        
+        .product-image {
+            position: relative;
+            filter: grayscale(0.8) contrast(1.2);
+            transition: all 0.5s;
+            border-bottom: 2px solid var(--neon-purple) !important;
+        }
+        
+        .product-image:hover {
+            filter: grayscale(0) contrast(1);
+            transform: scale(1.05);
+        }
+        
+        /* 全息价格标签 */
+        .price {
+            font-size: 1.5rem !important;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            letter-spacing: 1px;
+        }
+        
+        /* 赛博购物车 */
+        .cart-container {
+            background: rgba(10, 10, 18, 0.9) !important;
+            border: 1px solid var(--neon-purple) !important;
+            position: relative;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out calc(var(--section-delay) * 2) forwards;
+        }
+        
+        .cart-item {
+            background: rgba(0, 243, 255, 0.05) !important;
+            border: 1px solid rgba(0, 243, 255, 0.2) !important;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInRight 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeInRight {
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* 为每个购物车项目设置不同的延迟 */
+        .cart-item:nth-child(1) { animation-delay: calc(var(--section-delay) * 2 + 0.1s); }
+        .cart-item:nth-child(2) { animation-delay: calc(var(--section-delay) * 2 + 0.2s); }
+        .cart-item:nth-child(3) { animation-delay: calc(var(--section-delay) * 2 + 0.3s); }
+        
+        /* 脉冲按钮 */
+        .add-to-cart, .checkout-btn, .pay-btn {
+            background: linear-gradient(45deg, 
+                var(--neon-blue), 
+                var(--neon-purple)) !important;
+            border: none !important;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        
+        .add-to-cart::after, 
+        .checkout-btn::after,
+        .pay-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent 30%,
+                rgba(255,255,255,0.3),
+                transparent 70%);
+            transform: rotate(45deg);
+            animation: buttonGlow 3s infinite;
+        }
+        
+        @keyframes buttonGlow {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        /* 数据流特效 */
+        #cyberOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+        
+        .data-stream {
+            position: absolute;
+            color: var(--neon-blue);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: nowrap;
+            text-shadow: 0 0 5px var(--neon-blue);
+            opacity: 0.3;
+            animation: streamFlow 10s linear forwards;
+        }
+        
+        @keyframes streamFlow {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100vw); }
+        }
+        
+        /* 全息支付面板 */
+        .payment-container {
+            background: rgba(10, 10, 18, 0.9) !important;
+            border: 1px solid var(--neon-pink) !important;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transform: scale(0.95);
+            animation: zoomIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes zoomIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        /* 3D悬停效果 */
+        .product-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 243, 255, 0.3);
+        }
+        
+        /* 订单卡片 */
+        .order-card {
+            background: rgba(10, 10, 18, 0.8);
+            border: 1px solid var(--neon-blue);
+            border-radius: 5px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        /* 为每个订单卡片设置不同的延迟 */
+        .order-card:nth-child(1) { animation-delay: calc(var(--section-delay) * 3 + 0.1s); }
+        .order-card:nth-child(2) { animation-delay: calc(var(--section-delay) * 3 + 0.2s); }
+        .order-card:nth-child(3) { animation-delay: calc(var(--section-delay) * 3 + 0.3s); }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .product-card {
+                margin-bottom: 20px;
+            }
+            
+            .product-image {
+                height: 150px;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1rem;
+            }
+        }
+        
+        /* 错误提示 */
+        .error-message {
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px rgba(255,0,255,0.3);
+            animation: errorPulse 1s infinite;
+        }
+        
+        @keyframes errorPulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* 加载动画 */
+        .loading-spinner {
+            border: 3px solid var(--neon-blue);
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 飞入购物车动画 */
+        .fly-to-cart {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            animation: flyToCart 0.8s cubic-bezier(0.5, -0.5, 1, 1) forwards;
+        }
+        
+        @keyframes flyToCart {
+            to {
+                transform: translate(var(--tx), var(--ty)) scale(0.2);
+                opacity: 0;
+            }
+        }
+        
+        /* 页面内容容器 */
+        .page-container {
+            padding-top: 80px;
+            min-height: calc(100vh - 160px);
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: linear-gradient(90deg, 
+                rgba(0, 243, 255, 0.1) 0%,
+                rgba(188, 19, 254, 0.2) 100%);
+            border-top: 1px solid var(--neon-blue);
+            padding: 20px 0;
+            margin-top: 50px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-shopping-cart mr-2"></i>购物商城
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="#products">商品列表</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#cart">购物车</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#orders">订单历史</a></li>
+                    <li class="nav-item" id="registerLink"><a class="nav-link" href="/register">注册</a></li>
+                    <li class="nav-item" id="loginLink"><a class="nav-link" href="/login">登录</a></li>
+                    <li class="nav-item" id="logoutLink" style="display:none;"><a class="nav-link" href="/logout">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container page-container">
+        <!-- 商品列表 -->
+        <section id="products" class="mb-5">
+            <h2 class="text-center mb-4">商品列表</h2>
+            <div class="row" id="productsContainer">
+                <!-- 商品卡片将通过JS动态生成 -->
+            </div>
+        </section>
+
+        <!-- 购物车 -->
+        <section id="cart" class="mb-5">
+            <h2 class="text-center mb-4">购物车</h2>
+            <div class="cart-container p-4">
+                <div class="cart-items" id="cartItems">
+                    <!-- 购物车商品将通过JS动态生成 -->
+                </div>
+                <div class="cart-summary mt-4 animate__animated animate__fadeIn">
+                    <div class="total d-flex justify-content-between align-items-center p-3">
+                        <span class="font-weight-bold">总计:</span>
+                        <span id="cartTotal" class="price">¥0.00</span>
+                    </div>
+                    <button class="checkout-btn btn-block py-3 mt-3" id="checkoutBtn">结算</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 订单历史 -->
+        <section id="orders" class="mb-5">
+            <h2 class="text-center mb-4">订单历史</h2>
+            <div class="row" id="ordersContainer">
+                <!-- 订单列表将通过JS动态生成 -->
+            </div>
+        </section>
+
+        <!-- 支付表单 -->
+        <section id="payment" class="mb-5">
+            <h2 class="text-center mb-4">支付订单</h2>
+            <div class="payment-container p-4" id="paymentContainer">
+                <!-- 支付表单内容 -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p class="mb-0">© 2023 赛博购物商城 | 未来科技体验</p>
+        </div>
+    </footer>
+
+    <!-- 脚本依赖 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // 创建随机数据流特效
+        function createDataStreams() {
+            const overlay = document.createElement('div');
+            overlay.id = 'cyberOverlay';
+            document.body.appendChild(overlay);
+
+            setInterval(() => {
+                const stream = document.createElement('div');
+                stream.className = 'data-stream';
+                stream.style.left = `${Math.random() * 100}%`;
+                stream.style.top = `${Math.random() * 100}%`;
+                stream.style.animation = `streamFlow ${5 + Math.random() * 10}s linear`;
+                stream.textContent = generateBinaryString();
+                
+                overlay.appendChild(stream);
+                
+                setTimeout(() => stream.remove(), 10000);
+            }, 500);
+        }
+
+        function generateBinaryString() {
+            return Array(50).fill(0).map(() => Math.random() > 0.5 ? '1' : '0').join('');
+        }
+
+        // 初始化特效
+        document.addEventListener('DOMContentLoaded', () => {
+            createDataStreams();
+            
+            // 添加卡片悬停3D效果
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    card.style.transform = `
+                        perspective(1000px)
+                        rotateX(${(y - rect.height/2) / 10}deg)
+                        rotateY(${-(x - rect.width/2) / 10}deg)
+                        translateY(-10px)
+                    `;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+                });
+            });
+        });
+
+        // 购物车数据
+        let cart = [];
+        let token = sessionStorage.getItem('token');
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态
+            if (token) {
+                document.getElementById('registerLink').style.display = 'none';
+                document.getElementById('loginLink').style.display = 'none';
+                document.getElementById('logoutLink').style.display = 'block';
+                loadProducts();
+                loadOrders();
+            } else {
+                alert('请先登录');
+                window.location.href = '/login';
+            }
+
+            // 检查本地存储中的购物车
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartUI();
+            }
+        });
+
+        // 加载商品列表
+        async function loadProducts() {
+            try {
+                const response = await fetch('/shop/products');
+                const data = await response.json();
+                if (data.success) {
+                    const productsContainer = document.getElementById('productsContainer');
+                    productsContainer.innerHTML = '';
+                    data.data.forEach((product, index) => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'col-md-4 mb-4';
+                        productCard.style.animationDelay = `${0.1 * index}s`;
+                        productCard.innerHTML = `
+                            <div class="product-card h-100">
+                                <img src="${product.imageUrl || 'default-product.jpg'}" class="card-img-top product-image" alt="${product.name}">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">${product.name}</h5>
+                                    <p class="card-text flex-grow-1">${product.description}</p>
+                                    <div class="price mb-2">¥${product.price.toFixed(2)}</div>
+                                    <div class="stock mb-3">库存: ${product.stock}</div>
+                                    <button class="btn add-to-cart mt-auto" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-stock="${product.stock}">加入购物车</button>
+                                </div>
+                            </div>
+                        `;
+                        productsContainer.appendChild(productCard);
+                    });
+
+                    // 添加加入购物车事件监听
+                    document.querySelectorAll('.add-to-cart').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const productId = parseInt(this.getAttribute('data-id'));
+                            const productName = this.getAttribute('data-name');
+                            const productPrice = parseFloat(this.getAttribute('data-price'));
+                            const productStock = parseInt(this.getAttribute('data-stock'));
+
+                            addToCart(productId, productName, productPrice, productStock);
+                        });
+                    });
+                }
+            } catch (err) {
+                console.error('加载商品失败:', err);
+            }
+        }
+
+        // 加载订单历史
+        async function loadOrders() {
+            try {
+                const response = await fetch(`/shop/orders?timestamp=${new Date().getTime()}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    const ordersContainer = document.getElementById('ordersContainer');
+                    ordersContainer.innerHTML = '';
+                    data.data.forEach((order, index) => {
+                        if (order.status === 'pending') {
+                            const orderCard = document.createElement('div');
+                            orderCard.className = 'col-md-6 mb-4';
+                            orderCard.style.animationDelay = `${0.1 * index}s`;
+                            orderCard.innerHTML = `
+                                <div class="order-card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5>订单 #${order.id}</h5>
+                                        <span class="badge ${order.status === 'paid' ? 'badge-success' : 'badge-warning'}">${order.status === 'paid' ? '已支付' : '待支付'}</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="order-items">
+                                            <ul class="list-group">
+                                                ${order.items.map(item => `
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        ${item.product.name} x${item.quantity}
+                                                        <span class="text-right">¥${(item.price * item.quantity).toFixed(2)}</span>
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        </div>
+                                        <div class="order-total mt-3 d-flex justify-content-between">
+                                            <span class="font-weight-bold">总计:</span>
+                                            <span class="price">¥${order.totalAmount.toFixed(2)}</span>
+                                        </div>
+                                        ${order.status === 'pending' ? `
+                                            <button class="btn pay-btn btn-block mt-3" data-order-id="${order.id}" data-amount="${order.totalAmount}">支付</button>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `;
+                            ordersContainer.appendChild(orderCard);
+                        }
+                    });
+
+                    // 添加支付按钮事件监听
+                    document.querySelectorAll('.pay-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const orderId = this.getAttribute('data-order-id');
+                            const amount = parseFloat(this.getAttribute('data-amount'));
+                            payOrder(orderId, amount);
+                        });
+                    });
+                }
+            } catch (err) {
+                console.error('加载订单历史失败:', err);
+            }
+        }
+
+        // 添加商品到购物车
+        function addToCart(productId, productName, productPrice, productStock) {
+            const existingItem = cart.find(item => item.productId === productId);
+            if (existingItem) {
+                if (existingItem.quantity < productStock) {
+                    existingItem.quantity++;
+                } else {
+                    alert('已达到最大库存');
+                    return;
+                }
+            } else {
+                cart.push({
+                    productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+            updateCartUI();
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // 添加飞入购物车的动画效果
+            const productElement = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
+            const cartIcon = document.querySelector('.navbar-brand');
+            
+            const productRect = productElement.getBoundingClientRect();
+            const cartRect = cartIcon.getBoundingClientRect();
+            
+            const flyElement = document.createElement('div');
+            flyElement.className = 'fly-to-cart';
+            flyElement.style.setProperty('--tx', `${cartRect.left - productRect.left}px`);
+            flyElement.style.setProperty('--ty', `${cartRect.top - productRect.top}px`);
+            flyElement.style.left = `${productRect.left}px`;
+            flyElement.style.top = `${productRect.top}px`;
+            
+            document.body.appendChild(flyElement);
+            setTimeout(() => {
+                document.body.removeChild(flyElement);
+            }, 800);
+        }
+
+        // 更新购物车UI
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center py-4">购物车是空的</p>';
+            } else {
+                cart.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item p-3 mb-3 d-flex justify-content-between align-items-center';
+                    cartItem.style.animationDelay = `${0.1 * index}s`;
+                    cartItem.innerHTML = `
+                        <div class="item-info">
+                            <h6 class="mb-2">${item.name}</h6>
+                            <div class="quantity-controls d-flex align-items-center">
+                                <button class="btn btn-sm decrease-quantity" data-id="${item.productId}">-</button>
+                                <span class="mx-2">${item.quantity}</span>
+                                <button class="btn btn-sm increase-quantity" data-id="${item.productId}">+</button>
+                            </div>
+                        </div>
+                        <div class="item-actions d-flex align-items-center">
+                            <span class="price mr-3">¥${itemTotal.toFixed(2)}</span>
+                            <button class="btn btn-sm remove-btn" data-id="${item.productId}">×</button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                });
+
+                // 更新总计
+                document.getElementById('cartTotal').textContent = `¥${total.toFixed(2)}`;
+
+                // 添加事件监听
+                document.querySelectorAll('.decrease-quantity').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        decreaseQuantity(productId);
+                    });
+                });
+
+                document.querySelectorAll('.increase-quantity').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        increaseQuantity(productId);
+                    });
+                });
+
+                document.querySelectorAll('.remove-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        removeItem(productId);
+                    });
+                });
+            }
+        }
+
+        // 减少商品数量
+        function decreaseQuantity(productId) {
+            const item = cart.find(item => item.productId === productId);
+            if (item && item.quantity > 1) {
+                item.quantity--;
+                updateCartUI();
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        }
+
+        // 增加商品数量
+        function increaseQuantity(productId) {
+            const item = cart.find(item => item.productId === productId);
+            if (item) {
+                const product = cart.find(item => item.productId === productId);
+                if (item.quantity < product.stock) {
+                    item.quantity++;
+                } else {
+                    alert('已达到最大库存');
+                    return;
+                }
+                updateCartUI();
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        }
+
+        // 移除商品
+        function removeItem(productId) {
+            cart = cart.filter(item => item.productId !== productId);
+            updateCartUI();
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // 结算
+        document.getElementById('checkoutBtn').addEventListener('click', async function() {
+            if (cart.length === 0) {
+                alert('购物车是空的');
+                return;
+            }
+
+            try {
+                const response = await fetch('/shop/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        items: cart.map(item => ({
+                            productId: item.productId,
+                            quantity: item.quantity,
+                            price: item.price
+                        })),
+                        totalAmount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('订单已创建');
+                    cart = [];
+                    updateCartUI();
+                    localStorage.removeItem('cart');
+                    loadOrders();
+                }
+            } catch (err) {
+                console.error('创建订单失败:', err);
+                alert('创建订单失败');
+            }
+        });
+
+        async function payOrder(orderId, amount) {
+            try {
+                const response = await fetch(`/shop/orders/${orderId}/create-payment-intent`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ orderId, amount })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    const clientSecret = data.clientSecret;
+                    const stripe = Stripe('pk_test_51QgNWHD1Fp8P8YGhamZwFhyFN1GAkKlRYajOT9s2srRJD1HLVoMwfFktObGYe2HGLK5rSeEzk2raO2746M5yF2kM00ThhA61hn'); 
+                    const elements = stripe.elements();
+                    const paymentContainer = document.getElementById('paymentContainer');
+                    paymentContainer.innerHTML = `
+                        <div id="card-element" class="mb-4"></div>
+                        <div id="card-errors" role="alert" class="error-message mb-3"></div>
+                        <button id="confirm-payment-btn" class="btn pay-btn btn-block py-3">确认支付 ¥${amount.toFixed(2)}</button>
+                    `;
+
+                    let cardElement = elements.create('card', {
+                        style: {
+                            base: {
+                                color: '#fff',
+                                fontFamily: '"Orbitron", sans-serif',
+                                fontSize: '16px',
+                                '::placeholder': {
+                                    color: 'rgba(255,255,255,0.5)'
+                                }
+                            }
+                        }
+                    });
+                    cardElement.mount('#card-element');
+
+                    cardElement.on('change', (event) => {
+                        const errorDisplay = document.getElementById('card-errors');
+                        errorDisplay.textContent = event.error?.message || '';
+                    });
+
+                    document.getElementById('confirm-payment-btn').addEventListener('click', async () => {
+                        try {
+                            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                                payment_method: { card: cardElement }
+                            });
+
+                            if (error) {
+                                alert(`支付失败: ${error.message}`);
+                            } else if (paymentIntent.status === 'succeeded') {
+                                paymentContainer.innerHTML = '<div class="alert alert-success text-center py-4">支付成功！订单正在处理中...</div>';
+                                cardElement.unmount();
+                                setTimeout(() => {
+                                    loadOrders();
+                                    document.getElementById('payment').scrollIntoView({ behavior: 'smooth' });
+                                }, 2000);
+                            } else {
+                                alert('支付状态未知，请稍后检查订单状态。');
+                            }
+                        } catch (err) {
+                            alert('支付确认失败');
+                        }
+                    });
+                }
+            } catch (err) {
+                alert('支付失败');
+            }
+        }
+    </script>
+</body>
+</html>
