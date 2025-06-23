@@ -410,9 +410,31 @@
             text-align: center;
             backdrop-filter: blur(5px);
         }
+
+        body {
+        transition: opacity 0.5s ease;
+    }
+
+    .fade-out {
+        animation: fadeOut 0.5s forwards;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s forwards;
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
     </style>
 </head>
-<body>
+<body class="fade-in">
     <!-- 导航栏 -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary fixed-top">
         <div class="container">
@@ -429,6 +451,7 @@
                     <li class="nav-item"><a class="nav-link" href="#orders">订单历史</a></li>
                     <li class="nav-item" id="registerLink"><a class="nav-link" href="/register">注册</a></li>
                     <li class="nav-item" id="loginLink"><a class="nav-link" href="/login">登录</a></li>
+                    <li class="nav-item" id="loginLink"><a class="nav-link" href="/">退出商城</a></li>
                     <li class="nav-item" id="logoutLink" style="display:none;"><a class="nav-link" href="/logout">登出</a></li>
                 </ul>
             </div>
