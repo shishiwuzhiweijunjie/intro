@@ -757,6 +757,28 @@ footer {
         font-size: 0.8rem;
     }
 }
+
+body {
+        transition: opacity 0.5s ease;
+    }
+
+    .fade-out {
+        animation: fadeOut 0.5s forwards;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s forwards;
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
     </style>
 </head>
 <body class="bg-light">
@@ -779,7 +801,7 @@ footer {
                     <li class="nav-item"><a class="nav-link" href="#blog">博客</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">联系</a></li>
                     <li class="nav-item"><a class="nav-link" href="/gacha">抽卡</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/shop">商店</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop.html" id="shopLink">商城</a></li>
                     <li class="nav-item"><a class="nav-link" href="/game">游戏</a></li>
                     <li class="nav-item" id="registerLink"><a class="nav-link" href="/register">注册</a></li>
                     <li class="nav-item" id="loginLink"><a class="nav-link" href="/login">登录</a></li>
@@ -1077,6 +1099,19 @@ footer {
     <script src="scripts.js"></script>
     <script src="./particles.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // 为“商城”链接添加点击事件
+    document.getElementById('shopLink').addEventListener('click', function(e) {
+        e.preventDefault(); // 阻止默认行为
+        document.body.classList.add('fade-out'); // 添加淡出动画
+        
+        // 淡出动画完成后跳转到 shop.html
+        setTimeout(() => {
+            window.location.href = '/shop.html';
+        }, 500); // 动画持续时间为 0.5 秒
+    });
+});
+
         particlesJS("particles-js", {
             "particles": {
                 "number": {
