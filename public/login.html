@@ -3,459 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录 - 北极星系统</title>
+    <title>[IDENTITY VERIFICATION] | 北极星系统登录</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #3f72af;
-            --secondary-color: #4a6fa5;
-            --hover-color: #2b579a;
-            --success-color: #28a745;
-            --error-color: #dc3545;
+            --accent-yellow: #ffc400;      
+            --tech-blue: #00b0ff;          
+            --text-dark: #121214;          
+            --text-muted: #475569;         
+            --border-color: rgba(209, 213, 219, 0.5);       
+            --error-color: #e74c3c;        
+            --success-color: #2ecc71;      
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .login-container {
-            max-width: 450px;
-            margin: 80px auto;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.97);
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
-            transform: perspective(800px) rotateX(10deg);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 100;
-        }
-
-        .login-container:hover {
-            transform: perspective(800px) rotateX(0deg);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes containerEntrance {
-            from {
-                opacity: 0;
-                transform: perspective(800px) rotateX(20deg) translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: perspective(800px) rotateX(10deg);
-            }
-        }
-
-        .login-container {
-            animation: containerEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 40px;
-            opacity: 0;
-            transform: scale(0.7);
-        }
-
-        .logo img {
-            max-width: 200px;
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
-            animation: logoFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .logo {
-            animation: logoPop 0.6s 0.3s ease-out forwards;
-        }
-
-        @keyframes logoPop {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        h2 {
-            color: var(--primary-color);
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 3px;
-        }
-
-        .form-group {
-            margin-bottom: 28px;
-            position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .form-group:nth-child(1) {
-            animation: slideUpFadeIn 0.6s ease-out forwards 0.3s;
-        }
-
-        .form-group:nth-child(2) {
-            animation: slideUpFadeIn 0.6s ease-out forwards 0.5s;
-        }
-
-        @keyframes slideUpFadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .form-control {
-            border-radius: 14px;
-            padding: 16px 22px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid #e0e0e0;
-            font-size: 15px;
-            height: auto;
-            background-color: white;
-            color: #333;
-            opacity: 1;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 15px rgba(63, 114, 175, 0.25);
-            animation: inputPulse 1s ease-out;
-        }
-
-        @keyframes inputPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        .form-control:valid {
-            border-color: var(--success-color);
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.25);
-        }
-
-        .form-control:invalid {
-            border-color: var(--error-color);
-            box-shadow: 0 0 10px rgba(220, 53, 69, 0.25);
-        }
-
-        .form-label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-
-        .form-text {
-            font-size: 13px;
-            margin-top: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border: none;
-            border-radius: 14px;
-            padding: 16px 30px;
-            font-size: 17px;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            transition: all 0.3s ease;
-            transform: scale(0.97);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: skewX(-45deg);
-            transition: all 0.5s;
-        }
-
-        .btn-primary:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(63, 114, 175, 0.4);
-        }
-
-        .btn-primary:hover::before {
-            left: 200%;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .form-check {
-            margin-top: 15px;
-        }
-
-        .nav-link {
-            color: var(--primary-color);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            right: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            transform: translateX(5px);
-            color: var(--hover-color);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-            left: 0;
-            right: auto;
-        }
-
-        .particles-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-
-        .success-animation {
-            animation: successShake 0.5s ease-in-out;
-        }
-
-        @keyframes successShake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(10px); }
-            40%, 80% { transform: translateX(-10px); }
-        }
-
-        .error-animation {
-            animation: errorShake 0.5s ease-in-out;
-        }
-
-        @keyframes errorShake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
-        }
-
-        .tilt-animation {
-            animation: tilt 1s ease-in-out;
-        }
-
-        @keyframes tilt {
-            0%, 100% { transform: rotate(0); }
-            30% { transform: rotate(-5deg); }
-            70% { transform: rotate(5deg); }
-        }
-
-        .ripple-effect {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ripple-effect::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: scale(0);
-            transition: transform 0.5s ease-out;
-        }
-
-        .ripple-effect:hover::after {
-            transform: scale(2);
-        }
-
-        .form-control:focus + .form-text {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* 新增的弹窗样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
+            font-family: 'Consolas', 'Segoe UI', system-ui, sans-serif;
+            overflow: hidden; 
+            display: flex;
             align-items: center;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            transform: scale(0.8);
-            opacity: 0;
-            animation: modalFadeIn 0.3s ease-out forwards;
-        }
-
-        @keyframes modalFadeIn {
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            color: var(--primary-color);
+            justify-content: center;
             margin: 0;
         }
 
-        .modal-body {
-            margin-bottom: 25px;
+        * { border-radius: 0 !important; }
+
+        /* ================= 沉浸式动态壁纸系统 ================= */
+        .wallpaper-bg {
+            position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
+            background: url('./image/seeyoutomorrow.jpg') center/cover no-repeat; z-index: -5;
+            animation: breathBg 25s infinite alternate ease-in-out;
+        }
+        @keyframes breathBg { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.08) translate(-1%, -1%); } }
+
+        .wallpaper-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(244, 246, 249, 0.75) 0%, rgba(244, 246, 249, 0.9) 100%);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: -4;
         }
 
-        .modal-text {
-            font-size: 16px;
-            color: #555;
-            line-height: 1.5;
+        .grid-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px; z-index: -3; pointer-events: none;
         }
 
-        .modal-footer {
-            display: flex;
-            justify-content: center;
+        /* ================= 背景微排版装饰 ================= */
+        .hg-bg-watermark { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2; overflow: hidden; }
+        .watermark-text { position: absolute; top: 15%; right: -5%; font-size: 15rem; font-weight: 900; color: rgba(0, 0, 0, 0.03); transform: rotate(-90deg); white-space: nowrap; font-family: 'Arial Black', sans-serif; }
+
+        .crosshair { position: fixed; width: 24px; height: 24px; pointer-events: none; z-index: -1; }
+        .crosshair::before, .crosshair::after { content: ''; position: absolute; background: rgba(18, 18, 20, 0.3); }
+        .crosshair::before { width: 100%; height: 1px; top: 50%; left: 0; }
+        .crosshair::after { width: 1px; height: 100%; top: 0; left: 50%; }
+        .top-left { top: 2%; left: 2%; } .top-right { top: 2%; right: 2%; }
+        .bottom-left { bottom: 2%; left: 2%; } .bottom-right { bottom: 2%; right: 2%; }
+
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;}
+
+        /* ================= 实时动态 HUD 小组件 ================= */
+        .hud-widget { position: fixed; top: 40px; right: 50px; z-index: 0; text-align: right; pointer-events: none; }
+        .hud-time { font-family: monospace; font-size: 1.2rem; font-weight: 900; letter-spacing: 2px; color: var(--text-dark); }
+        .hud-status { font-family: monospace; font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; letter-spacing: 1px; }
+
+        .tactical-console {
+            position: fixed; bottom: 40px; left: 50px; z-index: 0; width: 350px; height: 160px; overflow: hidden;
+            border-left: 3px solid var(--text-dark); padding-left: 15px; pointer-events: none;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+        }
+        .console-header { font-family: monospace; font-size: 0.65rem; font-weight: 900; color: var(--text-dark); margin-bottom: 10px; letter-spacing: 2px; }
+        .console-line { font-family: monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; animation: slideInLeft 0.3s ease-out forwards; }
+        .console-line .highlight { color: var(--text-dark); font-weight: bold; }
+        .console-line .warn { color: var(--error-color); font-weight: bold; }
+
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-15px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* ================= 登录面板 ================= */
+        .login-container {
+            width: 100%; max-width: 480px; padding: 50px 40px; background: rgba(255, 255, 255, 0.65); 
+            backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            animation: containerEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; z-index: 10;
         }
 
-        .btn-modal {
-            padding: 12px 25px;
-            border-radius: 12px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .login-container::before {
+            content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px;
+            background: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(0, 0, 0, 0.05) 3px, rgba(0, 0, 0, 0.05) 6px); pointer-events: none;
+        }
+        .login-container::after { content: 'SYS.LOGIN_PROTOCOL_V1.2'; position: absolute; bottom: 10px; right: 15px; font-size: 0.6rem; color: var(--text-muted); font-family: monospace; }
+        @keyframes containerEntrance { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        .logo { text-align: center; margin-bottom: 30px; }
+        .logo img { max-width: 120px; border: 2px solid var(--text-dark); padding: 5px; clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%); filter: grayscale(100%) contrast(1.2); transition: filter 0.3s; background: rgba(255,255,255,0.8); }
+        .logo img:hover { filter: grayscale(0%) contrast(1.1); }
+
+        .hg-title { font-size: 1.6rem; font-weight: 900; color: var(--text-dark); letter-spacing: 3px; text-transform: uppercase; border-left: 6px solid var(--accent-yellow); padding-left: 15px; margin-bottom: 40px; text-align: left; }
+
+        /* ================= 表单元素 ================= */
+        .form-group { margin-bottom: 30px; position: relative; }
+        .form-label { font-family: monospace; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px; color: var(--text-dark); text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .form-control { background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(0,0,0,0.1); padding: 14px 18px; font-size: 0.9rem; color: var(--text-dark); transition: all 0.2s ease; box-shadow: none !important; }
+        .form-control:focus { border-color: var(--text-dark); background: rgba(255, 255, 255, 0.9); border-left: 4px solid var(--tech-blue); }
+        .form-text { font-size: 0.7rem; font-family: monospace; color: var(--text-muted); margin-top: 6px; letter-spacing: 0.5px; }
+
+        .form-check { margin-top: 15px; display: flex; align-items: center; }
+        .form-check-input { background-color: rgba(255,255,255,0.5); border: 1px solid var(--border-color); width: 16px; height: 16px; margin-top: 0; cursor: pointer; }
+        .form-check-input:checked { background-color: var(--text-dark); border-color: var(--text-dark); }
+        .form-check-label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-left: 8px; cursor: pointer; }
+
+        .btn-primary { background: var(--text-dark); color: #fff; border: none; padding: 16px; font-size: 1rem; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; transition: all 0.2s ease; cursor: pointer; position: relative; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); margin-top: 10px; }
+        .btn-primary:hover { background: var(--accent-yellow); color: var(--text-dark); }
+        .btn-primary:active { transform: scale(0.98); }
+
+        .auth-links { margin-top: 30px; text-align: center; font-size: 0.85rem; font-weight: bold; }
+        .nav-link { color: var(--text-muted); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s; border-bottom: 1px solid transparent; display: inline-block; padding-bottom: 2px; margin: 0 10px; }
+        .nav-link:hover { color: var(--text-dark); border-bottom-color: var(--text-dark); }
+
+        .error-animation { animation: errorShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+        @keyframes errorShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); border-color: var(--error-color); } 75% { transform: translateX(8px); border-color: var(--error-color); } }
+
+        /* ================= 方舟转场：神经链路加载层 ================= */
+        .ark-loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #09090b; z-index: 9999; display: none;
+            flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; /* 初始全透明，由 JS 控制淡入 */
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.1s ease;
+        }
+        
+        .ark-loading-overlay.active {
+            opacity: 1; /* 淡入触发遮盖 */
         }
 
-        .btn-modal-primary {
-            background: var(--primary-color);
-            color: white;
-            border: none;
+        .ark-loading-content {
+            position: relative; width: 400px; display: flex; flex-direction: column; align-items: center;
+            opacity: 0;
+            transform: scale(1.15) translateY(20px); /* 略微放大偏下 */
+            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s; /* 延迟 0.2s 待背景黑屏后再淡入 */
+        }
+        
+        .ark-loading-overlay.active .ark-loading-content {
+            opacity: 1;
+            transform: scale(1) translateY(0); /* 恢复正常大小 */
         }
 
-        .btn-modal-primary:hover {
-            background: var(--hover-color);
+        /* 3D多维旋转体 */
+        .ark-geometry {
+            position: relative; width: 120px; height: 120px;
+            transform-style: preserve-3d; perspective: 800px; margin-bottom: 50px;
         }
+        .geo-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 2px solid var(--accent-yellow); background: rgba(255, 196, 0, 0.03); box-shadow: 0 0 15px rgba(255, 196, 0, 0.1) inset; }
+        .layer-1 { animation: spin1 3s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
+        .layer-2 { animation: spin2 4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; width: 75%; height: 75%; top: 12.5%; left: 12.5%; border-color: var(--tech-blue); background: rgba(0, 176, 255, 0.03); }
+        .layer-3 { animation: spin3 5s linear infinite; width: 40%; height: 40%; top: 30%; left: 30%; border-color: #fff; background: rgba(255,255,255,0.05); }
+        
+        @keyframes spin1 { 0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); } 100% { transform: rotateX(360deg) rotateY(180deg) rotateZ(360deg); } }
+        @keyframes spin2 { 0% { transform: rotateX(0deg) rotateY(360deg) rotateZ(0deg); } 100% { transform: rotateX(180deg) rotateY(0deg) rotateZ(180deg); } }
+        @keyframes spin3 { 0% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); } 100% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); } }
 
-        .btn-modal-outline {
-            background: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
+        /* 百分比数字 */
+        .ark-percentage { font-size: 3rem; font-weight: 900; font-family: monospace; color: #fff; letter-spacing: 4px; margin-bottom: 15px; text-shadow: 0 0 15px rgba(255,255,255,0.4); font-variant-numeric: tabular-nums; }
+        
+        /* 收束的光线 */
+        .ark-lines-container { position: relative; width: 100%; height: 2px; background: rgba(255,255,255,0.1); overflow: hidden; box-shadow: 0 0 8px rgba(255,255,255,0.1); }
+        .ark-line { position: absolute; top: 0; width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px 2px #fff; }
+        .line-left { left: 0; }
+        .line-right { right: 0; }
 
-        .btn-modal-outline:hover {
-            background: var(--primary-color);
-            color: white;
-        }
+        .ark-loading-text { font-size: 0.8rem; font-weight: bold; font-family: monospace; color: var(--tech-blue); letter-spacing: 4px; margin-top: 20px; animation: pulseText 1.5s infinite; }
+        @keyframes pulseText { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 20px;
-            cursor: pointer;
-            color: #999;
-        }
-
-        .modal-close:hover {
-            color: #555;
-        }
     </style>
 </head>
 <body>
+    <div class="wallpaper-bg"></div>
+    <div class="wallpaper-overlay"></div>
+    <div class="grid-overlay"></div>
     <div class="particles-bg" id="particles-js"></div>
+    <div class="hg-bg-watermark"><div class="watermark-text">POLARIS // SYS.LOGIN</div></div>
     
-    <div class="login-container">
-        <div class="logo">
-            <img src="./image/castorice.jpg" alt="北极星系统" class="animate__animated animate__fadeIn">
-        </div>
-        <h2 class="text-center">欢迎回来</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username" class="form-label">用户名</label>
-                <input type="text" id="username" class="form-control" required placeholder="请输入用户名">
-                <div class="form-text"><i class="fas fa-user-circle me-2"></i>请输入注册时的用户名</div>
-            </div>
-            <div class="form-group">
-                <label for="password" class="form-label">密码</label>
-                <input type="password" id="password" class="form-control" required placeholder="请输入密码">
-                <div class="form-text"><i class="fas fa-lock me-2"></i>区分大小写，请谨慎输入</div>
-            </div>
-            <div class="form-check mb-4">
-                <input type="checkbox" class="form-check-input" id="rememberMe">
-                <label class="form-check-label" for="rememberMe">记住我</label>
-            </div>
-            <button type="submit" class="btn btn-primary w-100 ripple-effect">登 录</button>
-        </form>
-        <p class="text-center mt-4">
-            没有账号？<a href="/register" class="nav-link">立即注册 <i class="fas fa-arrow-right ms-1"></i></a>
-        </p>
-        <p class="text-center mt-3">
-            <a href="/forgot-password" class="text-muted text-decoration-none"><i class="fas fa-key me-1"></i>忘记密码?</a>
-        </p>
+    <div class="crosshair top-left"></div><div class="crosshair top-right"></div>
+    <div class="crosshair bottom-left"></div><div class="crosshair bottom-right"></div>
+
+    <div class="hud-widget">
+        <div class="hud-time" id="hudTime">[ 00:00:00.000 ]</div>
+        <div class="hud-status">NODE: PRTS-MAIN-SERVER</div>
+        <div class="hud-status" id="hudPing">LATENCY: -- MS</div>
     </div>
 
-    <!-- 新增的弹窗结构 -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <div class="modal-header">
-                <h3 class="modal-title">登录成功</h3>
+    <div class="tactical-console">
+        <div class="console-header">SYSTEM.LOG_MONITOR // REALTIME</div>
+        <div id="consoleOutput"></div>
+    </div>
+
+    <div class="login-container" id="loginPanel">
+        <div class="logo">
+            <img src="./image/castorice.jpg" alt="北极星系统">
+        </div>
+        
+        <h2 class="hg-title">身份验证 // AUTH</h2>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username" class="form-label">IDENTIFIER / 识别码</label>
+                <input type="text" id="username" class="form-control" required placeholder="输入您的用户名">
+                <div class="form-text">>> 请输入系统中注册的唯一节点名称</div>
             </div>
-            <div class="modal-body">
-                <p class="modal-text">欢迎回来！您已成功登录。</p>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">ACCESS KEY / 访问密钥</label>
+                <input type="password" id="password" class="form-control" required placeholder="输入您的密码">
+                <div class="form-text">>> 密钥区分大小写，请确保环境安全</div>
             </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-modal-primary" onclick="navigateToHome()">进入首页</button>
-                <button class="btn-modal btn-modal-outline" onclick="closeModal()">稍后再说</button>
+            
+            <div class="form-check mb-4">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">保持神经连接 (REMEMBER ME)</label>
             </div>
+            
+            <button type="submit" class="btn-primary w-100" id="submitBtn">AUTHORIZE // 授权接入</button>
+        </form>
+        
+        <div class="auth-links">
+            <a href="/register" class="nav-link">建立新连接 (REGISTER)</a>
+            <span style="color: var(--border-color);">|</span>
+            <a href="/forgot-password" class="nav-link">找回密钥 (FORGOT KEY)</a>
+        </div>
+    </div>
+
+    <div id="arkLoadingOverlay" class="ark-loading-overlay">
+        <div class="ark-loading-content">
+            <div class="ark-geometry">
+                <div class="geo-layer layer-1"></div>
+                <div class="geo-layer layer-2"></div>
+                <div class="geo-layer layer-3"></div>
+            </div>
+            <div class="ark-percentage" id="arkPercentage">0%</div>
+            <div class="ark-lines-container">
+                <div class="ark-line line-left"></div>
+                <div class="ark-line line-right"></div>
+            </div>
+            <div class="ark-loading-text">NEURAL LINK ESTABLISHING...</div>
         </div>
     </div>
 
@@ -468,8 +261,14 @@
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const submitBtn = document.getElementById('submitBtn');
 
             try {
+                // 点击后按钮状态改变
+                const originalBtnText = submitBtn.innerText;
+                submitBtn.innerText = "VERIFYING // 验证中...";
+                submitBtn.style.pointerEvents = "none";
+
                 const response = await fetch('/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -479,161 +278,115 @@
                 const result = await response.json();
                 
                 if (!response.ok) {
-                    throw new Error(result.error || '登录失败');
+                    submitBtn.innerText = originalBtnText;
+                    submitBtn.style.pointerEvents = "auto";
+                    throw new Error(result.error || '接入请求被拒绝 (ACCESS DENIED)');
                 }
 
-                // 显示自定义成功弹窗
-                document.getElementById('successModal').style.display = 'flex';
+                // 成功后储存Token并触发转场动画
                 sessionStorage.setItem('token', result.token);
                 sessionStorage.setItem('userId', result.user.id);
                 sessionStorage.setItem('username', result.user.username);
+                
+                // 去掉原有的 display: none，调用无缝转场
+                initArknightsTransition();
 
             } catch (err) {
-                // 错误动画
-                document.getElementById('password').classList.add('error-animation');
-                document.querySelector('.login-container').classList.add('error-animation');
-                setTimeout(() => {
-                    document.getElementById('password').classList.remove('error-animation');
-                    document.querySelector('.login-container').classList.remove('error-animation');
-                }, 1000);
+                const pwdInput = document.getElementById('password');
+                pwdInput.classList.add('error-animation');
                 
-                alert(err.message);
-                document.getElementById('password').value = '';
+                const formText = pwdInput.nextElementSibling;
+                const originalText = formText.innerText;
+                formText.innerText = `>> [ERR] ${err.message}`;
+                formText.style.color = 'var(--error-color)';
+
+                setTimeout(() => {
+                    pwdInput.classList.remove('error-animation');
+                    formText.innerText = originalText;
+                    formText.style.color = 'var(--text-muted)';
+                }, 2000);
+                pwdInput.value = '';
             }
         });
 
-        // 初始化动画
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('focus', () => {
-                input.parentElement.style.transform = 'translateY(-5px)';
-            });
-            input.addEventListener('blur', () => {
-                input.parentElement.style.transform = 'translateY(0)';
-            });
-        });
-
-        // 粒子背景效果
         particlesJS("particles-js", {
-            "particles": {
-                "number": {
-                    "value": 100,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#3f72af"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    },
-                    "polygon": {
-                        "nb_sides": 5
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#3f72af",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 3,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 200,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
+            "particles": { "number": { "value": 40, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#000000" }, "shape": { "type": "circle" }, "opacity": { "value": 0.2, "random": false }, "size": { "value": 2, "random": true }, "line_linked": { "enable": true, "distance": 160, "color": "#000000", "opacity": 0.15, "width": 1 }, "move": { "enable": true, "speed": 1.2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false } },
+            "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 160, "line_linked": { "opacity": 0.5 } }, "push": { "particles_nb": 2 } } },
             "retina_detect": true
         });
 
-        // 滚动时的动画效果
-        window.addEventListener('scroll', () => {
-            const scrollPosition = window.scrollY;
-            document.querySelector('.particles-bg').style.transform = `translateY(${scrollPosition * 0.5}px)`;
-        });
-
-        // 关闭弹窗函数
-        function closeModal() {
-            document.getElementById('successModal').style.display = 'none';
+        // 实时 HUD 引擎
+        function updateHUD() {
+            const now = new Date();
+            const timeStr = now.toISOString().replace('T', ' ').substring(0, 23);
+            document.getElementById('hudTime').innerText = `[ ${timeStr} ]`;
+            if (Math.random() > 0.95) document.getElementById('hudPing').innerText = `LATENCY: ${Math.floor(Math.random() * 30 + 10)} MS`;
+            requestAnimationFrame(updateHUD);
         }
+        updateHUD();
 
-        // 跳转到首页函数
-        function navigateToHome() {
-            document.getElementById('successModal').style.display = 'none';
-            window.location.href = '/';
+        const logMessages = [ "Establishing secure connection...", "Verifying [RSA-4096]...", "Decrypting payload...", "Bypassing firewall...", "Syncing database...", "Authenticating...", "Loading UI...", "[WARN] Port scanning detected." ];
+        const consoleEl = document.getElementById('consoleOutput');
+        function generateLog() {
+            if(consoleEl.children.length > 8) consoleEl.removeChild(consoleEl.firstChild);
+            const line = document.createElement('div'); line.className = 'console-line';
+            const msg = logMessages[Math.floor(Math.random() * logMessages.length)];
+            const isWarn = msg.includes("[WARN]");
+            line.innerHTML = `<span style="color: ${isWarn ? 'var(--error-color)' : 'var(--tech-blue)'}">></span> <span class="${isWarn ? 'warn' : 'highlight'}">${msg}</span>`;
+            consoleEl.appendChild(line);
+            setTimeout(generateLog, Math.random() * 1500 + 500);
+        }
+        setTimeout(generateLog, 1000);
+
+        // ================= 触发无缝转场动画 =================
+        function initArknightsTransition() {
+            const loginPanel = document.getElementById('loginPanel');
+            // 1. 给登录面板施加“潜入/失真”特效
+            loginPanel.style.transition = 'all 0.5s cubic-bezier(0.7, 0, 0.3, 1)';
+            loginPanel.style.transform = 'scale(1.1) translateY(-20px)';
+            loginPanel.style.opacity = '0';
+            loginPanel.style.filter = 'blur(10px)';
+
+            // 2. 唤起黑屏遮罩淡入
+            const overlay = document.getElementById('arkLoadingOverlay');
+            overlay.style.display = 'flex';
+            
+            // 强制重排，让 transition 生效
+            void overlay.offsetWidth; 
+            overlay.classList.add('active');
+
+            let progress = 0;
+            const pctText = document.getElementById('arkPercentage');
+            const lineLeft = document.querySelector('.line-left');
+            const lineRight = document.querySelector('.line-right');
+            
+            function stepProgress() {
+                progress += (Math.random() * 13 + 2);
+                if (progress > 100) progress = 100;
+                
+                let displayPct = Math.floor(progress);
+                pctText.innerText = displayPct + '%';
+                
+                lineLeft.style.width = (displayPct / 2) + '%';
+                lineRight.style.width = (displayPct / 2) + '%';
+                
+                if (progress < 100) {
+                    setTimeout(stepProgress, Math.random() * 150 + 50);
+                } else {
+                    // 100% 达成：剥夺透明度渐变，瞬间强制白屏 (Flashbang)
+                    overlay.style.transition = "background-color 0.1s ease";
+                    overlay.style.backgroundColor = '#ffffff';
+                    document.querySelector('.ark-loading-content').style.opacity = '0';
+                    
+                    // 白屏维持极短时间后，跳转主页
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 150);
+                }
+            }
+            
+            // 3. 等待中间几何体完全入场后，再启动进度条
+            setTimeout(stepProgress, 600);
         }
     </script>
 </body>

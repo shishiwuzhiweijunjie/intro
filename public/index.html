@@ -3,1276 +3,624 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人展示 | 某空</title>
-    <!-- 样式依赖 -->
+    <title>[OPERATOR TERMINAL] | 某空</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
     <style>
-:root {
-    --primary-color: #3f72af;
-    --secondary-color: #4a6fa5;
-    --hover-color: #2b579a;
-    --success-color: #28a745;
-    --error-color: #dc3545;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
-}
-
-.bg-gradient-primary {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)) !important;
-}
-
-.navbar {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    animation: slideInDown 0.6s ease;
-}
-
-.navbar-brand {
-    font-size: 1.5rem;
-    font-weight: 700;
-    animation: pulse 2s infinite;
-}
-
-.nav-link {
-    font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    right: 0;
-    width: 0;
-    height: 2px;
-    background-color: white;
-    transition: width 0.3s ease;
-}
-
-.nav-link:hover {
-    transform: translateX(5px);
-    color: white !important;
-}
-
-.nav-link:hover::after {
-    width: 100%;
-    left: 0;
-    right: auto;
-}
-
-.carousel-item {
-    animation: fadeIn 1.5s ease;
-}
-
-.carousel-caption {
-    background: rgba(255, 255, 255, 0.5);
-    padding: 20px;
-    border-radius: 10px;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease forwards;
-}
-
-.card {
-    border: none;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    margin-bottom: 40px;
-    animation: fadeInUp 0.8s ease;
-}
-
-.card-title {
-    color: var(--primary-color);
-    font-weight: 700;
-    margin-bottom: 20px;
-    position: relative;
-    padding-left: 15px;
-}
-
-.card-title::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 5px;
-    height: 30px;
-    background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
-    border-radius: 3px;
-}
-
-.img-fluid.rounded-circle {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border: 5px solid var(--primary-color);
-    transition: transform 0.3s ease;
-}
-
-.img-fluid.rounded-circle:hover {
-    transform: scale(1.05);
-}
-
-.skill-badges {
-    margin-top: 15px;
-}
-
-.badge {
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 8px 15px;
-    border-radius: 20px;
-}
-
-.badge-primary {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    color: white;
-}
-
-.badge-success {
-    background: linear-gradient(90deg, #28a745, #218834);
-    color: white;
-}
-
-.badge-info {
-    background: linear-gradient(90deg, #17a2b8, #0c7a8a);
-    color: white;
-}
-
-.skill-item {
-    margin-bottom: 25px;
-}
-
-.skill-label {
-    margin-bottom: 5px;
-}
-
-.progress {
-    height: 10px;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    font-size: 12px;
-    text-align: center;
-    color: white;
-    line-height: 10px;
-}
-
-.progress-bar-animated {
-    animation: progressAnim 2s linear infinite;
-}
-
-@keyframes progressAnim {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 50px 0;
-    }
-}
-
-.chat-container {
-    position: fixed;
-    bottom: 150px;
-    right: 50px;
-    width: 410px;
-    background: rgba(0, 0, 0, 0.15);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 0 30px rgba(63, 114, 175, 0.4),
-                inset 0 0 15px rgba(63, 114, 175, 0.3);
-    border: 1px solid rgba(63, 114, 175, 0.6);
-    backdrop-filter: blur(25px);
-    transform: perspective(1000px) rotateX(5deg) scale(0.95);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0.95;
-    z-index: 1000;
-    clip-path: polygon(
-        0% 0%, 100% 0%, 100% 90%,
-        97% 100%, 3% 100%, 0% 90%
-    );
-}
-
-.chat-container:hover {
-    transform: perspective(1000px) rotateX(0deg) scale(1);
-    box-shadow: 0 0 40px rgba(63, 114, 175, 0.6),
-                inset 0 0 20px rgba(63, 114, 175, 0.5);
-}
-
-/* 全息扫描线效果 */
-.chat-container::before {
-    content: '';
-    position: absolute;
-    top: -100%;
-    left: 0;
-    width: 100%;
-    height: 200%;
-    background: linear-gradient(
-        180deg,
-        rgba(255,255,255,0) 0%,
-        rgba(63, 114, 175, 0.1) 50%,
-        rgba(255,255,255,0) 100%
-    );
-    animation: scan 6s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes scan {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100%); }
-}
-
-/* 数据网格背景 */
-.chat-container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        linear-gradient(rgba(63, 114, 175, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(63, 114, 175, 0.05) 1px, transparent 1px);
-    background-size: 15px 15px;
-    z-index: -1;
-}
-
-.chat-header {
-    background: transparent;
-    color: white;
-    padding: 15px;
-    border-radius: 20px 20px 0 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    box-shadow: none;
-}
-
-.chat-history {
-    height: 300px;
-    overflow-y: auto;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.1);
-    color: white;
-    scrollbar-width: thin;
-    position: relative;
-}
-
-.chat-history::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: radial-gradient(ellipse at center, rgba(63, 114, 175, 0.2), transparent 70%);
-    pointer-events: none;
-}
-
-.chat-message {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: flex-start;
-}
-
-.chat-avatar {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-    margin-right: 15px;
-    border: 2px solid rgba(63, 114, 175, 0.5);
-    animation: pulse 3s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.chat-bubble {
-    background: linear-gradient(
-        145deg,
-        rgba(63, 114, 175, 0.15),
-        rgba(63, 114, 175, 0.05)
-    );
-    border: 1px solid rgba(63, 114, 175, 0.4);
-    box-shadow: 
-        0 5px 15px rgba(0, 0, 0, 0.3),
-        0 0 20px rgba(63, 114, 175, 0.3);
-    backdrop-filter: blur(8px);
-    position: relative;
-    overflow: hidden;
-}
-
-.chat-bubble::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        45deg,
-        transparent,
-        rgba(63, 114, 175, 0.2),
-        transparent
-    );
-    animation: hologramLight 3s linear infinite;
-}
-
-@keyframes hologramLight {
-    0% { transform: translate(-50%, -50%) rotate(45deg); }
-    100% { transform: translate(50%, 50%) rotate(45deg); }
-}
-
-
-.chat-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 20px;
-    border-width: 10px 10px 0;
-    border-style: solid;
-    border-color: rgba(63, 114, 175, 0.2) transparent transparent;
-}
-
-.chat-bubble.ai {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    border-color: rgba(255, 255, 255, 0.3);
-    color: white;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 255, 255, 0.2);
-}
-
-.chat-bubble.ai::after {
-    border-color: rgba(255, 255, 255, 0.1) transparent transparent;
-}
-
-.chat-input-group {
-    display: flex;
-    padding: 20px;
-    border-top: 1px solid rgba(63, 114, 175, 0.2);
-    background: rgba(0, 0, 0, 0.2);
-}
-
-#chatInput {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(63, 114, 175, 0.6);
-    box-shadow: 
-        inset 0 0 15px rgba(0, 0, 0, 0.3),
-        0 0 10px rgba(63, 114, 175, 0.3);
-    text-shadow: 0 0 10px rgba(63, 114, 175, 0.5);
-}
-
-
-/* 发送按钮增强 */
-.chat-send-btn {
-    background: linear-gradient(
-        135deg,
-        rgba(63, 114, 175, 0.8),
-        rgba(63, 114, 175, 0.6)
-    );
-    box-shadow: 
-        0 5px 15px rgba(0, 0, 0, 0.3),
-        0 0 15px rgba(63, 114, 175, 0.5);
-    position: relative;
-    overflow: hidden;
-}
-
-.chat-send-btn::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        45deg,
-        transparent,
-        rgba(255,255,255,0.2),
-        transparent
-    );
-    animation: buttonLight 1.5s linear infinite;
-}
-
-@keyframes buttonLight {
-    0% { transform: translate(-50%, -50%) rotate(45deg); }
-    100% { transform: translate(50%, 50%) rotate(45deg); }
-}
-
-.chat-send-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 20px rgba(63, 114, 175, 0.5);
-}
-
-.open-chat-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 70px;
-    height: 70px;
-    background: linear-gradient(90deg, #3f72af, #4a6fa5);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 30px rgba(63, 114, 175, 0.5);
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    animation: pulse 2s infinite;
-    font-size: 1.5rem;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(63, 114, 175, 0.4);
-    }
-    50% {
-        transform: scale(1.1);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 35px rgba(63, 114, 175, 0.6);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(63, 114, 175, 0.4);
-    }
-}
-
-.projects-section {
-    margin-top: 50px;
-}
-
-.project-card {
-    margin-bottom: 30px;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.project-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.project-image {
-    height: 200px;
-    object-fit: cover;
-}
-
-.project-info {
-    padding: 20px;
-}
-
-.project-title {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: var(--primary-color);
-}
-
-.project-description {
-    color: #666;
-    margin-bottom: 15px;
-}
-
-.project-tech {
-    font-size: 0.9rem;
-    color: #888;
-}
-
-.blog-section {
-    margin-top: 50px;
-}
-
-.blog-card {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-}
-
-.blog-image {
-    height: 250px;
-    object-fit: cover;
-}
-
-.blog-content {
-    padding: 20px;
-}
-
-.blog-title {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    color: var(--primary-color);
-}
-
-.blog-excerpt {
-    color: #666;
-    margin-bottom: 15px;
-}
-
-.read-more {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 600;
-    transition: transform 0.2s ease;
-}
-
-.read-more:hover {
-    transform: translateX(5px);
-}
-
-.contact-section {
-    margin-top: 50px;
-}
-
-.contact-form {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.form-control {
-    border-radius: 30px;
-    padding: 15px 20px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    transition: all 0.3s ease;
-}
-
-.form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 10px rgba(63, 114, 175, 0.3);
-    outline: none;
-}
-
-.btn-submit {
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 15px 30px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-}
-
-.btn-submit:hover {
-    background: var(--hover-color);
-    transform: scale(1.05);
-}
-
-footer {
-    background: var(--primary-color);
-    color: white;
-    padding: 40px 0;
-    margin-top: 80px;
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.footer-column {
-    flex: 1;
-    min-width: 250px;
-    margin-bottom: 30px;
-}
-
-.footer-title {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.footer-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 50px;
-    height: 3px;
-    background: var(--hover-color);
-}
-
-.footer-links a {
-    display: block;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    margin-bottom: 10px;
-    transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-    color: white;
-    text-decoration: underline;
-}
-
-.social-icons a {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-radius: 50%;
-    margin-right: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background 0.3s ease;
-}
-
-.social-icons a:hover {
-    background: var(--hover-color);
-}
-
-.copyright {
-    text-align: center;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 30px;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-@media (max-width: 768px) {
-    .navbar-brand {
-        font-size: 1.2rem;
-    }
-    
-    .nav-item {
-        margin-bottom: 10px;
-    }
-    
-    .chat-container {
-        width: 90%;
-        bottom: 30px;
-        right: 30px;
-    }
-    
-    .open-chat-btn {
-        bottom: 10px;
-        right: 10px;
-        width: 60px;
-        height: 60px;
-    }
-    
-    .img-fluid.rounded-circle {
-        width: 150px;
-        height: 150px;
-    }
-    
-    .card-title {
-        font-size: 1.2rem;
-    }
-    
-    .skill-item {
-        margin-bottom: 15px;
-    }
-    
-    .progress {
-        height: 8px;
-    }
-    
-    .project-card {
-        margin-bottom: 20px;
-    }
-    
-    .project-image {
-        height: 150px;
-    }
-    
-    .project-title {
-        font-size: 1rem;
-    }
-    
-    .project-description {
-        font-size: 0.9rem;
-    }
-    
-    .project-tech {
-        font-size: 0.8rem;
-    }
-    
-    .blog-image {
-        height: 200px;
-    }
-    
-    .blog-title {
-        font-size: 1.1rem;
-    }
-    
-    .blog-excerpt {
-        font-size: 0.9rem;
-    }
-    
-    .contact-form {
-        padding: 0 15px;
-    }
-    
-    .form-control {
-        padding: 10px 15px;
-    }
-    
-    .btn-submit {
-        padding: 10px 20px;
-    }
-    
-    .footer-column {
-        min-width: 100%;
-        margin-bottom: 20px;
-    }
-    
-    .footer-title {
-        font-size: 1rem;
-    }
-    
-    .footer-links a {
-        font-size: 0.9rem;
-    }
-    
-    .social-icons a {
-        width: 30px;
-        height: 30px;
-        font-size: 0.8rem;
-    }
-}
-
-body {
-        transition: opacity 0.5s ease;
-    }
-
-    .fade-out {
-        animation: fadeOut 0.5s forwards;
-    }
-
-    .fade-in {
-        animation: fadeIn 0.5s forwards;
-    }
-
-    @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
+        :root {
+            --bg-main: #f4f6f9;            
+            --bg-card: #ffffff;            
+            --accent-yellow: #ffc400;      
+            --tech-blue: #00b0ff;          
+            --text-dark: #121214;          
+            --text-muted: #6c727f;         
+            --border-color: #d1d5db;       
+        }
+
+        body {
+            font-family: 'Consolas', 'Segoe UI', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        * { border-radius: 0 !important; }
+
+        /* ================= 系统入场转场：致盲白光消散 ================= */
+        .system-boot-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; z-index: 99999; pointer-events: none;
+            animation: bootFadeOut 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+        @keyframes bootFadeOut {
+            0%, 15% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        /* ================= 视界拦截系统 (滚动逐级载入) ================= */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal-item.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* 顶部导航栏专属空投动画 */
+        .navbar {
+            transform: translateY(-100%);
+            animation: navDrop 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s forwards;
+            background: rgba(255, 255, 255, 0.92) !important; border-bottom: 2px solid var(--text-dark);
+            backdrop-filter: blur(15px); padding: 12px 0; z-index: 1050; box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+        }
+        @keyframes navDrop { to { transform: translateY(0); } }
+
+        /* HUD与背景装饰专属：信号接入闪烁 */
+        .sys-glitch-in {
+            opacity: 0;
+            animation: sysBlink 0.6s ease-out 0.4s forwards;
+        }
+        @keyframes sysBlink {
+            0% { opacity: 0; } 20% { opacity: 1; } 40% { opacity: 0.2; }
+            60% { opacity: 1; } 80% { opacity: 0.5; } 100% { opacity: 1; }
+        }
+
+        /* ================= 背景装饰层 (Micro-Typography) ================= */
+        .hg-bg-watermark { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2; overflow: hidden; }
+        .watermark-text { position: absolute; top: 25%; right: -10%; font-size: 15rem; font-weight: 900; color: rgba(0, 0, 0, 0.015); transform: rotate(-90deg); white-space: nowrap; font-family: 'Arial Black', sans-serif; letter-spacing: 5px; }
+        .watermark-text-large { position: absolute; bottom: -2%; left: 5%; font-size: 10rem; font-weight: 900; color: rgba(0, 0, 0, 0.025); letter-spacing: -2px; }
+
+        .crosshair { position: fixed; width: 24px; height: 24px; pointer-events: none; z-index: -1; }
+        .crosshair::before, .crosshair::after { content: ''; position: absolute; background: rgba(18, 18, 20, 0.25); }
+        .crosshair::before { width: 100%; height: 1px; top: 50%; left: 0; }
+        .crosshair::after { width: 1px; height: 100%; top: 0; left: 50%; }
+        .top-left { top: 2%; left: 2%; } .top-right { top: 2%; right: 2%; }
+        .bottom-left { bottom: 2%; left: 2%; } .bottom-right { bottom: 2%; right: 2%; }
+
+        .data-ribbon { position: fixed; left: 15px; top: 0; width: 20px; height: 100%; overflow: hidden; pointer-events: none; z-index: -1; border-left: 1px solid rgba(0,0,0,0.04); }
+        .ribbon-content { writing-mode: vertical-rl; text-orientation: mixed; color: rgba(0,0,0,0.1); font-family: monospace; font-size: 0.65rem; letter-spacing: 3px; white-space: nowrap; animation: scrollUp 40s linear infinite; }
+        @keyframes scrollUp { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+
+        .particles-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; pointer-events: none; }
+
+        /* ================= 核心 UI 样式 ================= */
+        .navbar-brand { font-size: 1.3rem; font-weight: 900; letter-spacing: 3px; color: var(--text-dark) !important; text-transform: uppercase; }
+        .navbar-brand span { color: var(--accent-yellow); background: var(--text-dark); padding: 2px 6px; margin-right: 4px; }
+        .nav-link { font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted) !important; transition: all 0.3s ease; padding: 5px 15px !important; }
+        .nav-link:hover { color: var(--text-dark) !important; border-bottom: 2px solid var(--text-dark); }
+
+        .carousel-item { background: #f0f0f2; }
+        .carousel-item img { filter: brightness(0.85) contrast(1.05); }
+        .carousel-caption { background: transparent; text-align: left; left: 10%; bottom: 15%; padding: 0; }
+        .carousel-caption h1 { font-size: 3.5rem; font-weight: 900; letter-spacing: 4px; color: var(--text-dark) !important; text-transform: uppercase; border-left: 6px solid var(--text-dark); padding-left: 20px; }
+
+        .hg-card { background: var(--bg-card) !important; border: 1px solid var(--border-color); margin-bottom: 40px; position: relative; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02); clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px); }
+        .hg-card::before { content: ''; position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(0, 0, 0, 0.04) 3px, rgba(0, 0, 0, 0.04) 6px); pointer-events: none; }
+
+        .hg-title { font-size: 1.4rem; font-weight: 900; color: var(--text-dark); letter-spacing: 2px; text-transform: uppercase; position: relative; padding-left: 15px; margin-bottom: 30px; border-left: 5px solid var(--text-dark); }
+        .hg-title::after { content: '// SYSTEM.OPERATOR_ARCHIVE'; font-size: 0.65rem; color: var(--text-muted); font-family: monospace; position: absolute; right: 0; bottom: 0; letter-spacing: 1px; opacity: 0.8; }
+
+        .operator-avatar { border: 1px solid var(--border-color); padding: 6px; background: #ffffff; clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%); display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .operator-avatar img { width: 100%; max-width: 200px; object-fit: cover; clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%); }
+
+        .tag-container { margin-top: 15px; }
+        .hg-tag { font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; padding: 4px 12px; background: #eef1f6; border: 1px solid transparent; color: var(--text-muted); margin-right: 8px; display: inline-block; text-transform: uppercase; }
+        .hg-tag.active { border-color: var(--text-dark); color: var(--text-dark); background: var(--accent-yellow); }
+
+        .skill-item { margin-bottom: 22px; }
+        .skill-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; }
+        .skill-name { color: var(--text-dark); }
+        .skill-rank { font-family: monospace; font-weight: 900; }
+        .skill-rank.rank-a { color: #fff; background: var(--text-dark); padding: 1px 6px; font-size: 0.75rem; }
+        .skill-rank.rank-b { color: var(--text-muted); background: #e4e7ec; padding: 1px 6px; font-size: 0.75rem; }
+        .hg-progress { height: 8px; background: #e4e7ec; border: 1px solid #d1d5db; overflow: hidden; position: relative; }
+        .hg-progress-bar { height: 100%; background: var(--text-dark); transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hg-progress-bar.secondary { background: var(--text-muted); }
+
+        .hg-project-card { background: #ffffff; border: 1px solid var(--border-color); margin-bottom: 30px; transition: all 0.3s ease; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
+        .hg-project-card:hover { border-color: var(--text-dark); transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
+        .project-image-wrapper { position: relative; background: #fff; overflow: hidden; border-bottom: 1px solid var(--border-color); }
+        .project-image-wrapper img { width: 100%; height: 180px; object-fit: cover; transition: all 0.3s ease; }
+        .project-meta-code { position: absolute; top: 10px; left: 10px; font-size: 0.6rem; background: var(--text-dark); padding: 2px 6px; color: #fff; letter-spacing: 1px; font-weight: bold; }
+        .hg-project-body { padding: 20px; }
+        .hg-project-title { font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; }
+        .hg-project-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px; height: 68px; overflow: hidden; }
+        .hg-project-tech { font-size: 0.75rem; font-family: monospace; color: var(--text-dark); font-weight: bold; border-top: 1px solid #edf1f6; padding-top: 10px; }
+
+        .hg-link { font-size: 0.8rem; color: var(--text-dark); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; text-decoration: none !important; transition: all 0.2s ease; display: inline-block; border-bottom: 1px solid var(--text-dark); }
+        .hg-link:hover { color: var(--text-muted); border-bottom-color: var(--text-muted); padding-left: 5px; }
+
+        .hg-form-control { background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-dark) !important; font-size: 0.85rem !important; padding: 12px 15px !important; margin-bottom: 20px; }
+        .hg-form-control:focus { border-color: var(--text-dark) !important; box-shadow: none !important; }
+
+        .hg-btn-submit { background: var(--text-dark) !important; color: #ffffff !important; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; border: none; padding: 14px 30px; width: 100%; cursor: pointer; transition: all 0.2s ease; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+        .hg-btn-submit:hover { background: var(--accent-yellow) !important; color: var(--text-dark) !important; letter-spacing: 4px; }
+
+        .chat-container { position: fixed; bottom: 100px; right: 40px; width: 380px; background: rgba(255, 255, 255, 0.95); border: 1px solid var(--tech-blue); box-shadow: 0 8px 30px rgba(0, 176, 255, 0.15); backdrop-filter: blur(20px); z-index: 1000; display: none; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); }
+        .chat-container.active { display: block; animation: fadeIn 0.4s ease forwards; }
+        .chat-header { background: rgba(0, 176, 255, 0.06); border-bottom: 1px solid rgba(0, 176, 255, 0.2); padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .chat-header h5 { font-size: 0.85rem; font-weight: 900; color: var(--tech-blue); letter-spacing: 1px; margin: 0; }
+        .chat-history { height: 280px; overflow-y: auto; padding: 15px; background: #f8fafc; }
+        .chat-message { margin-bottom: 15px; display: flex; }
+        .chat-avatar { width: 32px; height: 32px; border: 1px solid var(--tech-blue); background-size: cover; margin-right: 10px; flex-shrink: 0; }
+        .chat-bubble { background: #ffffff; border: 1px solid rgba(0,0,0,0.06); padding: 8px 12px; font-size: 0.8rem; max-width: 80%; color: var(--text-dark); line-height: 1.5; box-shadow: 0 2px 6px rgba(0,0,0,0.01); }
+        .chat-bubble.ai { background: rgba(0, 176, 255, 0.03); border: 1px solid rgba(0, 176, 255, 0.2); color: #0070cc; }
+        .chat-input-group { display: flex; padding: 15px; border-top: 1px solid rgba(0, 176, 255, 0.1); background: #ffffff; }
+        #chatInput { background: #f1f5f9; border: 1px solid #cbd5e1; color: var(--text-dark); font-size: 0.8rem; padding: 8px 12px; flex-grow: 1; }
+        #chatInput:focus { outline: none; border-color: var(--tech-blue); box-shadow: 0 0 8px rgba(0, 176, 255, 0.2); }
+        .chat-send-btn { background: var(--tech-blue); color: #fff; border: none; padding: 0 15px; margin-left: 10px; font-weight: 900; cursor: pointer; }
+
+        .open-chat-btn { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: #ffffff; color: var(--tech-blue); border: 1px solid var(--tech-blue); box-shadow: 0 4px 12px rgba(0, 176, 255, 0.15); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 1000; font-size: 1.2rem; transition: all 0.3s; }
+        .open-chat-btn:hover { background: var(--tech-blue); color: #fff; box-shadow: 0 0 20px rgba(0, 176, 255, 0.4); scale: 1.05; }
+
+        footer { background: #ffffff; border-top: 1px solid var(--border-color); padding: 50px 0 30px 0; margin-top: 100px; font-size: 0.8rem; color: var(--text-muted); }
+        .footer-title { font-size: 0.9rem; font-weight: 800; color: var(--text-dark); margin-bottom: 20px; letter-spacing: 1px; text-transform: uppercase; }
+        .footer-links a { display: block; color: var(--text-muted); text-decoration: none !important; margin-bottom: 10px; }
+        .footer-links a:hover { color: var(--text-dark); }
+        .social-icons a { display: inline-block; color: var(--text-muted); margin-right: 15px; font-size: 1.1rem; transition: color 0.2s; }
+        .social-icons a:hover { color: var(--text-dark); }
+        .copyright { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #edf1f6; font-family: monospace; letter-spacing: 1px; }
+
+        body { transition: opacity 0.4s ease; }
+        .fade-out { opacity: 0; }
     </style>
 </head>
-<body class="bg-light">
-    <div class="particles-bg" id="particles-js"></div>
+<body>
+    <div class="system-boot-overlay"></div>
+
+    <div class="particles-bg sys-glitch-in" id="particles-js"></div>
     
-    <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary fixed-top">
+    <div class="hg-bg-watermark sys-glitch-in">
+        <div class="watermark-text">CI/CD // SYS.01</div>
+        <div class="watermark-text-large">DB-ACTIVE</div>
+    </div>
+
+    <div class="crosshair top-left sys-glitch-in"></div>
+    <div class="crosshair top-right sys-glitch-in"></div>
+    <div class="crosshair bottom-left sys-glitch-in"></div>
+    <div class="crosshair bottom-right sys-glitch-in"></div>
+
+    <div class="data-ribbon sys-glitch-in">
+        <div class="ribbon-content">
+            [SYS] JAVA_THREAD_POOL: STABLE • [DB] SYNC_NODE_01: ONLINE • [CICD] PIPELINE_BUILD: SUCCESS • 
+            [SYS] JAVA_THREAD_POOL: STABLE • [DB] SYNC_NODE_01: ONLINE • [CICD] PIPELINE_BUILD: SUCCESS •
+            [SYS] JAVA_THREAD_POOL: STABLE • [DB] SYNC_NODE_01: ONLINE • [CICD] PIPELINE_BUILD: SUCCESS •
+        </div>
+    </div>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand animate__animated animate__pulse" href="#">
-                <i class="fas fa-user-circle mr-2"></i>某空
+            <a class="navbar-brand" href="#">
+                <span>//</span> OPERATOR.某空
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="#about">关于</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#skills">技能</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">项目</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#blog">博客</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">联系</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/gacha">抽卡</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/shop.html" id="shopLink">商城</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/game">游戏</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">档案</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">评测</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">实战</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#blog">情报</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">连接</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/gacha">寻访</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop.html" id="shopLink">采购部</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/game">终端</a></li>
                     <li class="nav-item" id="registerLink"><a class="nav-link" href="/register">注册</a></li>
                     <li class="nav-item" id="loginLink"><a class="nav-link" href="/login">登录</a></li>
-                    <li class="nav-item" id="logoutLink" style="display:none;"><a class="nav-link" href="/logout">登出</a></li>
+                    <li class="nav-item" id="logoutLink" style="display:none;"><a class="nav-link" href="/logout">切断</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- 轮播图 -->
-    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+    <div id="myCarousel" class="carousel slide reveal-item" data-ride="carousel" data-interval="4000">
         <div class="carousel-inner">
-            <!-- 轮播图片项 -->
             <div class="carousel-item active">
-                <img src="./image/tribbie.jpg" class="d-block w-100" alt="图片 1" style="height: 500px; object-fit: cover;">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="animate__animated animate__fadeInDown display-4 mb-4" style="color: black;">全栈开发者</h1>
-                    <div class="animate__animated animate__fadeInUp delay-1s">
-                        <a href="#about" class="btn btn-outline-dark btn-lg">探索更多</a>
-                    </div>
+                <img src="./image/tribbie.jpg" class="d-block w-100" alt="Terminal 1" style="height: 550px; object-fit: cover;">
+                <div class="carousel-caption">
+                    <h1>Full-Stack Engineer</h1>
+                    <p class="text-muted font-weight-bold mt-2">// SYSTEM STATUS: ACTIVE / DEPLOYABLE</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="./image/seeyoutomorrow.jpg" class="d-block w-100" alt="图片 2" style="height: 500px; object-fit: cover;">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="animate__animated animate__fadeInDown display-4 mb-4" style="color: black;">技术专家</h1>
-                    <div class="animate__animated animate__fadeInUp delay-1s">
-                        <a href="#skills" class="btn btn-outline-dark btn-lg">查看技能</a>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="./image/success.jpg" class="d-block w-100" alt="图片 3" style="height: 500px; object-fit: cover;">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="animate__animated animate__fadeInDown display-4 mb-4" style="color: white;">创意无限</h1>
-                    <div class="animate__animated animate__fadeInUp delay-1s">
-                        <a href="#projects" class="btn btn-outline-dark btn-lg">查看项目</a>
-                    </div>
+                <img src="./image/seeyoutomorrow.jpg" class="d-block w-100" alt="Terminal 2" style="height: 550px; object-fit: cover;">
+                <div class="carousel-caption">
+                    <h1>Core Architecture</h1>
+                    <p class="text-muted font-weight-bold mt-2">// RECONNAISSANCE & INFRASTRUCTURE COMPLETE</p>
                 </div>
             </div>
         </div>
-        <!-- 轮播图控制按钮 -->
-        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: brightness(0) invert(0.8);"></span>
-            <span class="sr-only">上一张</span>
-        </a>
-        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true" style="filter: brightness(0) invert(0.8);"></span>
-            <span class="sr-only">下一张</span>
-        </a>
     </div>
 
-    <!-- 主要内容 -->
-    <main class="container py-5" style="margin-top: 80px;">
-        <!-- 关于我 -->
-        <section id="about" class="card shadow-lg mb-5 animate__animated animate__fadeIn">
-            <div class="card-body">
-                <h2 class="card-title"><i class="fas fa-user-tie text-primary mr-2"></i>关于我</h2>
+    <main class="container py-5">
+        
+        <section id="about" class="card hg-card reveal-item">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="hg-title">干员档案 // OPERATOR RECORD</h2>
                 <div class="row align-items-center">
-                    <div class="col-md-4 text-center">
-                        <img src="./image/castorice.jpg" 
-                             alt="头像" 
-                             class="img-fluid rounded-circle hover-zoom mb-4">
+                    <div class="col-md-4 text-center mb-4 mb-md-0">
+                        <div class="operator-avatar">
+                            <img src="./image/castorice.jpg" alt="干员证件照">
+                        </div>
                     </div>
                     <div class="col-md-8">
-                        <p class="lead">拥有5年全栈开发经验的技术专家，擅长使用现代Web技术构建高性能应用。</p>
-                        <div class="skill-badges">
-                            <span class="badge badge-pill badge-primary mr-2">React</span>
-                            <span class="badge badge-pill badge-success mr-2">Node.js</span>
-                            <span class="badge badge-pill badge-info">MongoDB</span>
+                        <p class="lead font-weight-bold text-dark mb-2">全栈系统研发专家 / 基础架构架构师</p>
+                        <p class="text-muted style-code mb-4" style="font-size: 0.9rem; line-height: 1.7;">
+                            具备深厚的信息技术知识体系与全栈工程落地经验。精通大规模分布式数据库架构设计与敏捷交付全链路生命周期管理，擅长运用工业级设计范式重构高并发、高可用核心业务层系统。
+                        </p>
+                        <div class="tag-container">
+                            <div class="hg-tag active">Java & J2EE</div>
+                            <div class="hg-tag active">Database System</div>
+                            <div class="hg-tag active">CI/CD Pipeline</div>
+                            <div class="hg-tag">Enterprise Architecture</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 技能 -->
-        <section id="skills" class="card shadow-lg mb-5 animate__animated animate__fadeIn">
-            <div class="card-body">
-                <h2 class="card-title"><i class="fas fa-tools text-primary mr-2"></i>技术能力</h2>
-                <div class="skill-chart">
-                    <div class="skill-item mb-4">
-                        <div class="skill-label d-flex justify-content-between">
-                            <span>前端开发</span>
-                            <span>85%</span>
+        <section id="skills" class="card hg-card reveal-item">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="hg-title">战术评测 // TACTICAL STATS</h2>
+                <div class="row">
+                    <div class="col-md-6 pr-md-4">
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Java & J2EE 核心架构能力</span>
+                                <span class="skill-rank rank-a">RANK: A</span>
+                            </div>
+                            <div class="hg-progress">
+                                <div class="hg-progress-bar" style="width: 95%"></div>
+                            </div>
                         </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
-                                 role="progressbar" 
-                                 style="width: 85%">85%</div>
-                        </div>
-                    </div>
-                    <div class="skill-item mb-4">
-                        <div class="skill-label d-flex justify-content-between">
-                            <span>后端开发</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" 
-                                 role="progressbar" 
-                                 style="width: 75%">75%</div>
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">工业级分布式数据库系统设计</span>
+                                <span class="skill-rank rank-a">RANK: A</span>
+                            </div>
+                            <div class="hg-progress">
+                                <div class="hg-progress-bar" style="width: 92%"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="skill-item mb-4">
-                        <div class="skill-label d-flex justify-content-between">
-                            <span>数据库设计</span>
-                            <span>80%</span>
+                    <div class="col-md-6 pl-md-4">
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">CI/CD 高级自动化流水线交付</span>
+                                <span class="skill-rank rank-a">RANK: A</span>
+                            </div>
+                            <div class="hg-progress">
+                                <div class="hg-progress-bar" style="width: 90%"></div>
+                            </div>
                         </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" 
-                                 role="progressbar" 
-                                 style="width: 80%">80%</div>
-                        </div>
-                    </div>
-                    <div class="skill-item mb-4">
-                        <div class="skill-label d-flex justify-content-between">
-                            <span>系统架构</span>
-                            <span>70%</span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" 
-                                 role="progressbar" 
-                                 style="width: 70%">70%</div>
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">核心数理与算法工程基础 (Core Math)</span>
+                                <span class="skill-rank rank-b">RANK: B</span>
+                            </div>
+                            <div class="hg-progress">
+                                <div class="hg-progress-bar secondary" style="width: 78%"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 项目 -->
-        <section id="projects" class="projects-section animate__animated animate__fadeIn">
-            <h2 class="text-center mb-5" style="color: var(--primary-color);"><i class="fas fa-briefcase mr-2"></i>我的项目</h2>
+        <section id="projects" class="py-3">
+            <h2 class="hg-title mb-4 reveal-item">实战记录 // MISSION LOGS</h2>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="project-card">
-                        <img src="./image/project1.jpg" alt="项目1" class="project-image">
-                        <div class="project-info">
-                            <h3 class="project-title">电商平台</h3>
-                            <p class="project-description">一个功能完善的电商平台，支持用户注册、商品浏览、购物车、订单管理等功能。</p>
-                            <p class="project-tech">技术栈: React, Node.js, MongoDB</p>
+                <div class="col-md-4 reveal-item">
+                    <div class="hg-project-card">
+                        <div class="project-image-wrapper">
+                            <div class="project-meta-code">MSN-001</div>
+                            <img src="./image/project1.jpg" alt="Mission 1">
+                        </div>
+                        <div class="hg-project-body">
+                            <h3 class="hg-project-title">高并发多级缓存电商平台</h3>
+                            <p class="hg-project-desc">构建承载大规模并发流量的线上采购与订单状态流转终端，引入严苛的交易鲁棒性验证校验。</p>
+                            <div class="hg-project-tech">// TECH: J2EE, Spring Boot, Redis</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="project-card">
-                        <img src="./image/project2.jpg" alt="项目2" class="project-image">
-                        <div class="project-info">
-                            <h3 class="project-title">任务管理系统</h3>
-                            <p class="project-description">一个团队协作的任务管理系统，支持任务分配、进度跟踪、文件共享等功能。</p>
-                            <p class="project-tech">技术栈: Vue.js, Spring Boot, MySQL</p>
+                <div class="col-md-4 reveal-item">
+                    <div class="hg-project-card">
+                        <div class="project-image-wrapper">
+                            <div class="project-meta-code">MSN-002</div>
+                            <img src="./image/project2.jpg" alt="Mission 2">
+                        </div>
+                        <div class="hg-project-body">
+                            <h3 class="hg-project-title">多团队协同自动化任务调度系统</h3>
+                            <p class="hg-project-desc">打破团队隔离，实现透明的流水化任务指派与交付物动态审计追溯终端。</p>
+                            <div class="hg-project-tech">// TECH: Vue.js, Node.js, MySQL</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="project-card">
-                        <img src="./image/project3.jpg" alt="项目3" class="project-image">
-                        <div class="project-info">
-                            <h3 class="project-title">数据分析工具</h3>
-                            <p class="project-description">一个用于数据分析和可视化的工具，支持多种数据源接入和丰富的图表展示。</p>
-                            <p class="project-tech">技术栈: D3.js, Python, PostgreSQL</p>
+                <div class="col-md-4 reveal-item">
+                    <div class="hg-project-card">
+                        <div class="project-image-wrapper">
+                            <div class="project-meta-code">MSN-003</div>
+                            <img src="./image/project3.jpg" alt="Mission 3">
+                        </div>
+                        <div class="hg-project-body">
+                            <h3 class="hg-project-title">异构数据流全息可视化分析工具</h3>
+                            <p class="hg-project-desc">支持实时流数据接入与多维数据拓扑图谱绘制，输出高精度辅助决策情报。</p>
+                            <div class="hg-project-tech">// TECH: Python, D3.js, PostgreSQL</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 博客 -->
-        <section id="blog" class="blog-section animate__animated animate__fadeIn">
-            <h2 class="text-center mb-5" style="color: var(--primary-color);"><i class="fas fa-blog mr-2"></i>技术博客</h2>
+        <section id="blog" class="py-4">
+            <h2 class="hg-title mb-4 reveal-item">情报分析 // INTELLIGENCE</h2>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="blog-card">
-                        <img src="./image/blog1.jpg" alt="博客1" class="blog-image">
-                        <div class="blog-content">
-                            <h3 class="blog-title">前端性能优化实践</h3>
-                            <p class="blog-excerpt">在本文中，我将分享一些实用的前端性能优化技巧，帮助你提升应用的加载速度和用户体验。</p>
-                            <a href="#" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                <div class="col-md-4 reveal-item">
+                    <div class="hg-project-card">
+                        <div class="hg-project-body">
+                            <h3 class="hg-project-title" style="font-size: 1rem;">大规模分布式数据库性能调优实践</h3>
+                            <p class="hg-project-desc" style="font-size: 0.8rem; height: 50px;">探讨如何通过精密索引拓扑与执行计划裁剪规避战术性延迟陷阱。</p>
+                            <a href="#" class="hg-link">解析报告 <i class="fas fa-chevron-right ml-1"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="blog-card">
-                        <img src="./image/blog2.jpg" alt="博客2" class="blog-image">
-                        <div class="blog-content">
-                            <h3 class="blog-title">Node.js 高并发处理策略</h3>
-                            <p class="blog-excerpt">本文深入探讨了 Node.js 在高并发场景下的性能表现，并分享了一些优化实践。</p>
-                            <a href="#" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                <div class="col-md-4 reveal-item">
+                    <div class="hg-project-card">
+                        <div class="hg-project-body">
+                            <h3 class="hg-project-title" style="font-size: 1rem;">企业级自动化流水线 CI/CD 演进指南</h3>
+                            <p class="hg-project-desc" style="font-size: 0.8rem; height: 50px;">深度解析在异构集群中实施零感知平滑热部署的生产级别配置矩阵。</p>
+                            <a href="#" class="hg-link">解析报告 <i class="fas fa-chevron-right ml-1"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="blog-card">
-                        <img src="./image/blog3.jpg" alt="博客3" class="blog-image">
-                        <div class="blog-content">
-                            <h3 class="blog-title">MongoDB 索引优化技巧</h3>
-                            <p class="blog-excerpt">了解如何通过合理设计索引来提升 MongoDB 的查询性能，避免常见陷阱。</p>
-                            <a href="#" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                <div class="col-md-4 reveal-item">
+                    <div class="hg-project-card">
+                        <div class="hg-project-body">
+                            <h3 class="hg-project-title" style="font-size: 1rem;">Java 虚拟机高并发底层的屏障开销</h3>
+                            <p class="hg-project-desc" style="font-size: 0.8rem; height: 50px;">深入多线程指令重排内部，测算内存屏障对指令级吞吐的真实扰动。</p>
+                            <a href="#" class="hg-link">解析报告 <i class="fas fa-chevron-right ml-1"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 联系 -->
-        <section id="contact" class="contact-section animate__animated animate__fadeIn">
-            <h2 class="text-center mb-5" style="color: var(--primary-color);"><i class="fas fa-envelope mr-2"></i>联系我</h2>
-            <div class="contact-form">
-                <form>
-                    <input type="text" class="form-control" placeholder="您的姓名" required>
-                    <input type="email" class="form-control" placeholder="您的邮箱" required>
-                    <input type="text" class="form-control" placeholder="主题" required>
-                    <textarea class="form-control" rows="5" placeholder="您的消息" required></textarea>
-                    <button type="submit" class="btn-submit">发送消息</button>
-                </form>
+        <section id="contact" class="card hg-card reveal-item">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="hg-title">建立连接 // ESTABLISH CONNECTION</h2>
+                <div class="max-width: 600px; margin: 0 auto;">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control hg-form-control" placeholder="IDENTIFIER / 发起方名称" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control hg-form-control" placeholder="COMM_CHANNEL / 节点邮箱" required>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control hg-form-control" placeholder="SUBJECT / 通讯主题" required>
+                        <textarea class="form-control hg-form-control" rows="4" placeholder="MESSAGE_CONTENT / 传输加密明文" required></textarea>
+                        <button type="submit" class="hg-btn-submit">发送单向广播信号</button>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
-<!-- 聊天窗口增强版 -->
-<div class="chat-container" id="chatContainer">
-    <div class="chat-header">
-        <h5 class="animate__animated animate__pulse"></i></h5>
-        <button class="btn">
-            <i class="fas fa-times-circle text-danger animate__animated animate__bounce"></i>
-        </button>
-    </div>
-    <div class="chat-history" id="chatHistory">
-        <div class="chat-message animate__animated animate__fadeIn">
-            <div class="chat-avatar" style="background-image: url('./image/miyabi.png')"></div>
-            <div class="chat-bubble ai animate__animated animate__backInLeft">
-                欢迎来到智能AI助手！我是您的专属智能伙伴，随时为您提供帮助。
+
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h5><i class="fas fa-project-diagram mr-2"></i>PRTS // LIGHT_TERMINAL_v2.0</h5>
+            <button class="btn p-0 text-secondary" style="background:none; border:none;">
+                <i class="fas fa-times-circle"></i>
+            </button>
+        </div>
+        <div class="chat-history" id="chatHistory">
+            <div class="chat-message">
+                <div class="chat-avatar" style="background-image: url('./image/miyabi.png')"></div>
+                <div class="chat-bubble ai">
+                    外部分发协议已加载。智能管理模块 PRTS (Light Mode) 运行稳定。随时可以进行指令调度。
+                </div>
             </div>
         </div>
+        <div class="chat-input-group">
+            <input type="text" id="chatInput" placeholder="下达战术指令...">
+            <button class="chat-send-btn" id="sendButton">EXEC</button>
+        </div>
     </div>
-    <div class="chat-input-group">
-        <input type="text" id="chatInput" placeholder="输入消息..." class="animate__animated animate__fadeIn">
-        <button class="chat-send-btn" id="sendButton">
-            <i class="fas fa-paper-plane animate__animated animate__rubberBand"></i>
-        </button>
-    </div>
-</div>
 
-<button class="open-chat-btn" id="openChat">
-    <i class="fas fa-comment-alt animate__animated animate__pulse"></i>
-</button>
+    <button class="open-chat-btn reveal-item" id="openChat">
+        <i class="fas fa-terminal"></i>
+    </button>
 
-    <!-- 页脚 -->
-    <footer>
+    <footer class="reveal-item">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3 class="footer-title">关于我</h3>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h3 class="footer-title">索引架构</h3>
                     <div class="footer-links">
-                        <a href="#about">个人简介</a>
-                        <a href="#skills">技能清单</a>
-                        <a href="#projects">项目作品</a>
-                        <a href="#blog">技术博客</a>
+                        <a href="#about">干员基础背景</a>
+                        <a href="#skills">战术核心评级</a>
+                        <a href="#projects">实战演练记录</a>
+                        <a href="#blog">底层情报分析</a>
                     </div>
                 </div>
-                <div class="footer-column">
-                    <h3 class="footer-title">服务</h3>
+                <div class="col-md-3 mb-4">
+                    <h3 class="footer-title">战术服务</h3>
                     <div class="footer-links">
-                        <a href="#">网站开发</a>
-                        <a href="#">应用开发</a>
-                        <a href="#">系统集成</a>
-                        <a href="#">技术咨询</a>
+                        <a href="#">分布式架构审计</a>
+                        <a href="#">自动化交付链部署</a>
+                        <a href="#">高性能后端架构</a>
                     </div>
                 </div>
-                <div class="footer-column">
-                    <h3 class="footer-title">联系方式</h3>
+                <div class="col-md-3 mb-4">
+                    <h3 class="footer-title">加密链路</h3>
                     <div class="footer-links">
-                        <a href="mailto:example@example.com">邮箱: example@example.com</a>
-                        <a href="tel:+123456789">电话: +123456789</a>
+                        <a href="mailto:example@example.com">COM_LINK: example@example.com</a>
+                        <a href="tel:+123456789">SEC_VOICE: +123456789</a>
                     </div>
                 </div>
-                <div class="footer-column">
-                    <h3 class="footer-title">关注我</h3>
+                <div class="col-md-3 mb-4">
+                    <h3 class="footer-title">网际分发</h3>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-github"></i></a>
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-weixin"></i></a>
                     </div>
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2023 某空 保留所有权利
+                &copy; 2026 ENDFIELD STYLED RESUME TERMINAL. ALL RIGHTS RESERVED.
             </div>
         </div>
     </footer>
 
-    <!-- 脚本依赖 -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="scripts.js"></script>
     <script src="./particles.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-    // 为“商城”链接添加点击事件
-    document.getElementById('shopLink').addEventListener('click', function(e) {
-        e.preventDefault(); // 阻止默认行为
-        document.body.classList.add('fade-out'); // 添加淡出动画
-        
-        // 淡出动画完成后跳转到 shop.html
-        setTimeout(() => {
-            window.location.href = '/shop.html';
-        }, 500); // 动画持续时间为 0.5 秒
-    });
-});
+            
+            // ================= 终端视界观察者：控制滚动与首屏延迟载入 =================
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // 触发一次后解除监听
+                    }
+                });
+            }, { threshold: 0.1 });
 
-        particlesJS("particles-js", {
-            "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#000" /* 黑色粒子 */
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000"
-                    },
-                    "polygon": {
-                        "nb_sides": 5
-                    },
-                    "image": {
-                        "src": "img/github.svg",
-                        "width": 100,
-                        "height": 100
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false,
-                    "anim": {
-                        "enable": false,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#000", /* 黑色线条 */
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 6,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
+            // 为所有的 reveal-item 施加延迟，营造白光消散后的级联感
+            document.querySelectorAll('.reveal-item').forEach((el, index) => {
+                // 首屏可见的元素，给予阶梯状较长的延迟，配合白光的消散(1.2s)
+                if (index < 4) {
+                    el.style.transitionDelay = `${0.6 + (index * 0.15)}s`;
+                } else {
+                    // 后续滚动拉出的元素，只需要一个极短的基础延迟
+                    el.style.transitionDelay = `0.1s`;
                 }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "repulse"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 400,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
-            "retina_detect": true
-        });
+                observer.observe(el);
+            });
 
-        // 登录状态检测
-        const token = sessionStorage.getItem('token');
-        if(token) {
-            document.getElementById('registerLink').style.display = 'none';
-            document.getElementById('loginLink').style.display = 'none';
-            document.getElementById('logoutLink').style.display = 'block';
-        }
 
-        // 聊天功能
-        document.getElementById('openChat').addEventListener('click', function() {
-    document.getElementById('chatContainer').classList.add('active');
-    document.getElementById('openChat').style.display = 'none'; // 隐藏按钮
-});
+            // ============== 粒子系统改造配置 ==============
+            if(typeof particlesJS !== 'undefined') {
+                particlesJS("particles-js", {
+                    "particles": {
+                        "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
+                        "color": { "value": "#cbd5e1" }, 
+                        "shape": { "type": "circle" },
+                        "opacity": { "value": 0.5, "random": false },
+                        "size": { "value": 2, "random": true },
+                        "line_linked": { "enable": true, "distance": 160, "color": "#cbd5e1", "opacity": 0.35, "width": 1 },
+                        "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                        "modes": { "grab": { "distance": 180, "line_linked": { "opacity": 0.6 } }, "push": { "particles_nb": 3 } }
+                    },
+                    "retina_detect": true
+                });
+            }
 
-document.querySelector('.chat-header button').addEventListener('click', function() {
-    document.getElementById('chatContainer').classList.remove('active');
-    document.getElementById('openChat').style.display = 'flex'; // 显示按钮
-});
+            // 采购部平滑跳转
+            const shopLink = document.getElementById('shopLink');
+            if (shopLink) {
+                shopLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.body.classList.add('fade-out');
+                    setTimeout(() => { window.location.href = '/shop.html'; }, 400);
+                });
+            }
 
-        document.getElementById('chatInput').addEventListener('keypress', function(e) {
-            if(e.key === 'Enter') {
-                document.getElementById('sendButton').click();
+            // 登录状态校验
+            const token = sessionStorage.getItem('token');
+            if(token) {
+                if(document.getElementById('registerLink')) document.getElementById('registerLink').style.display = 'none';
+                if(document.getElementById('loginLink')) document.getElementById('loginLink').style.display = 'none';
+                if(document.getElementById('logoutLink')) document.getElementById('logoutLink').style.display = 'block';
+            }
+
+            // 全息 PRTS 窗口逻辑
+            const openChatBtn = document.getElementById('openChat');
+            const chatContainer = document.getElementById('chatContainer');
+            const closeChatBtn = document.querySelector('.chat-header button');
+
+            if(openChatBtn && chatContainer) {
+                openChatBtn.addEventListener('click', function() {
+                    chatContainer.classList.add('active');
+                    openChatBtn.style.display = 'none';
+                });
+            }
+
+            if(closeChatBtn && openChatBtn && chatContainer) {
+                closeChatBtn.addEventListener('click', function() {
+                    chatContainer.classList.remove('active');
+                    openChatBtn.style.display = 'flex';
+                });
+            }
+
+            // 模拟发送指令
+            const sendButton = document.getElementById('sendButton');
+            const chatInput = document.getElementById('chatInput');
+            if(sendButton && chatInput) {
+                sendButton.addEventListener('click', function() {
+                    const txt = chatInput.value.trim();
+                    if(!txt) return;
+                    addChatMessage('user', txt);
+                    chatInput.value = '';
+                    setTimeout(() => {
+                        addChatMessage('ai', '指令已接收。白昼终端数据同步完成。');
+                    }, 800);
+                });
+
+                chatInput.addEventListener('keypress', function(e) {
+                    if(e.key === 'Enter') sendButton.click();
+                });
             }
         });
 
         function addChatMessage(sender, message) {
             const chatHistory = document.getElementById('chatHistory');
+            if(!chatHistory) return;
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('chat-message');
-            if(sender === 'user') {
-                messageDiv.classList.add('user-message');
-            } else {
-                messageDiv.classList.add('ai-message');
+            
+            const bubble = document.createElement('div');
+            bubble.classList.add('chat-bubble');
+            if(sender === 'ai') {
+                bubble.classList.add('ai');
+                const av = document.createElement('div');
+                av.classList.add('chat-avatar');
+                av.style.backgroundImage = "url('./image/miyabi.png')";
+                messageDiv.appendChild(av);
             }
-            messageDiv.textContent = message;
+            bubble.textContent = message;
+            messageDiv.appendChild(bubble);
             chatHistory.appendChild(messageDiv);
             chatHistory.scrollTop = chatHistory.scrollHeight;
         }
 
-        // 平滑滚动
+        // 平滑锚点滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
             });
         });
-
-        
     </script>
 </body>
 </html>

@@ -79,7 +79,7 @@ const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY})
 
 app.post('/message', async (req, res) => {
     const response = await openai.chat.completions.create({
-        model: 'chatgpt-4o-latest',
+        model: 'gpt-4o',
         messages: [
             {
                 role: 'user',

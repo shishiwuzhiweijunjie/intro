@@ -3,506 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注册 - 北极星系统</title>
+    <title>[IDENTITY REGISTRATION] | 北极星系统注册</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #3f72af;
-            --secondary-color: #4a6fa5;
-            --hover-color: #2b579a;
-            --success-color: #28a745;
-            --error-color: #dc3545;
+            --accent-yellow: #ffc400;      
+            --tech-blue: #00b0ff;          
+            --text-dark: #121214;          
+            --text-muted: #475569;         
+            --border-color: rgba(209, 213, 219, 0.5);       
+            --error-color: #e74c3c;        
+            --success-color: #2ecc71;      
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .register-container {
-            max-width: 450px;
-            margin: 80px auto;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.97);
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
-            transform: perspective(800px) rotateX(10deg);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 100;
-        }
-
-        .register-container:hover {
-            transform: perspective(800px) rotateX(0deg);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes containerEntrance {
-            from {
-                opacity: 0;
-                transform: perspective(800px) rotateX(20deg) translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: perspective(800px) rotateX(10deg);
-            }
-        }
-
-        .register-container {
-            animation: containerEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 40px;
-            opacity: 0;
-            transform: scale(0.7);
-        }
-
-        .logo img {
-            max-width: 200px;
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
-            animation: logoFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .logo {
-            animation: logoPop 0.6s 0.3s ease-out forwards;
-        }
-
-        @keyframes logoPop {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        h2 {
-            color: var(--primary-color);
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 3px;
-        }
-
-        .form-group {
-            margin-bottom: 28px;
-            position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .form-group:nth-child(1) {
-            animation: slideUpFadeIn 0.6s ease-out forwards 0.3s;
-        }
-
-        .form-group:nth-child(2) {
-            animation: slideUpFadeIn 0.6s ease-out forwards 0.5s;
-        }
-
-        .form-group:nth-child(3) {
-            animation: slideUpFadeIn 0.6s ease-out forwards 0.7s;
-        }
-
-        @keyframes slideUpFadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .form-control {
-            border-radius: 14px;
-            padding: 16px 22px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid #e0e0e0;
-            font-size: 15px;
-            height: auto;
-            background-color: white;
-            color: #333;
-            opacity: 1;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 15px rgba(63, 114, 175, 0.25);
-            animation: inputPulse 1s ease-out;
-        }
-
-        @keyframes inputPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        .form-control:valid {
-            border-color: var(--success-color);
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.25);
-        }
-
-        .form-control:invalid {
-            border-color: var(--error-color);
-            box-shadow: 0 0 10px rgba(220, 53, 69, 0.25);
-        }
-
-        .form-label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-
-        .form-text {
-            font-size: 13px;
-            margin-top: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border: none;
-            border-radius: 14px;
-            padding: 16px 30px;
-            font-size: 17px;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            transition: all 0.3s ease;
-            transform: scale(0.97);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: skewX(-45deg);
-            transition: all 0.5s;
-        }
-
-        .btn-primary:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(63, 114, 175, 0.4);
-        }
-
-        .btn-primary:hover::before {
-            left: 200%;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .password-strength {
-            height: 6px;
-            background: #eee;
-            border-radius: 3px;
-            margin-top: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .password-strength::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: calc(1% * var(--strength));
-            background: var(--primary-color);
-            transition: all 0.4s ease;
-        }
-
-        .password-strength::before {
-            content: attr(data-text);
-            position: absolute;
-            top: -22px;
-            left: 0;
-            font-size: 12px;
-            color: #666;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-        }
-
-        .password-strength[data-text] {
-            cursor: help;
-        }
-
-        .password-strength:hover::before {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .form-check {
-            margin-top: 15px;
-        }
-
-        .nav-link {
-            color: var(--primary-color);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            right: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            transform: translateX(5px);
-            color: var(--hover-color);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-            left: 0;
-            right: auto;
-        }
-
-        .particles-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-
-        .success-animation {
-            animation: successShake 0.5s ease-in-out;
-        }
-
-        @keyframes successShake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(10px); }
-            40%, 80% { transform: translateX(-10px); }
-        }
-
-        .error-animation {
-            animation: errorShake 0.5s ease-in-out;
-        }
-
-        @keyframes errorShake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
-        }
-
-        .tilt-animation {
-            animation: tilt 1s ease-in-out;
-        }
-
-        @keyframes tilt {
-            0%, 100% { transform: rotate(0); }
-            30% { transform: rotate(-5deg); }
-            70% { transform: rotate(5deg); }
-        }
-
-        .ripple-effect {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ripple-effect::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: scale(0);
-            transition: transform 0.5s ease-out;
-        }
-
-        .ripple-effect:hover::after {
-            transform: scale(2);
-        }
-
-        .form-control:focus + .form-text {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* 新增的弹窗样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
+            font-family: 'Consolas', 'Segoe UI', system-ui, sans-serif;
+            overflow: hidden; 
+            display: flex;
             align-items: center;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            transform: scale(0.8);
-            opacity: 0;
-            animation: modalFadeIn 0.3s ease-out forwards;
-        }
-
-        @keyframes modalFadeIn {
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            color: var(--primary-color);
+            justify-content: center;
             margin: 0;
         }
 
-        .modal-body {
-            margin-bottom: 25px;
+        * { border-radius: 0 !important; }
+
+        /* ================= 沉浸式动态壁纸系统 ================= */
+        .wallpaper-bg {
+            position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
+            /* 建议注册页和登录页使用不一样的插画，这里调用了 tribbie.jpg */
+            background: url('./image/tribbie.jpg') center/cover no-repeat;
+            z-index: -5;
+            animation: breathBg 25s infinite alternate ease-in-out;
         }
 
-        .modal-text {
-            font-size: 16px;
-            color: #555;
-            line-height: 1.5;
+        @keyframes breathBg {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.08) translate(-1%, -1%); }
         }
 
-        .modal-footer {
-            display: flex;
-            justify-content: center;
+        .wallpaper-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(244, 246, 249, 0.75) 0%, rgba(244, 246, 249, 0.9) 100%);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: -4;
         }
 
-        .btn-modal {
-            padding: 12px 25px;
-            border-radius: 12px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .grid-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px; z-index: -3; pointer-events: none;
         }
 
-        .btn-modal-primary {
-            background: var(--primary-color);
-            color: white;
-            border: none;
+        /* ================= 背景微排版装饰 ================= */
+        .hg-bg-watermark { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2; overflow: hidden; }
+        .watermark-text { position: absolute; top: 15%; left: -5%; font-size: 15rem; font-weight: 900; color: rgba(0, 0, 0, 0.03); transform: rotate(90deg); white-space: nowrap; font-family: 'Arial Black', sans-serif; }
+
+        .crosshair { position: fixed; width: 24px; height: 24px; pointer-events: none; z-index: -1; }
+        .crosshair::before, .crosshair::after { content: ''; position: absolute; background: rgba(18, 18, 20, 0.3); }
+        .crosshair::before { width: 100%; height: 1px; top: 50%; left: 0; }
+        .crosshair::after { width: 1px; height: 100%; top: 0; left: 50%; }
+        .top-left { top: 2%; left: 2%; } .top-right { top: 2%; right: 2%; }
+        .bottom-left { bottom: 2%; left: 2%; } .bottom-right { bottom: 2%; right: 2%; }
+
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;}
+
+        /* ================= 实时动态 HUD 小组件 ================= */
+        .hud-widget { position: fixed; top: 40px; right: 50px; z-index: 0; text-align: right; pointer-events: none; }
+        .hud-time { font-family: monospace; font-size: 1.2rem; font-weight: 900; letter-spacing: 2px; color: var(--text-dark); }
+        .hud-status { font-family: monospace; font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; letter-spacing: 1px; }
+
+        .tactical-console {
+            position: fixed; bottom: 40px; left: 50px; z-index: 0; width: 350px; height: 160px; overflow: hidden;
+            border-left: 3px solid var(--text-dark); padding-left: 15px; pointer-events: none;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+        }
+        .console-header { font-family: monospace; font-size: 0.65rem; font-weight: 900; color: var(--text-dark); margin-bottom: 10px; letter-spacing: 2px; }
+        .console-line { font-family: monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; animation: slideInLeft 0.3s ease-out forwards; }
+        .console-line .highlight { color: var(--text-dark); font-weight: bold; }
+        .console-line .warn { color: var(--error-color); font-weight: bold; }
+
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-15px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* ================= 注册面板 (毛玻璃重构) ================= */
+        .register-container {
+            width: 100%; max-width: 480px; padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            animation: containerEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            z-index: 10;
         }
 
-        .btn-modal-primary:hover {
-            background: var(--hover-color);
+        .register-container::before {
+            content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px;
+            background: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(0, 0, 0, 0.05) 3px, rgba(0, 0, 0, 0.05) 6px);
+            pointer-events: none;
+        }
+        
+        .register-container::after {
+            content: 'SYS.REG_PROTOCOL_V2.0'; position: absolute;
+            bottom: 10px; right: 15px; font-size: 0.6rem; color: var(--text-muted); font-family: monospace;
         }
 
-        .btn-modal-outline {
-            background: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
+        @keyframes containerEntrance { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        .logo { text-align: center; margin-bottom: 30px; }
+        .logo img {
+            max-width: 120px; border: 2px solid var(--text-dark); padding: 5px;
+            clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
+            filter: grayscale(100%) contrast(1.2); transition: filter 0.3s;
+            background: rgba(255,255,255,0.8);
+        }
+        .logo img:hover { filter: grayscale(0%) contrast(1.1); }
+
+        .hg-title {
+            font-size: 1.6rem; font-weight: 900; color: var(--text-dark);
+            letter-spacing: 3px; text-transform: uppercase;
+            border-left: 6px solid var(--accent-yellow); padding-left: 15px;
+            margin-bottom: 40px; text-align: left;
         }
 
-        .btn-modal-outline:hover {
-            background: var(--primary-color);
-            color: white;
+        /* ================= 表单元素 ================= */
+        .form-group { margin-bottom: 30px; position: relative; }
+        .form-label { font-family: monospace; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px; color: var(--text-dark); text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .form-control { 
+            background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(0,0,0,0.1); 
+            padding: 14px 18px; font-size: 0.9rem; color: var(--text-dark); 
+            transition: all 0.2s ease; box-shadow: none !important; 
         }
+        .form-control:focus { border-color: var(--text-dark); background: rgba(255, 255, 255, 0.9); border-left: 4px solid var(--tech-blue); }
+        .form-text { font-size: 0.7rem; font-family: monospace; color: var(--text-muted); margin-top: 6px; letter-spacing: 0.5px; }
 
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 20px;
-            cursor: pointer;
-            color: #999;
-        }
+        .form-check { margin-top: 15px; display: flex; align-items: center; }
+        .form-check-input { background-color: rgba(255,255,255,0.5); border: 1px solid var(--border-color); width: 16px; height: 16px; margin-top: 0; cursor: pointer; }
+        .form-check-input:checked { background-color: var(--text-dark); border-color: var(--text-dark); }
+        .form-check-label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-left: 8px; cursor: pointer; }
 
-        .modal-close:hover {
-            color: #555;
+        .password-strength { height: 4px; background: rgba(0,0,0,0.1); margin-top: 8px; position: relative; overflow: hidden; }
+        .password-strength::after { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: calc(1% * var(--strength)); background: var(--text-dark); transition: all 0.4s ease; }
+        .password-strength-text { font-size: 0.65rem; font-family: monospace; font-weight: bold; color: var(--text-dark); text-align: right; margin-top: 4px; display: block; }
+
+        .btn-primary {
+            background: var(--text-dark); color: #fff; border: none;
+            padding: 16px; font-size: 1rem; font-weight: 900; letter-spacing: 4px;
+            text-transform: uppercase; transition: all 0.2s ease; cursor: pointer;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            margin-top: 10px; width: 100%;
         }
+        .btn-primary:hover { background: var(--accent-yellow); color: var(--text-dark); }
+        .btn-primary:active { transform: scale(0.98); }
+
+        .auth-links { margin-top: 30px; text-align: center; font-size: 0.85rem; font-weight: bold; }
+        .nav-link { color: var(--text-muted); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s; border-bottom: 1px solid transparent; display: inline-block; padding-bottom: 2px; margin: 0 5px; }
+        .nav-link:hover { color: var(--text-dark); border-bottom-color: var(--text-dark); }
+
+        .error-animation { animation: errorShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+        @keyframes errorShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); border-color: var(--error-color); } 75% { transform: translateX(8px); border-color: var(--error-color); } }
+
+        /* ================= 权限许可弹窗 (Modal) ================= */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(18, 18, 20, 0.8); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: #ffffff; padding: 0; border: 1px solid var(--text-dark); max-width: 420px; width: 90%; clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); animation: modalFadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes modalFadeIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-header { background: var(--text-dark); color: var(--accent-yellow); padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1rem; font-weight: 900; letter-spacing: 2px; margin: 0; font-family: monospace; }
+        .modal-close { color: #fff; font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
+        .modal-close:hover { color: var(--error-color); }
+        .modal-body { padding: 30px 25px; text-align: left; }
+        .modal-text { font-size: 1rem; color: var(--text-dark); font-weight: bold; margin: 0; }
+        .modal-subtext { font-size: 0.8rem; color: var(--text-muted); font-family: monospace; margin-top: 10px; }
+        .modal-footer { padding: 0 25px 25px; display: flex; gap: 15px; }
+        .btn-modal { flex: 1; padding: 12px; font-size: 0.85rem; font-weight: 900; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; border: none; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+        .btn-modal-primary { background: var(--text-dark); color: #fff; }
+        .btn-modal-primary:hover { background: var(--accent-yellow); color: var(--text-dark); }
+        .btn-modal-outline { background: #f1f5f9; color: var(--text-dark); border: 1px solid rgba(0,0,0,0.1); }
+        .btn-modal-outline:hover { background: rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
-    <div class="particles-bg" id="particles-js"></div>
+    <div class="wallpaper-bg"></div>
+    <div class="wallpaper-overlay"></div>
+    <div class="grid-overlay"></div>
     
-    <div class="register-container">
-        <div class="logo">
-            <img src="./image/castorice.jpg" alt="北极星系统" class="animate__animated animate__fadeIn">
-        </div>
-        <h2 class="text-center">加入北极星</h2>
-        <form id="registerForm">
-            <div class="form-group">
-                <label for="username" class="form-label">用户名</label>
-                <input type="text" id="username" class="form-control" required placeholder="请输入用户名" pattern="[A-Za-z0-9_]{4,16}">
-                <div class="form-text"><i class="fas fa-user-edit me-2"></i>4-16位字母/数字/下划线</div>
-            </div>
-            <div class="form-group">
-                <label for="email" class="form-label">邮箱</label>
-                <input type="email" id="email" class="form-control" required placeholder="example@domain.com">
-                <div class="form-text"><i class="fas fa-envelope me-2"></i>请输入有效邮箱地址</div>
-            </div>
-            <div class="form-group">
-                <label for="password" class="form-label">密码</label>
-                <input type="password" id="password" class="form-control" required placeholder="至少8位字符" minlength="8">
-                <div class="password-strength" style="--strength: 0" data-text="密码强度: 弱"></div>
-                <div class="form-text"><i class="fas fa-shield-alt me-2"></i>建议使用大小写字母+数字+特殊字符组合</div>
-            </div>
-            <div class="form-check mb-4">
-                <input type="checkbox" class="form-check-input" id="terms" required>
-                <label class="form-check-label" for="terms">我已阅读并同意<a href="#" class="nav-link ms-1">服务条款</a>和<a href="#" class="nav-link ms-1">隐私政策</a></label>
-            </div>
-            <button type="submit" class="btn btn-primary w-100 ripple-effect">立即注册</button>
-        </form>
-        <p class="text-center mt-4">
-            已有账号？<a href="/login" class="nav-link">立即登录 <i class="fas fa-arrow-right ms-1"></i></a>
-        </p>
+    <div class="particles-bg" id="particles-js"></div>
+    <div class="hg-bg-watermark"><div class="watermark-text">POLARIS // SYS.REG</div></div>
+    
+    <div class="crosshair top-left"></div><div class="crosshair top-right"></div>
+    <div class="crosshair bottom-left"></div><div class="crosshair bottom-right"></div>
+
+    <div class="hud-widget">
+        <div class="hud-time" id="hudTime">[ 00:00:00.000 ]</div>
+        <div class="hud-status">NODE: PRTS-MAIN-SERVER</div>
+        <div class="hud-status" id="hudPing">LATENCY: -- MS</div>
     </div>
 
-    <!-- 新增的弹窗结构 -->
+    <div class="tactical-console">
+        <div class="console-header">SYSTEM.LOG_MONITOR // REALTIME</div>
+        <div id="consoleOutput"></div>
+    </div>
+
+    <div class="register-container">
+        <div class="logo">
+            <img src="./image/castorice.jpg" alt="北极星系统">
+        </div>
+        
+        <h2 class="hg-title">建立神经连接 // JOIN</h2>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username" class="form-label">IDENTIFIER / 识别码注册</label>
+                <input type="text" id="username" class="form-control" required placeholder="请输入您的用户名" pattern="[A-Za-z0-9_]{4,16}">
+                <div class="form-text">>> 4-16位字母/数字/下划线，作为节点唯一标识</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">COMM_LINK / 通讯邮箱</label>
+                <input type="email" id="email" class="form-control" required placeholder="example@domain.com">
+                <div class="form-text">>> 请提供安全有效的通讯地址</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">ACCESS KEY / 访问密钥</label>
+                <input type="password" id="password" class="form-control" required placeholder="至少8位字符" minlength="8">
+                <div class="password-strength" style="--strength: 0"></div>
+                <span class="password-strength-text" id="pwdStrengthText">SECURITY LEVEL: WEAK</span>
+                <div class="form-text mt-1">>> 建议使用大/小写字母、数字及特殊字符的混合编制</div>
+            </div>
+            
+            <div class="form-check mb-4">
+                <input type="checkbox" class="form-check-input" id="terms" required>
+                <label class="form-check-label" for="terms">我已阅读并签署 <a href="#" class="nav-link">战术条款</a> 及 <a href="#" class="nav-link">保密协议</a></label>
+            </div>
+            
+            <button type="submit" class="btn-primary w-100">INITIALIZE // 初始化注册</button>
+        </form>
+        
+        <div class="auth-links">
+            <span style="color: var(--text-muted);">已有节点权限？</span>
+            <a href="/login" class="nav-link">立即登录接入 (LOGIN)</a>
+        </div>
+    </div>
+
     <div class="modal" id="successModal">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
             <div class="modal-header">
-                <h3 class="modal-title">注册成功</h3>
+                <h3 class="modal-title">SYS.PROMPT // 注册下达</h3>
+                <span class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></span>
             </div>
             <div class="modal-body">
-                <p class="modal-text">恭喜您！您的账号已成功注册。</p>
+                <p class="modal-text"><i class="fas fa-check-circle me-2" style="color: var(--success-color);"></i>权限生成完毕。欢迎加入北极星系统。</p>
+                <p class="modal-subtext">>> 您的节点数据已记录，现在可以尝试连接控制台。</p>
             </div>
             <div class="modal-footer">
-                <button class="btn-modal btn-modal-primary" onclick="navigateToLogin()">立即登录</button>
-                <button class="btn-modal btn-modal-outline" onclick="closeModal()">返回首页</button>
+                <button class="btn-modal btn-modal-primary" onclick="navigateToLogin()">PROCEED // 登录</button>
+                <button class="btn-modal btn-modal-outline" onclick="closeModal()">STANDBY // 稍后</button>
             </div>
         </div>
     </div>
@@ -511,23 +271,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./particles.min.js"></script>
     <script>
-        // 密码强度检测
         document.getElementById('password').addEventListener('input', function(e) {
             const strength = Math.min(Math.floor(this.value.length / 8 * 100), 100);
             const strengthBar = this.nextElementSibling;
+            const strengthText = document.getElementById('pwdStrengthText');
             
             strengthBar.style.setProperty('--strength', strength);
             
             if (strength < 30) {
-                strengthBar.setAttribute('data-text', '密码强度: 弱');
+                strengthText.innerText = "SECURITY LEVEL: WEAK";
+                strengthText.style.color = "var(--error-color)";
+                strengthBar.style.setProperty('--text-dark', "var(--error-color)");
             } else if (strength < 70) {
-                strengthBar.setAttribute('data-text', '密码强度: 中');
+                strengthText.innerText = "SECURITY LEVEL: NORMAL";
+                strengthText.style.color = "var(--accent-yellow)";
+                strengthBar.style.setProperty('--text-dark', "var(--accent-yellow)");
             } else {
-                strengthBar.setAttribute('data-text', '密码强度: 强');
+                strengthText.innerText = "SECURITY LEVEL: HIGH";
+                strengthText.style.color = "var(--success-color)";
+                strengthBar.style.setProperty('--text-dark', "var(--success-color)");
             }
         });
 
-        // 表单提交
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -545,158 +310,83 @@
                 const result = await response.json();
                 
                 if (response.ok) {
-                    // 显示自定义成功弹窗
                     document.getElementById('successModal').style.display = 'flex';
                 } else {
-                    throw new Error(result.error || '注册失败');
+                    throw new Error(result.error || '节点注册失败 (REGISTRATION FAILED)');
                 }
             } catch (err) {
-                // 错误动画
-                document.getElementById('password').classList.add('error-animation');
-                document.querySelector('.register-container').classList.add('error-animation');
-                setTimeout(() => {
-                    document.getElementById('password').classList.remove('error-animation');
-                    document.querySelector('.register-container').classList.remove('error-animation');
-                }, 1000);
+                const pwdInput = document.getElementById('password');
+                const container = document.querySelector('.register-container');
+                pwdInput.classList.add('error-animation');
+                container.classList.add('error-animation');
                 
-                alert(err.message);
+                const formText = pwdInput.nextElementSibling.nextElementSibling;
+                const originalText = formText.innerText;
+                formText.innerText = `>> [ERR] ${err.message}`;
+                formText.style.color = 'var(--error-color)';
+
+                setTimeout(() => {
+                    pwdInput.classList.remove('error-animation');
+                    container.classList.remove('error-animation');
+                    formText.innerText = originalText;
+                    formText.style.color = 'var(--text-muted)';
+                }, 2000);
             }
         });
 
-        // 输入框交互效果
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('focus', () => {
-                input.parentElement.style.transform = 'translateY(-5px)';
-            });
-            input.addEventListener('blur', () => {
-                input.parentElement.style.transform = 'translateY(0)';
-            });
-        });
-
-        // 粒子背景效果
         particlesJS("particles-js", {
             "particles": {
-                "number": {
-                    "value": 100,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#3f72af"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    },
-                    "polygon": {
-                        "nb_sides": 5
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#3f72af",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 3,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
+                "number": { "value": 40, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#000000" }, "shape": { "type": "circle" },
+                "opacity": { "value": 0.2, "random": false }, "size": { "value": 2, "random": true },
+                "line_linked": { "enable": true, "distance": 160, "color": "#000000", "opacity": 0.15, "width": 1 },
+                "move": { "enable": true, "speed": 1.2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
             },
             "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 200,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
+                "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                "modes": { "grab": { "distance": 160, "line_linked": { "opacity": 0.5 } }, "push": { "particles_nb": 2 } }
             },
             "retina_detect": true
         });
 
-        // 滚动时的动画效果
-        window.addEventListener('scroll', () => {
-            const scrollPosition = window.scrollY;
-            document.querySelector('.particles-bg').style.transform = `translateY(${scrollPosition * 0.5}px)`;
-        });
-
-        // 关闭弹窗函数
-        function closeModal() {
-            document.getElementById('successModal').style.display = 'none';
-            window.location.href = '/';
-        }
-
-        // 跳转到登录页面函数
+        function closeModal() { document.getElementById('successModal').style.display = 'none'; }
         function navigateToLogin() {
             document.getElementById('successModal').style.display = 'none';
-            window.location.href = '/login';
+            setTimeout(() => { window.location.href = '/login'; }, 200);
         }
+
+        // ================= 实时 HUD 与日志系统 =================
+        function updateHUD() {
+            const now = new Date();
+            const timeStr = now.toISOString().replace('T', ' ').substring(0, 23);
+            document.getElementById('hudTime').innerText = `[ ${timeStr} ]`;
+            if (Math.random() > 0.95) {
+                const ping = Math.floor(Math.random() * 30 + 10);
+                document.getElementById('hudPing').innerText = `LATENCY: ${ping} MS`;
+            }
+            requestAnimationFrame(updateHUD);
+        }
+        updateHUD();
+
+        const logMessages = [
+            "Establishing secure connection to POLARIS_CORE...", "Verifying node encryption protocol [RSA-4096]...",
+            "Decrypting incoming payload...", "Bypassing standard firewall limits...", "Syncing distributed database shards...",
+            "Authenticating handshake protocol...", "Loading interface modules...", "Running neural memory diagnostics...",
+            "Routing traffic through proxy nodes...", "Allocating virtual memory space...",
+            "[WARN] Unauthorized port scanning detected.", "[WARN] High latency on sector 7."
+        ];
+        const consoleEl = document.getElementById('consoleOutput');
+        function generateLog() {
+            if(consoleEl.children.length > 8) consoleEl.removeChild(consoleEl.firstChild);
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            const msg = logMessages[Math.floor(Math.random() * logMessages.length)];
+            const isWarn = msg.includes("[WARN]");
+            line.innerHTML = `<span style="color: ${isWarn ? 'var(--error-color)' : 'var(--tech-blue)'}">></span> <span class="${isWarn ? 'warn' : 'highlight'}">${msg}</span>`;
+            consoleEl.appendChild(line);
+            setTimeout(generateLog, Math.random() * 1500 + 500);
+        }
+        setTimeout(generateLog, 1000);
     </script>
 </body>
 </html>
