@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通讯中心 | PRTS</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f4f6f9;            
+            --bg-card: #ffffff;            
+            --accent-yellow: #ffc400;      
+            --tech-blue: #00b0ff;          
+            --text-dark: #121214;          
+            --text-muted: #6c727f;         
+            --border-color: #d1d5db;       
+        }
+
+        body, html {
+            height: 100%; margin: 0; padding: 0;
+            font-family: 'Consolas', 'Segoe UI', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-main);
+            overflow: hidden; /* 防止页面整体滚动，只允许内部局部滚动 */
+        }
+
+        * { border-radius: 0 !important; }
+
+        /* 顶部导航，保持统一视觉 */
+        .navbar {
+            background: #ffffff !important; border-bottom: 2px solid var(--text-dark);
+            height: 60px; z-index: 1050; box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+        }
+        .navbar-brand { font-size: 1.2rem; font-weight: 900; letter-spacing: 2px; color: var(--text-dark) !important; text-transform: uppercase; }
+        .navbar-brand span { color: var(--accent-yellow); background: var(--text-dark); padding: 2px 6px; margin-right: 4px; }
+        
+        /* 全屏通讯 UI */
+        .chat-layout {
+            display: flex;
+            height: calc(100vh - 60px); /* 减去 navbar 高度 */
+            width: 100%;
+        }
+
+        /* 左侧侧边栏：干员检索与频道列表 */
+        .chat-sidebar {
+            width: 300px;
+            background: #f8fafc;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-search-box { padding: 15px; border-bottom: 1px solid var(--border-color); position: relative; }
+        .chat-search-box input { 
+            width: 100%; border: 1px solid var(--border-color); padding: 8px 12px; 
+            font-size: 0.85rem; background: #fff; transition: all 0.3s;
+        }
+        .chat-search-box input:focus { border-color: var(--tech-blue); outline: none; box-shadow: 0 0 8px rgba(0, 176, 255, 0.2); }
+        
+        .search-results { 
+            position: absolute; top: 55px; left: 15px; right: 15px; background: #fff; 
+            border: 1px solid var(--tech-blue); box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            z-index: 10; max-height: 200px; overflow-y: auto; display: none; 
+        }
+        .search-item { padding: 10px 15px; font-size: 0.85rem; cursor: pointer; border-bottom: 1px solid #f0f0f2; font-weight: bold; }
+        .search-item:hover { background: rgba(0, 176, 255, 0.1); color: var(--tech-blue); }
+
+        .convo-list { flex-grow: 1; overflow-y: auto; }
+        .convo-item { 
+            padding: 15px; border-bottom: 1px solid #edf1f6; cursor: pointer; 
+            font-size: 0.9rem; font-weight: bold; transition: all 0.2s; 
+            display: flex; align-items: center;
+        }
+        .convo-item i { margin-right: 10px; color: var(--text-muted); }
+        .convo-item:hover, .convo-item.active { 
+            background: rgba(0, 176, 255, 0.05); border-left: 4px solid var(--tech-blue); 
+        }
+
+        /* 右侧主视窗：聊天区域 */
+        .chat-main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .chat-history {
+            flex-grow: 1; padding: 25px; overflow-y: auto; background: #ffffff;
+        }
+
+        .chat-message { display: flex; margin-bottom: 20px; }
+        .chat-avatar { 
+            width: 40px; height: 40px; border: 1px solid var(--tech-blue); 
+            background-size: cover; background-position: center; margin-right: 15px; flex-shrink: 0; 
+        }
+        .chat-bubble { 
+            background: #f1f5f9; border: 1px solid rgba(0,0,0,0.06); padding: 12px 18px; 
+            font-size: 0.85rem; max-width: 60%; color: var(--text-dark); line-height: 1.6; 
+        }
+        
+        .chat-message.self { flex-direction: row-reverse; }
+        .chat-message.self .chat-avatar { margin-right: 0; margin-left: 15px; }
+        .chat-message.self .chat-bubble { background: var(--tech-blue); color: #fff; border: none; }
+        
+        .chat-message.ai .chat-bubble { background: rgba(0, 176, 255, 0.03); border: 1px solid rgba(0, 176, 255, 0.2); color: #0070cc; }
+
+        .chat-input-group { 
+            display: flex; padding: 20px; border-top: 1px solid var(--border-color); background: #f8fafc; 
+        }
+        #chatInput { 
+            background: #ffffff; border: 1px solid #cbd5e1; color: var(--text-dark); 
+            font-size: 0.9rem; padding: 12px 15px; flex-grow: 1; 
+        }
+        #chatInput:focus { outline: none; border-color: var(--tech-blue); box-shadow: 0 0 8px rgba(0, 176, 255, 0.2); }
+        .chat-send-btn { 
+            background: var(--text-dark); color: #fff; border: none; padding: 0 30px; 
+            margin-left: 15px; font-weight: 900; cursor: pointer; letter-spacing: 2px; transition: 0.3s;
+        }
+        .chat-send-btn:hover { background: var(--tech-blue); }
+        .chat-send-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+        /* 未选择通讯频道时的遮罩 */
+        .empty-state {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; justify-content: center; align-items: center;
+            flex-direction: column; color: var(--text-muted); z-index: 5;
+        }
+        .empty-state i { font-size: 4rem; color: #e4e7ec; margin-bottom: 20px; }
+        .empty-state h3 { font-size: 1.2rem; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    
+    <!-- 极简导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <span>//</span> OPERATOR.某空 - 通讯中心
+            </a>
+            <div class="ml-auto">
+                <a href="/" class="btn btn-outline-dark btn-sm" style="font-weight:bold; letter-spacing: 1px;">
+                    <i class="fas fa-sign-out-alt"></i> 返回基站
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 核心布局 -->
+    <div class="chat-layout">
+        <!-- 侧边栏：检索与频道 -->
+        <div class="chat-sidebar">
+            <div class="chat-search-box">
+                <input type="text" id="userSearchInput" placeholder="输入代号检索全网干员...">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+            <div class="convo-list" id="convoList">
+                <div class="text-center text-muted mt-4" style="font-size:0.75rem; font-weight:bold;">// 正在接入网络...</div>
+            </div>
+        </div>
+        
+        <!-- 主界面：聊天窗口 -->
+        <div class="chat-main">
+            <!-- 未选择目标时的占位界面 -->
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-satellite-dish"></i>
+                <h3>PRTS 战术通讯链路待命中</h3>
+                <p style="font-size: 0.85rem; margin-top: 10px;">请在左侧检索干员并建立点对点连接</p>
+            </div>
+
+            <!-- 对话历史 -->
+            <div class="chat-history" id="chatHistory"></div>
+            
+            <!-- 指令输入 -->
+            <div class="chat-input-group">
+                <input type="text" id="chatInput" placeholder="输入加密战术指令..." disabled>
+                <button class="chat-send-btn" id="sendButton" disabled>发送 (ENTER)</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- 引入 Socket.io 客户端 -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 请确保用户登录后将真实ID存在了 sessionStorage 里
+            const currentUserId = sessionStorage.getItem('userId'); 
+            
+            if(!currentUserId) {
+                alert("未检测到有效身份令牌，请先登录！");
+                window.location.href = '/login';
+                return;
+            }
+
+            // ================= Socket.io 引擎连接 =================
+            const socket = io(); 
+            let currentConversationId = null;
+
+            socket.on('receive_message', (message) => {
+                if (message.conversationId === currentConversationId) {
+                    renderMessage(message);
+                } else {
+                    console.log(`[PRTS_ALERT] 后台接收到来自频道 ${message.conversationId} 的新指令`);
+                    // 可选：在这里加上提示音效或给左侧列表的频道加上红点提示
+                }
+            });
+
+            // ================= DOM 元素缓存 =================
+            const userSearchInput = document.getElementById('userSearchInput');
+            const searchResults = document.getElementById('searchResults');
+            const chatHistory = document.getElementById('chatHistory');
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const emptyState = document.getElementById('emptyState');
+            const convoList = document.getElementById('convoList');
+
+            // ================= 页面初始化：自动拉取历史频道 =================
+            function loadConversations() {
+                fetch(`/api/chat/conversations/${currentUserId}`)
+                    .then(res => res.json())
+                    .then(convos => {
+                        if (!Array.isArray(convos) || convos.length === 0) {
+                            convoList.innerHTML = '<div class="text-center text-muted mt-4" style="font-size:0.75rem; font-weight:bold;">// 当前无可用频道</div>';
+                            return;
+                        }
+                        
+                        convoList.innerHTML = ''; // 清空占位符
+                        
+                        convos.forEach(convo => {
+                            // 找出这个对话里“不是我自己”的那个用户（即聊天对象）
+                            const targetUser = convo.users.find(u => u.id !== parseInt(currentUserId, 10));
+                            const targetName = targetUser ? targetUser.username : '未知终端';
+
+                            const div = document.createElement('div');
+                            div.className = 'convo-item';
+                            // 如果当前频道已经被选中，保持高亮
+                            if(convo.id === currentConversationId) div.classList.add('active');
+                            div.innerHTML = `<i class="fas fa-satellite-dish"></i> ${targetName}`;
+                            
+                            // 点击左侧列表，直接切换到该频道
+                            div.onclick = () => {
+                                // 样式高亮切换
+                                document.querySelectorAll('.convo-item').forEach(el => el.classList.remove('active'));
+                                div.classList.add('active');
+
+                                // 切换核心逻辑
+                                currentConversationId = convo.id;
+                                socket.emit('join_channel', currentConversationId);
+                                
+                                emptyState.style.display = 'none';
+                                chatInput.disabled = false;
+                                sendButton.disabled = false;
+                                chatInput.focus();
+                                
+                                chatHistory.innerHTML = `<div class="text-center text-muted mb-4" style="font-size:0.8rem; font-weight:bold;">// 已连接至 [ ${targetName} ] 的加密链路 //</div>`;
+                                
+                                loadMessages(currentConversationId);
+                            };
+                            
+                            convoList.appendChild(div);
+                        });
+                    }).catch(err => console.error("加载频道列表失败", err));
+            }
+
+            // 开机自动执行拉取
+            loadConversations();
+
+            // ================= 检索干员防抖处理 =================
+            let searchTimeout;
+            userSearchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value.trim();
+                
+                if (!query) { 
+                    searchResults.style.display = 'none'; 
+                    return; 
+                }
+                
+                searchTimeout = setTimeout(() => {
+                    fetch(`/api/chat/users?query=${query}`)
+                        .then(res => res.json())
+                        .then(users => {
+                            searchResults.innerHTML = '';
+
+                            if (!Array.isArray(users)) {
+                                searchResults.innerHTML = '<div class="search-item text-danger text-center">检索系统异常</div>';
+                                searchResults.style.display = 'block';
+                                return;
+                            }
+
+                            if (users.length === 0) {
+                                searchResults.innerHTML = '<div class="search-item text-muted text-center">未检索到匹配的干员</div>';
+                            } else {
+                                users.forEach(user => {
+                                    if(user.id === parseInt(currentUserId, 10)) return; // 屏蔽自己
+                                    const div = document.createElement('div');
+                                    div.className = 'search-item';
+                                    div.innerHTML = `<i class="fas fa-user-astronaut"></i> ${user.username || user.name}`;
+                                    div.onclick = () => startConversation(user.id, user.username || user.name);
+                                    searchResults.appendChild(div);
+                                });
+                            }
+                            searchResults.style.display = 'block';
+                        }).catch(e => console.error("检索失败", e));
+                }, 400);
+            });
+
+            // 点击空白处关闭搜索结果
+            document.addEventListener('click', (e) => {
+                if(e.target !== userSearchInput) searchResults.style.display = 'none';
+            });
+
+            // ================= 建立/切换通讯链路 =================
+            function startConversation(targetUserId, targetUserName) {
+                searchResults.style.display = 'none';
+                userSearchInput.value = '';
+
+                fetch('/api/chat/conversation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ currentUserId, targetUserId })
+                })
+                .then(res => res.json())
+                .then(convo => {
+                    currentConversationId = convo.id;
+                    
+                    socket.emit('join_channel', currentConversationId);
+                    
+                    emptyState.style.display = 'none';
+                    chatInput.disabled = false;
+                    sendButton.disabled = false;
+                    chatInput.focus();
+                    
+                    chatHistory.innerHTML = `<div class="text-center text-muted mb-4" style="font-size:0.8rem; font-weight:bold;">// 已建立与 [ ${targetUserName} ] 的点对点加密链路 //</div>`;
+                    
+                    loadMessages(currentConversationId);
+                    
+                    // 新建立聊天后，刷新左侧列表
+                    loadConversations(); 
+                });
+            }
+
+            // ================= 拉取历史情报 =================
+            function loadMessages(convoId) {
+                fetch(`/api/chat/messages/${convoId}`)
+                    .then(res => res.json())
+                    .then(messages => {
+                        if(Array.isArray(messages)) {
+                            messages.forEach(msg => renderMessage(msg));
+                        }
+                    });
+            }
+
+            // ================= 渲染气泡 =================
+            function renderMessage(msg) {
+                const isSelf = msg.senderId === parseInt(currentUserId, 10);
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `chat-message ${isSelf ? 'self' : 'ai'}`;
+                
+                // 头像占位，如果没有配置真实头像，默认使用 miyabi.png
+                const avatarUrl = './image/miyabi.png'; 
+                
+                msgDiv.innerHTML = `
+                    <div class="chat-avatar" style="background-image: url('${avatarUrl}')"></div>
+                    <div class="chat-bubble">
+                        ${msg.content}
+                    </div>
+                `;
+                chatHistory.appendChild(msgDiv);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+
+            // ================= 发送战术指令 =================
+            sendButton.addEventListener('click', () => {
+                const content = chatInput.value.trim();
+                if (!content || !currentConversationId) return;
+
+                socket.emit('send_message', {
+                    conversationId: currentConversationId,
+                    senderId: currentUserId,
+                    content: content
+                });
+
+                chatInput.value = '';
+            });
+
+            chatInput.addEventListener('keypress', (e) => {
+                if(e.key === 'Enter') sendButton.click();
+            });
+        });
+    </script>
+</body>
+</html>

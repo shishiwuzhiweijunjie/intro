@@ -6,23 +6,70 @@ const multer = require('multer');
 const { body, validationResult } = require('express-validator');
 const mysql = require('mysql2');
 const jwt = require('jsonwebtoken');
+const http = require('http');
 const path = require('path');
+const { Server } = require('socket.io');
 require('dotenv').config()
 const upload = multer({ storage: multer.memoryStorage() });
 const authController = require('./controllers/authController');
 const indexController = require('./controllers/indexController');
 const gachaController = require('./controllers/gachaController');
 const shopController = require('./controllers/shopController');
+const contactController = require('./controllers/contactController');
 const authMiddleware = require('./middleware/auth');
 const paymentController = require('./controllers/paymentController');
 const userModel = require('./models/userModel')
+const chatController = require('./controllers/chatController');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 const PORT = process.env.PORT || 3000
 
+
 const app = express();
+
+// 1. 用 http 模块包装 express app
+const server = http.createServer(app); 
+// 2. 将 Socket.io 挂载到 server 上
+const io = new Server(server, {
+    cors: { origin: "*" } // 允许跨域（生产环境建议限制域名）
+});
 
 app.post('/shop/webhook',  bodyParser.raw({ type: 'application/json' }), paymentController.handlePaymentSuccess);
 app.use(bodyParser.json());
+io.on('connection', (socket) => {
+    console.log(`[PRTS_SYS] 节点已接入: ${socket.id}`);
+
+    // 监听加入特定通讯频道的指令
+    socket.on('join_channel', (conversationId) => {
+        socket.join(conversationId);
+        console.log(`[PRTS_SYS] 节点 ${socket.id} 加入了频道: ${conversationId}`);
+    });
+
+    // 监听发送消息的指令
+    socket.on('send_message', async (data) => {
+        try {
+            // 1. 将情报持久化到数据库
+            const newMessage = await prisma.message.create({
+                data: {
+                    content: data.content,
+                    senderId: parseInt(data.senderId, 10), // <--- 【关键修改】强制转换为数字
+                    conversationId: data.conversationId
+                },
+                include: { sender: true } 
+            });
+
+            // 2. 将情报在当前频道内进行全息广播 (含发送者自己)
+            io.to(data.conversationId).emit('receive_message', newMessage);
+        } catch (error) {
+            console.error('[PRTS_ERR] 情报入库失败:', error);
+        }
+    });
+
+    socket.on('disconnect', () => {
+        console.log(`[PRTS_SYS] 节点已断开: ${socket.id}`);
+    });
+});
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -129,8 +176,11 @@ app.post('/shop/orders/:orderId/pay', authMiddleware, shopController.payOrder);
 app.get('/shop/orders', authMiddleware, shopController.getOrderHistory);
 
 app.post('/shop/orders/:orderId/create-payment-intent', authMiddleware, paymentController.createPaymentIntent);
-
-
-app.listen(PORT, () => {
-    console.log(`PORT listening to ${PORT}`);
-})
+app.post('/api/contact', contactController.sendContactEmail);
+app.get('/api/chat/users', chatController.searchUsers);
+app.post('/api/chat/conversation', chatController.getOrCreateConversation);
+app.get('/api/chat/messages/:conversationId', chatController.getMessages);
+app.get('/api/chat/conversations/:userId', chatController.getUserConversations);
+server.listen(PORT, () => {
+    console.log(`[SYSTEM] 终端基站已启动，监听端口: ${PORT}`);
+});

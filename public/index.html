@@ -137,28 +137,31 @@
         .hg-link { font-size: 0.8rem; color: var(--text-dark); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; text-decoration: none !important; transition: all 0.2s ease; display: inline-block; border-bottom: 1px solid var(--text-dark); }
         .hg-link:hover { color: var(--text-muted); border-bottom-color: var(--text-muted); padding-left: 5px; }
 
+        /* 表单与发信按钮特效 */
         .hg-form-control { background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-dark) !important; font-size: 0.85rem !important; padding: 12px 15px !important; margin-bottom: 20px; }
-        .hg-form-control:focus { border-color: var(--text-dark) !important; box-shadow: none !important; }
+        .hg-form-control:focus { border-color: var(--tech-blue) !important; background-color: #f8fafc !important; box-shadow: 0 0 12px rgba(0, 176, 255, 0.15) !important; transition: all 0.3s ease; }
 
         .hg-btn-submit { background: var(--text-dark) !important; color: #ffffff !important; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; border: none; padding: 14px 30px; width: 100%; cursor: pointer; transition: all 0.2s ease; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
         .hg-btn-submit:hover { background: var(--accent-yellow) !important; color: var(--text-dark) !important; letter-spacing: 4px; }
 
-        .chat-container { position: fixed; bottom: 100px; right: 40px; width: 380px; background: rgba(255, 255, 255, 0.95); border: 1px solid var(--tech-blue); box-shadow: 0 8px 30px rgba(0, 176, 255, 0.15); backdrop-filter: blur(20px); z-index: 1000; display: none; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); }
-        .chat-container.active { display: block; animation: fadeIn 0.4s ease forwards; }
-        .chat-header { background: rgba(0, 176, 255, 0.06); border-bottom: 1px solid rgba(0, 176, 255, 0.2); padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
-        .chat-header h5 { font-size: 0.85rem; font-weight: 900; color: var(--tech-blue); letter-spacing: 1px; margin: 0; }
-        .chat-history { height: 280px; overflow-y: auto; padding: 15px; background: #f8fafc; }
-        .chat-message { margin-bottom: 15px; display: flex; }
-        .chat-avatar { width: 32px; height: 32px; border: 1px solid var(--tech-blue); background-size: cover; margin-right: 10px; flex-shrink: 0; }
-        .chat-bubble { background: #ffffff; border: 1px solid rgba(0,0,0,0.06); padding: 8px 12px; font-size: 0.8rem; max-width: 80%; color: var(--text-dark); line-height: 1.5; box-shadow: 0 2px 6px rgba(0,0,0,0.01); }
-        .chat-bubble.ai { background: rgba(0, 176, 255, 0.03); border: 1px solid rgba(0, 176, 255, 0.2); color: #0070cc; }
-        .chat-input-group { display: flex; padding: 15px; border-top: 1px solid rgba(0, 176, 255, 0.1); background: #ffffff; }
-        #chatInput { background: #f1f5f9; border: 1px solid #cbd5e1; color: var(--text-dark); font-size: 0.8rem; padding: 8px 12px; flex-grow: 1; }
-        #chatInput:focus { outline: none; border-color: var(--tech-blue); box-shadow: 0 0 8px rgba(0, 176, 255, 0.2); }
-        .chat-send-btn { background: var(--tech-blue); color: #fff; border: none; padding: 0 15px; margin-left: 10px; font-weight: 900; cursor: pointer; }
+        .hg-btn-loading {
+            position: relative;
+            background: repeating-linear-gradient(-45deg, var(--text-dark), var(--text-dark) 15px, #2a2a35 15px, #2a2a35 30px) !important;
+            background-size: 42px 42px !important;
+            animation: digitalScan 1s linear infinite;
+            color: var(--accent-yellow) !important;
+            border: 1px solid var(--accent-yellow) !important;
+            letter-spacing: 4px;
+            pointer-events: none;
+            text-shadow: 0 0 5px rgba(255, 196, 0, 0.5);
+        }
+        @keyframes digitalScan { 0% { background-position: 0 0; } 100% { background-position: 42px 0; } }
+        .loading-text::after { content: ''; display: inline-block; width: 20px; text-align: left; animation: blinkDots 1.5s infinite steps(4, end); }
+        @keyframes blinkDots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } 100% { content: ''; } }
 
-        .open-chat-btn { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: #ffffff; color: var(--tech-blue); border: 1px solid var(--tech-blue); box-shadow: 0 4px 12px rgba(0, 176, 255, 0.15); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 1000; font-size: 1.2rem; transition: all 0.3s; }
-        .open-chat-btn:hover { background: var(--tech-blue); color: #fff; box-shadow: 0 0 20px rgba(0, 176, 255, 0.4); scale: 1.05; }
+        /* 右下角悬浮跳转按钮 (前往聊天室) */
+        .open-chat-btn { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: #ffffff; color: var(--tech-blue); border: 1px solid var(--tech-blue); box-shadow: 0 4px 12px rgba(0, 176, 255, 0.15); cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 1000; font-size: 1.2rem; transition: all 0.3s; text-decoration: none !important; }
+        .open-chat-btn:hover { background: var(--tech-blue); color: #fff; box-shadow: 0 0 20px rgba(0, 176, 255, 0.4); transform: scale(1.05); }
 
         footer { background: #ffffff; border-top: 1px solid var(--border-color); padding: 50px 0 30px 0; margin-top: 100px; font-size: 0.8rem; color: var(--text-muted); }
         .footer-title { font-size: 0.9rem; font-weight: 800; color: var(--text-dark); margin-bottom: 20px; letter-spacing: 1px; text-transform: uppercase; }
@@ -191,13 +194,12 @@
         <div class="ribbon-content">
             [SYS] JAVA_THREAD_POOL: STABLE • [DB] SYNC_NODE_01: ONLINE • [CICD] PIPELINE_BUILD: SUCCESS • 
             [SYS] JAVA_THREAD_POOL: STABLE • [DB] SYNC_NODE_01: ONLINE • [CICD] PIPELINE_BUILD: SUCCESS •
-            [SYS] JAVA_THREAD_POOL: STABLE • [DB] SYNC_NODE_01: ONLINE • [CICD] PIPELINE_BUILD: SUCCESS •
         </div>
     </div>
     
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <span>//</span> OPERATOR.某空
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -210,6 +212,7 @@
                     <li class="nav-item"><a class="nav-link" href="#projects">实战</a></li>
                     <li class="nav-item"><a class="nav-link" href="#blog">情报</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">连接</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/chat.html">通讯中心</a></li>
                     <li class="nav-item"><a class="nav-link" href="/gacha">寻访</a></li>
                     <li class="nav-item"><a class="nav-link" href="/shop.html" id="shopLink">采购部</a></li>
                     <li class="nav-item"><a class="nav-link" href="/game">终端</a></li>
@@ -267,215 +270,48 @@
             </div>
         </section>
 
-        <section id="skills" class="card hg-card reveal-item">
-            <div class="card-body p-4 p-md-5">
-                <h2 class="hg-title">战术评测 // TACTICAL STATS</h2>
-                <div class="row">
-                    <div class="col-md-6 pr-md-4">
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">Java & J2EE 核心架构能力</span>
-                                <span class="skill-rank rank-a">RANK: A</span>
-                            </div>
-                            <div class="hg-progress">
-                                <div class="hg-progress-bar" style="width: 95%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">工业级分布式数据库系统设计</span>
-                                <span class="skill-rank rank-a">RANK: A</span>
-                            </div>
-                            <div class="hg-progress">
-                                <div class="hg-progress-bar" style="width: 92%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-md-4">
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">CI/CD 高级自动化流水线交付</span>
-                                <span class="skill-rank rank-a">RANK: A</span>
-                            </div>
-                            <div class="hg-progress">
-                                <div class="hg-progress-bar" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-header">
-                                <span class="skill-name">核心数理与算法工程基础 (Core Math)</span>
-                                <span class="skill-rank rank-b">RANK: B</span>
-                            </div>
-                            <div class="hg-progress">
-                                <div class="hg-progress-bar secondary" style="width: 78%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- 其他 Section (Skills, Projects, Blog) 与你原先的一致，这里省略，请保留原本的代码 -->
 
-        <section id="projects" class="py-3">
-            <h2 class="hg-title mb-4 reveal-item">实战记录 // MISSION LOGS</h2>
-            <div class="row">
-                <div class="col-md-4 reveal-item">
-                    <div class="hg-project-card">
-                        <div class="project-image-wrapper">
-                            <div class="project-meta-code">MSN-001</div>
-                            <img src="./image/project1.jpg" alt="Mission 1">
-                        </div>
-                        <div class="hg-project-body">
-                            <h3 class="hg-project-title">高并发多级缓存电商平台</h3>
-                            <p class="hg-project-desc">构建承载大规模并发流量的线上采购与订单状态流转终端，引入严苛的交易鲁棒性验证校验。</p>
-                            <div class="hg-project-tech">// TECH: J2EE, Spring Boot, Redis</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 reveal-item">
-                    <div class="hg-project-card">
-                        <div class="project-image-wrapper">
-                            <div class="project-meta-code">MSN-002</div>
-                            <img src="./image/project2.jpg" alt="Mission 2">
-                        </div>
-                        <div class="hg-project-body">
-                            <h3 class="hg-project-title">多团队协同自动化任务调度系统</h3>
-                            <p class="hg-project-desc">打破团队隔离，实现透明的流水化任务指派与交付物动态审计追溯终端。</p>
-                            <div class="hg-project-tech">// TECH: Vue.js, Node.js, MySQL</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 reveal-item">
-                    <div class="hg-project-card">
-                        <div class="project-image-wrapper">
-                            <div class="project-meta-code">MSN-003</div>
-                            <img src="./image/project3.jpg" alt="Mission 3">
-                        </div>
-                        <div class="hg-project-body">
-                            <h3 class="hg-project-title">异构数据流全息可视化分析工具</h3>
-                            <p class="hg-project-desc">支持实时流数据接入与多维数据拓扑图谱绘制，输出高精度辅助决策情报。</p>
-                            <div class="hg-project-tech">// TECH: Python, D3.js, PostgreSQL</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="blog" class="py-4">
-            <h2 class="hg-title mb-4 reveal-item">情报分析 // INTELLIGENCE</h2>
-            <div class="row">
-                <div class="col-md-4 reveal-item">
-                    <div class="hg-project-card">
-                        <div class="hg-project-body">
-                            <h3 class="hg-project-title" style="font-size: 1rem;">大规模分布式数据库性能调优实践</h3>
-                            <p class="hg-project-desc" style="font-size: 0.8rem; height: 50px;">探讨如何通过精密索引拓扑与执行计划裁剪规避战术性延迟陷阱。</p>
-                            <a href="#" class="hg-link">解析报告 <i class="fas fa-chevron-right ml-1"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 reveal-item">
-                    <div class="hg-project-card">
-                        <div class="hg-project-body">
-                            <h3 class="hg-project-title" style="font-size: 1rem;">企业级自动化流水线 CI/CD 演进指南</h3>
-                            <p class="hg-project-desc" style="font-size: 0.8rem; height: 50px;">深度解析在异构集群中实施零感知平滑热部署的生产级别配置矩阵。</p>
-                            <a href="#" class="hg-link">解析报告 <i class="fas fa-chevron-right ml-1"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 reveal-item">
-                    <div class="hg-project-card">
-                        <div class="hg-project-body">
-                            <h3 class="hg-project-title" style="font-size: 1rem;">Java 虚拟机高并发底层的屏障开销</h3>
-                            <p class="hg-project-desc" style="font-size: 0.8rem; height: 50px;">深入多线程指令重排内部，测算内存屏障对指令级吞吐的真实扰动。</p>
-                            <a href="#" class="hg-link">解析报告 <i class="fas fa-chevron-right ml-1"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        <!-- 建立连接表单 -->
         <section id="contact" class="card hg-card reveal-item">
             <div class="card-body p-4 p-md-5">
                 <h2 class="hg-title">建立连接 // ESTABLISH CONNECTION</h2>
-                <div class="max-width: 600px; margin: 0 auto;">
-                    <form>
+                <div style="width: 100%;">
+                    <form id="contactForm">
                         <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" class="form-control hg-form-control" placeholder="IDENTIFIER / 发起方名称" required>
+                            <div class="col-md-4">
+                                <input type="text" name="name" class="form-control hg-form-control" placeholder="IDENTIFIER / 发起方名称" required>
                             </div>
-                            <div class="col-md-6">
-                                <input type="email" class="form-control hg-form-control" placeholder="COMM_CHANNEL / 节点邮箱" required>
+                            <div class="col-md-4">
+                                <input type="email" name="email" class="form-control hg-form-control" placeholder="COMM_CHANNEL / 节点邮箱" required>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="subject" class="form-control hg-form-control" placeholder="SUBJECT / 通讯主题" required>
                             </div>
                         </div>
-                        <input type="text" class="form-control hg-form-control" placeholder="SUBJECT / 通讯主题" required>
-                        <textarea class="form-control hg-form-control" rows="4" placeholder="MESSAGE_CONTENT / 传输加密明文" required></textarea>
-                        <button type="submit" class="hg-btn-submit">发送单向广播信号</button>
+                        <textarea name="message" class="form-control hg-form-control" rows="5" placeholder="MESSAGE_CONTENT / 传输加密明文" required></textarea>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" id="submitBtn" class="hg-btn-submit">
+                                    <i class="fas fa-satellite-dish mr-2"></i> 发送单向广播信号
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
         </section>
     </main>
 
-    <div class="chat-container" id="chatContainer">
-        <div class="chat-header">
-            <h5><i class="fas fa-project-diagram mr-2"></i>PRTS // LIGHT_TERMINAL_v2.0</h5>
-            <button class="btn p-0 text-secondary" style="background:none; border:none;">
-                <i class="fas fa-times-circle"></i>
-            </button>
-        </div>
-        <div class="chat-history" id="chatHistory">
-            <div class="chat-message">
-                <div class="chat-avatar" style="background-image: url('./image/miyabi.png')"></div>
-                <div class="chat-bubble ai">
-                    外部分发协议已加载。智能管理模块 PRTS (Light Mode) 运行稳定。随时可以进行指令调度。
-                </div>
-            </div>
-        </div>
-        <div class="chat-input-group">
-            <input type="text" id="chatInput" placeholder="下达战术指令...">
-            <button class="chat-send-btn" id="sendButton">EXEC</button>
-        </div>
-    </div>
-
-    <button class="open-chat-btn reveal-item" id="openChat">
-        <i class="fas fa-terminal"></i>
-    </button>
+    <!-- 独立的浮动按钮，跳转至独立的通讯页面 -->
+    <a href="/chat.html" class="open-chat-btn reveal-item" title="进入通讯中心">
+        <i class="fas fa-comments"></i>
+    </a>
 
     <footer class="reveal-item">
         <div class="container">
-            <div class="row">
-                <div class="col-md-3 mb-4">
-                    <h3 class="footer-title">索引架构</h3>
-                    <div class="footer-links">
-                        <a href="#about">干员基础背景</a>
-                        <a href="#skills">战术核心评级</a>
-                        <a href="#projects">实战演练记录</a>
-                        <a href="#blog">底层情报分析</a>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h3 class="footer-title">战术服务</h3>
-                    <div class="footer-links">
-                        <a href="#">分布式架构审计</a>
-                        <a href="#">自动化交付链部署</a>
-                        <a href="#">高性能后端架构</a>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h3 class="footer-title">加密链路</h3>
-                    <div class="footer-links">
-                        <a href="mailto:example@example.com">COM_LINK: example@example.com</a>
-                        <a href="tel:+123456789">SEC_VOICE: +123456789</a>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h3 class="footer-title">网际分发</h3>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-            </div>
+            <!-- 你的 footer 代码 -->
             <div class="copyright">
                 &copy; 2026 ENDFIELD STYLED RESUME TERMINAL. ALL RIGHTS RESERVED.
             </div>
@@ -488,62 +324,31 @@
     <script src="./particles.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            
-            // ================= 终端视界观察者：控制滚动与首屏延迟载入 =================
+            // ================= 终端视界观察者 =================
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        observer.unobserve(entry.target); // 触发一次后解除监听
+                        observer.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.1 });
 
-            // 为所有的 reveal-item 施加延迟，营造白光消散后的级联感
             document.querySelectorAll('.reveal-item').forEach((el, index) => {
-                // 首屏可见的元素，给予阶梯状较长的延迟，配合白光的消散(1.2s)
-                if (index < 4) {
-                    el.style.transitionDelay = `${0.6 + (index * 0.15)}s`;
-                } else {
-                    // 后续滚动拉出的元素，只需要一个极短的基础延迟
-                    el.style.transitionDelay = `0.1s`;
-                }
+                el.style.transitionDelay = index < 4 ? `${0.6 + (index * 0.15)}s` : `0.1s`;
                 observer.observe(el);
             });
 
-
-            // ============== 粒子系统改造配置 ==============
+            // ================= 粒子系统 =================
             if(typeof particlesJS !== 'undefined') {
                 particlesJS("particles-js", {
-                    "particles": {
-                        "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
-                        "color": { "value": "#cbd5e1" }, 
-                        "shape": { "type": "circle" },
-                        "opacity": { "value": 0.5, "random": false },
-                        "size": { "value": 2, "random": true },
-                        "line_linked": { "enable": true, "distance": 160, "color": "#cbd5e1", "opacity": 0.35, "width": 1 },
-                        "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
-                    },
-                    "interactivity": {
-                        "detect_on": "canvas",
-                        "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-                        "modes": { "grab": { "distance": 180, "line_linked": { "opacity": 0.6 } }, "push": { "particles_nb": 3 } }
-                    },
+                    "particles": { "number": { "value": 50, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#cbd5e1" }, "shape": { "type": "circle" }, "opacity": { "value": 0.5 }, "size": { "value": 2, "random": true }, "line_linked": { "enable": true, "distance": 160, "color": "#cbd5e1", "opacity": 0.35, "width": 1 }, "move": { "enable": true, "speed": 1.5 } },
+                    "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 180, "line_linked": { "opacity": 0.6 } }, "push": { "particles_nb": 3 } } },
                     "retina_detect": true
                 });
             }
 
-            // 采购部平滑跳转
-            const shopLink = document.getElementById('shopLink');
-            if (shopLink) {
-                shopLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.body.classList.add('fade-out');
-                    setTimeout(() => { window.location.href = '/shop.html'; }, 400);
-                });
-            }
-
-            // 登录状态校验
+            // ================= 登录校验 =================
             const token = sessionStorage.getItem('token');
             if(token) {
                 if(document.getElementById('registerLink')) document.getElementById('registerLink').style.display = 'none';
@@ -551,74 +356,67 @@
                 if(document.getElementById('logoutLink')) document.getElementById('logoutLink').style.display = 'block';
             }
 
-            // 全息 PRTS 窗口逻辑
-            const openChatBtn = document.getElementById('openChat');
-            const chatContainer = document.getElementById('chatContainer');
-            const closeChatBtn = document.querySelector('.chat-header button');
+            // ================= 原生邮件发送与动效 =================
+            const contactForm = document.getElementById('contactForm');
+            const submitBtn = document.getElementById('submitBtn');
 
-            if(openChatBtn && chatContainer) {
-                openChatBtn.addEventListener('click', function() {
-                    chatContainer.classList.add('active');
-                    openChatBtn.style.display = 'none';
+            if (contactForm && submitBtn) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); 
+                    const originalHTML = submitBtn.innerHTML;
+                    
+                    submitBtn.classList.add('hg-btn-loading');
+                    submitBtn.innerHTML = "<span class='loading-text'>信号传输中</span> // TRANSMITTING";
+
+                    const formData = new FormData(contactForm);
+                    const data = Object.fromEntries(formData.entries());
+
+                    fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => {
+                        submitBtn.classList.remove('hg-btn-loading');
+                        if (response.ok) {
+                            submitBtn.innerHTML = "<i class='fas fa-check-circle mr-2'></i> 信号已送达 // SIGNAL DELIVERED";
+                            submitBtn.style.background = "var(--tech-blue)"; 
+                            submitBtn.style.color = "#fff";
+                            submitBtn.style.borderColor = "var(--tech-blue)";
+                            contactForm.reset(); 
+                        } else {
+                            submitBtn.innerHTML = "<i class='fas fa-exclamation-triangle mr-2'></i> 传输被拦截 // TRANSMISSION BLOCKED";
+                            submitBtn.style.background = "#dc3545"; 
+                            submitBtn.style.borderColor = "#dc3545";
+                            submitBtn.style.color = "#fff";
+                        }
+                    })
+                    .catch(error => {
+                        submitBtn.classList.remove('hg-btn-loading');
+                        submitBtn.innerHTML = "<i class='fas fa-times-circle mr-2'></i> 链路故障 // LINK ERROR";
+                        submitBtn.style.background = "#dc3545";
+                        submitBtn.style.borderColor = "#dc3545";
+                        submitBtn.style.color = "#fff";
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            submitBtn.innerHTML = originalHTML;
+                            submitBtn.disabled = false;
+                            submitBtn.style.background = ""; 
+                            submitBtn.style.color = "";
+                            submitBtn.style.borderColor = "";
+                        }, 5000);
+                    });
                 });
             }
-
-            if(closeChatBtn && openChatBtn && chatContainer) {
-                closeChatBtn.addEventListener('click', function() {
-                    chatContainer.classList.remove('active');
-                    openChatBtn.style.display = 'flex';
-                });
-            }
-
-            // 模拟发送指令
-            const sendButton = document.getElementById('sendButton');
-            const chatInput = document.getElementById('chatInput');
-            if(sendButton && chatInput) {
-                sendButton.addEventListener('click', function() {
-                    const txt = chatInput.value.trim();
-                    if(!txt) return;
-                    addChatMessage('user', txt);
-                    chatInput.value = '';
-                    setTimeout(() => {
-                        addChatMessage('ai', '指令已接收。白昼终端数据同步完成。');
-                    }, 800);
-                });
-
-                chatInput.addEventListener('keypress', function(e) {
-                    if(e.key === 'Enter') sendButton.click();
-                });
-            }
-        });
-
-        function addChatMessage(sender, message) {
-            const chatHistory = document.getElementById('chatHistory');
-            if(!chatHistory) return;
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('chat-message');
             
-            const bubble = document.createElement('div');
-            bubble.classList.add('chat-bubble');
-            if(sender === 'ai') {
-                bubble.classList.add('ai');
-                const av = document.createElement('div');
-                av.classList.add('chat-avatar');
-                av.style.backgroundImage = "url('./image/miyabi.png')";
-                messageDiv.appendChild(av);
-            }
-            bubble.textContent = message;
-            messageDiv.appendChild(bubble);
-            chatHistory.appendChild(messageDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-
-        // 平滑锚点滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if(target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
+            // 平滑锚点滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if(target) target.scrollIntoView({ behavior: 'smooth' });
+                });
             });
         });
     </script>

@@ -49,6 +49,8 @@ model User {
 
   orders        Order[]
   UserCharacters UserCharacters[]
+  conversations Conversation[]
+  messages Message[]
 }
 
 model UserCharacters {
@@ -106,4 +108,32 @@ model Payment {
   status      String   @default("pending")
   createdAt   DateTime @default(now())
   order       Order    @relation(fields: [orderId], references: [id])
+}
+
+model Conversation {
+  id        String    @id @default(uuid())
+  isGroup   Boolean   @default(false) // 是否为群聊
+  name      String?   // 群聊名称 (私聊可为空)
+  
+  // 关联
+  users     User[]    // 参与该会话的用户
+  messages  Message[] // 该会话中的所有消息
+  
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  content        String       @db.Text
+  
+  // 关联发送者
+  senderId       Int          // <--- 【关键修改】这里必须改成 Int，和 User.id 保持一致
+  sender         User         @relation(fields: [senderId], references: [id])
+  
+  // 关联所属会话
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  
+  createdAt      DateTime     @default(now())
 }
