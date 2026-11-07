@@ -45,6 +45,10 @@ exports.sendContactEmail = async (req, res) => {
         res.status(200).json({ message: '信号已成功送达目标节点' });
     } catch (error) {
         console.error('邮件发送失败:', error);
-        res.status(500).json({ error: '链路故障，信号传输失败' });
+        // 【关键修改】把真实的 error.message 一并返回给前端
+        res.status(500).json({ 
+            error: '链路故障，信号传输失败',
+            detail: error.message || error.toString() // 暴露具体死因
+        });
     }
 };
