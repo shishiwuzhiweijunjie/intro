@@ -2,12 +2,17 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com', // 【关键修改】必须改成 gmail 的地址，而不是 qq
-    port: 465, 
-    secure: true,
+    host: 'smtp.gmail.com',
+    port: 587,         // 【关键修改 1】将 465 改为 587
+    secure: false,     // 【关键修改 2】587 端口这里必须设为 false（它会通过 STARTTLS 自动升级为安全连接）
+    requireTLS: true,  // 【新增】强制使用 TLS 加密
     auth: {
-        user: process.env.EMAIL_USER, // 你的 Gmail 邮箱地址
-        pass: process.env.EMAIL_PASS  // 你的 16 位 Gmail 应用专用密码
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    },
+    // 可选：强制使用 IPv4，防止云服务器默认走 IPv6 被 Google 拦截
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
